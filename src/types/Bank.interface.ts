@@ -44,7 +44,5 @@ export interface Bank {
   /**
    * The total expenses recorded for the card.
    */
-  expenses: {
-    [key: string]: string;
-  };
+  expenses: string
 }
