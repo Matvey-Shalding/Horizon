@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 7px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-light-white); /* Light background for the track */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-light-blue); /* Blue color for the scrollbar */
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-light-blue); /* Darker shade on hover */
+}
+
+* {
+  font-family: "IBM Plex Serif", serif;
+}
+
+body {
+  overflow-x: hidden !important;
+}
+
+@theme {
+  /* Media requests */
+
+  --breakpoint-*: initial;
+  --breakpoint-laptop: 67.5rem;
+  --breakpoint-desktop: 84.375rem;
+  --breakpoint-tablet: 48rem;
+  --breakpoint-tablet-small: 35rem;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-light-white: #f3f9ff;
+  --color-blue: #101828;
+  --color-gray: #475467;
+  --color-light-gray: #667085;
+  --gradient-blue: linear-gradient(90deg, #0179fe 0%, #4893ff 100%);
+  --color-light-blue: #0179fe;
+  --color-dark: #101828;
+  --color-dark-gray: #344054;
+  --color-green: #027a48;
+  --color-red: #f04438;
+  --color-border: #d0d5dd;
+  --color-gradient: var(--gradient-blue);
+  --color-gray-bg: rgba(252, 252, 253, 1);
+
+  --color-success: #ecfdf3;
+  --color-processing: #f2f4f7;
+  --color-declined: #fef3f2;
+
+  --color-pink: #c11574;
+
+  /* Border */
+
+  --radius-main: 0.5rem;
+
+  --radius-big: 1rem;
+
+  --shadow-main: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+@layer utilities {
+  .border {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-main);
+  }
+
+  .gradient {
+    background: var(--gradient-blue);
+    animation: shimmer 3s infinite;
+  }
+
+  .gradient_hover {
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    * {
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  .gradient_hover::before {
+    z-index: 1;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-blue); /* Gradient to fade in */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.25s;
+  }
+
+  .gradient_hover:hover::before {
+    opacity: 1; /* Gradually appears */
+  }
+}

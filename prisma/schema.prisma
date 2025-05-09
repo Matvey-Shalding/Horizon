@@ -1,0 +1,89 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-1.0.x"]
+}
+
+model User {
+  id          String    @id @default(uuid())
+  firstName   String
+  lastName    String
+  address     String
+  state       String
+  postalCode  String
+  dateOfBirth String
+  password    String
+  SSN         String
+  email       String    @unique
+
+  accounts    Account[]
+  banks       Bank[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Bank {
+  cardId         String        @id @default(cuid())
+  cardholderName String
+  balance        Decimal       @db.Decimal
+  monthlyBudget  Decimal       @db.Decimal
+  cardCvv        String
+
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categories     Category[]
+  transactions   Transaction[]
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  budget    Decimal  @db.Decimal
+  color     String
+
+  bankId    String
+  bank      Bank     @relation(fields: [bankId], references: [cardId], onDelete: Cascade)
+
+  transactions Transaction[] // optional if you want to relate transactions to categories
+}
+
+enum TransactionStatus {
+  PROCESSING
+  SUCCESS
+  DECLINED
+}
+
+model Transaction {
+  id         String            @id @default(cuid())
+  amount     Decimal           @db.Decimal
+  status     TransactionStatus
+  date       DateTime
+
+  category   String            // name of the category; or you can link via Category if needed
+
+  bankId     String
+  bank       Bank              @relation(fields: [bankId], references: [cardId], onDelete: Cascade)
+
+  Category Category[]
+}

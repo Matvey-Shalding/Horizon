@@ -1,0 +1,200 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Notification } from "components/auth/Notification";
+import { FormFields } from "constants/FormFields";
+import { redirect } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { SignUpSchema, SignUpSchemaType } from "schemas/singUp.schema";
+import { authorizationService } from "services/Authorization.service";
+import { Logo } from "ui/Logo";
+import { Button } from "../../../ui/Button";
+import { ErrorMessage } from "../../../ui/Error";
+import { Input } from "../../../ui/Input";
+import { useDispatch } from "react-redux";
+import { setPending } from "state/auth/authSlice";
+import { Title } from 'ui/Title';
+
+export default function SingUp() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpSchemaType>({
+    resolver: zodResolver(SignUpSchema),
+    defaultValues: {
+      firstName: "John",
+      lastName: "Doe",
+      address: "Avenue street",
+      postalCode: "121212",
+      state: "NY",
+      dateOfBirth: "2009-12-23",
+      SSN: "1234",
+      email: "John_doe@email.com",
+      password: "12345678",
+    },
+  });
+
+  const dispatch = useDispatch();
+  const [isSubmitting, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>();
+  const [success, setSuccess] = useState<string | undefined>();
+
+  useEffect(() => {
+    dispatch(setPending(isSubmitting));
+  }, [isSubmitting, dispatch]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="max-tablet-small:px-6 max-tablet-small:min-w-screen tablet:max-laptop:max-w-172.5 flex max-w-115 flex-col"
+    >
+      <div className="laptop:mb-6 max-tablet:mb-2 max-tablet-small:mb-1 mb-4">
+        <Logo />
+      </div>
+      <Title title="Sign up" subtitle="Please enter your details." />
+
+      <form
+        onSubmit={handleSubmit(
+          (data) =>
+            void authorizationService.singUp(
+              data,
+              setError,
+              setSuccess,
+              startTransition,
+            ),
+        )}
+        className="laptop:grid-cols-2 max-tablet-small:flex max-tablet-small:flex-col max-tablet-small:gap-y-2 tablet:max-laptop:grid-cols-3 grid gap-x-6 gap-y-3.5"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="order-1 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.firstName} />
+          <ErrorMessage message={errors.firstName?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="order-2 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.lastName} />
+          <ErrorMessage message={errors.lastName?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="tablet:max-laptop:order-4 tablet:max-laptop:col-span-3 order-3 col-span-2 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.address} />
+          <ErrorMessage message={errors.address?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="tablet:max-laptop:order-3 order-4 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.state} />
+          <ErrorMessage message={errors.state?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="order-5 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.postalCode} />
+          <ErrorMessage message={errors.postalCode?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="order-6 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.dateOfBirth} />
+          <ErrorMessage message={errors.dateOfBirth?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="order-7 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.SSN} />
+          <ErrorMessage message={errors.SSN?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="tablet:max-laptop:col-span-3 order-8 col-span-2 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.email} />
+          <ErrorMessage message={errors.email?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9 }}
+          className="tablet:max-laptop:col-span-3 order-9 col-span-2 flex flex-col gap-y-1"
+        >
+          <Input register={register} {...FormFields.password} />
+          <ErrorMessage message={errors.password?.message} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className={`order-10 col-span-2 ${(success || error) && "mb-3"}`}
+        >
+          <Notification message={success} type="success" />
+          <Notification message={error} type="error" />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.1, duration: 0.3 }}
+          className="tablet:max-laptop:col-span-3 tablet-small:-mt-3 order-11 col-span-2"
+        >
+          <Button props={{ type: "submit" }} content="Sign up" />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="tablet:max-laptop:col-span-3 tablet-small:-mt-2 order-12 col-span-2 flex gap-x-1 self-center justify-self-center text-sm"
+        >
+          <span className="text-gray">Already have an account?</span>
+          <span
+            onClick={() => void redirect("/auth/log-in")}
+            className="text-light-blue cursor-pointer font-semibold"
+          >
+            Log in
+          </span>
+        </motion.div>
+      </form>
+    </motion.div>
+  );
+}
