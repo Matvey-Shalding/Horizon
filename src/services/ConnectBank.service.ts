@@ -71,21 +71,6 @@ class ConnectBank {
     dispatch: Dispatch,
     router: AppRouterInstance,
   ) {
-    const monthlyBudget = parseFloat(data.monthlyBudget || "0");
-    const totalCategoryBudget = (data.categories || []).reduce(
-      (sum: any, category) => {
-        return sum + (parseFloat(category.budget) || 0);
-      },
-      0,
-    );
-
-    if (totalCategoryBudget > monthlyBudget) {
-      setError("root", {
-        type: "manual",
-        message: "Total category budget exceeds the monthly budget.",
-      });
-      return;
-    }
     reset();
     setCategories(() => []);
     dispatch(addBank({ ...data, transactions: [], expenses: "0" }));
