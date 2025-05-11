@@ -126,20 +126,6 @@ export function CategorySectionEdit({
                 />
               </div>
 
-              {/* Budget Input */}
-              <div className="flex flex-col gap-y-1">
-                <Input
-                  label="Budget"
-                  placeholder=""
-                  defaultValue={category.budget}
-                  register={register}
-                  fieldRegister={`categories.${index}.budget`}
-                />
-                <ErrorMessage
-                  message={errors.categories?.[index]?.budget?.message}
-                />
-              </div>
-
               {/* Category Color Input */}
               <div className="relative flex items-end gap-x-2">
                 <div className="basis-full">

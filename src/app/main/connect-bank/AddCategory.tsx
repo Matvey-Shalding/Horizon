@@ -52,7 +52,6 @@ export function AddCategory({
     resolver: zodResolver(bankCategorySchema),
     defaultValues: {
       name: "",
-      budget: "100",
       color: DEFAULT_COLOR,
     },
   });
@@ -102,20 +101,6 @@ export function AddCategory({
               fieldRegister="name"
             />
             <ErrorMessage message={errors.name?.message} />
-          </div>
-          <div className="flex flex-col gap-y-1">
-            <Input
-              {...{
-                type: "number",
-                min: "1",
-                noValidate: true,
-              }}
-              label="Category Budget"
-              placeholder="Enter category budget"
-              register={register}
-              fieldRegister="budget"
-            />
-            <ErrorMessage message={errors.budget?.message} />
           </div>
 
           <div className="flex flex-col gap-y-1">
