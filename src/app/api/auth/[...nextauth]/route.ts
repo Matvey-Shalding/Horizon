@@ -1,13 +1,7 @@
 // /app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
-import authConfig from "../../../../../auth.config"; // Adjust as needed
+import authConfig from "../../../../../auth.config";
 
-const handler = NextAuth({
-  ...authConfig,
-  secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    strategy: "jwt",
-  },
-});
+const { handlers } = NextAuth(authConfig);
 
-export { handler as GET, handler as POST };
+export const { GET, POST } = handlers;

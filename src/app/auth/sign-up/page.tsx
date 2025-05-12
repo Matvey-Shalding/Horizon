@@ -1,21 +1,23 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Notification } from "components/auth/Notification";
 import { FormFields } from "constants/FormFields";
-import { redirect } from "next/navigation";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { AUTH_ROUTES } from "routes";
 import { SignUpSchema, SignUpSchemaType } from "schemas/singUp.schema";
 import { authorizationService } from "services/Authorization.service";
+import { setPending } from "state/auth/authSlice";
 import { Logo } from "ui/Logo";
+import { Title } from "ui/Title";
+import { useImmer } from "use-immer";
 import { Button } from "../../../ui/Button";
 import { ErrorMessage } from "../../../ui/Error";
 import { Input } from "../../../ui/Input";
-import { useDispatch } from "react-redux";
-import { setPending } from "state/auth/authSlice";
-import { Title } from 'ui/Title';
 
 export default function SingUp() {
   const {
@@ -37,14 +39,31 @@ export default function SingUp() {
     },
   });
 
+  const router = useRouter();
+
   const dispatch = useDispatch();
   const [isSubmitting, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
 
+  const [userData, setUserData] = useImmer<{
+    email?: string;
+    password?: string;
+  }>({});
+
   useEffect(() => {
     dispatch(setPending(isSubmitting));
   }, [isSubmitting, dispatch]);
+
+  useEffect(() => {
+    authorizationService.singInAfterSignUp(
+      userData,
+      success,
+      setSuccess,
+      setError,
+      router,
+    );
+  }, [success]);
 
   return (
     <motion.div
@@ -67,6 +86,7 @@ export default function SingUp() {
               setError,
               setSuccess,
               startTransition,
+              setUserData,
             ),
         )}
         className="laptop:grid-cols-2 max-tablet-small:flex max-tablet-small:flex-col max-tablet-small:gap-y-2 tablet:max-laptop:grid-cols-3 grid gap-x-6 gap-y-3.5"
@@ -188,7 +208,7 @@ export default function SingUp() {
         >
           <span className="text-gray">Already have an account?</span>
           <span
-            onClick={() => void redirect("/auth/log-in")}
+            onClick={() => void router.push(AUTH_ROUTES.LOGIN)}
             className="text-light-blue cursor-pointer font-semibold"
           >
             Log in

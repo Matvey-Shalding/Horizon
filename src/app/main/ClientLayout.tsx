@@ -6,9 +6,11 @@ import Sidebar from "components/icons/sidebar/Sidebar";
 import { SearchInput } from "components/main/SearchInput";
 import { menuItems } from "data/menuItems";
 import { AnimatePresence, motion } from "framer-motion";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AUTH_ROUTES } from "routes";
 import { RootState } from "state/store";
 import Loader from "ui/Loader";
 import { Logo } from "ui/Logo";
@@ -170,7 +172,11 @@ export default function ClientLayout({
                 </motion.div>
               )}
             </AnimatePresence>
-            <Log_out width={20} height={20} />
+            <Log_out
+              onClick={() => signOut({ callbackUrl: AUTH_ROUTES.LOGIN })}
+              width={20}
+              height={20}
+            />
           </div>
         </div>
       </motion.div>

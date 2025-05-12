@@ -1,19 +1,27 @@
-import { DefaultSession } from "next-auth";
+// types/next-auth.d.ts (or next-auth.d.ts in your project root)
+import { Session, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
-// Custom session type to include user ID
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string; // Add user ID to session
-      email: string;
-      name: string; // Optional, if you want user's full name
+      id: string; // Add id to session.user
+      email?: string | null;
+      name?: string | null;
+      image?: string | null;
     };
   }
 
-  interface JWT {
-    id: string; // Add user ID to JWT token
-    email: string;
+  interface User {
+    id: string; // Add id to User (used in callbacks)
+    email?: string | null;
+    name?: string | null;
+    image?: string | null;
   }
 }
 
-//satisfies NextAuthConfig;
+declare module "next-auth/jwt" {
+  interface JWT {
+    id?: string; // Add id to JWT token
+  }
+}

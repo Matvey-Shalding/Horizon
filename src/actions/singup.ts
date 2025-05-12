@@ -31,5 +31,5 @@ export const singUp = async (data: SingUp) => {
     }
   })
 
-	return { success: 'User created' };
+	return { success: 'User created',email,password: hashedPassword };
 };

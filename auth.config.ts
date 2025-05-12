@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { LogInSchema } from "schemas/logIn.schema";
@@ -9,6 +8,7 @@ const authConfig: NextAuthConfig = {
     Credentials({
       async authorize(credentials) {
         const validatedFields = LogInSchema.safeParse(credentials);
+
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
 
@@ -16,7 +16,7 @@ const authConfig: NextAuthConfig = {
 
           if (!user) return null;
 
-          const isPasswordMatch = await bcrypt.compare(password, user.password);
+          const isPasswordMatch = password === user.password;
 
           if (isPasswordMatch) {
             return {
