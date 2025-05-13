@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { redirect } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -18,6 +17,9 @@ import { ErrorMessage } from "ui/Error";
 import { Input } from "ui/Input";
 import { Logo } from "ui/Logo";
 import { Title } from "ui/Title";
+
+import { useRouter } from 'next/navigation';
+import { AUTH_ROUTES } from 'routes';
 
 export default function LogIn() {
   const {
@@ -40,6 +42,8 @@ export default function LogIn() {
   useEffect(() => {
     dispatch(setPending(isSubmitting));
   }, [isSubmitting, dispatch]);
+
+  const router = useRouter()
 
   return (
     <motion.div
@@ -93,7 +97,7 @@ export default function LogIn() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className={`col-span-2 ${error || success ? "mb-3" : ""}`}
+          className={`col-span-2 -mt-1`}
         >
           <Notification message={success} type="success" />
           <Notification message={error} type="error" />
@@ -116,7 +120,7 @@ export default function LogIn() {
         >
           <span className="text-gray">Don’t have an account?</span>
           <span
-            onClick={() => void redirect("/auth/sign-up")}
+            onClick={() => void router.push(AUTH_ROUTES.SIGN_UP)}
             className="text-light-blue cursor-pointer font-semibold"
           >
             Sign up
