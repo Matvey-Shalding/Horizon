@@ -5,7 +5,6 @@ import {
   apiAuthPrefix,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
-  publicRoutes,
 } from "../routes";
 
 export async function middleware(req: NextRequest) {
@@ -13,8 +12,8 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   const isLoggedIn = !!token;
+
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname as any);
 
   // Allow access to API authentication routes
@@ -35,8 +34,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Redirect non-authenticated users to the login page unless it's a public route
-  if (!isLoggedIn && !isPublicRoute) {
+  if (!isLoggedIn) {
     return NextResponse.redirect(new URL(AUTH_ROUTES.LOGIN, nextUrl));
   }
 
