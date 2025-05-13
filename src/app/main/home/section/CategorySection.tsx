@@ -32,6 +32,9 @@ export function CategorySection({
   // Common state used by various modes
   const [open, setOpen] = useState(false);
 
+  const currentBank = useMemo(() => {
+    return banks[activeTab];
+  }, [activeTab, banks]);
   // For DELETE mode:
   const [deletedCategories, setDeletedCategories] = useImmer<string[]>([]);
 
@@ -89,6 +92,7 @@ export function CategorySection({
     case "DEFAULT":
       return (
         <CategorySectionDefault
+          currentBank={currentBank}
           {...commonProps}
           setDeletedCategories={setDeletedCategories}
         />

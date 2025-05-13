@@ -83,7 +83,7 @@ export function AddCategoryForm({
     }
 
     setCategories((draft) => {
-      draft.push({ ...data });
+      draft.push({ ...data,expenses: "0" });
     });
     handleCancel();
   };

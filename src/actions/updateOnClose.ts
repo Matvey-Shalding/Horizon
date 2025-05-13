@@ -76,7 +76,7 @@ export async function updateOnClose(user: any, banks: any[]) {
             where: { id: existingCategory.id },
             data: {
               name: category.name,
-              budget: category.budget,
+              expenses: category.expenses,
               color: category.color,
             },
           });
@@ -84,7 +84,7 @@ export async function updateOnClose(user: any, banks: any[]) {
           await Database.category.create({
             data: {
               name: category.name,
-              budget: category.budget,
+              expenses: category.expenses,
               color: category.color,
               bankId: updatedBank.cardId,
             },

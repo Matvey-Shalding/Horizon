@@ -1,13 +1,12 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { MENU_STATUSES, MenuStatus } from "constants/MenuStatuses";
-import { bankCategorySchemaType } from "schemas/bankCategory.schema";
 import { setBanks } from "state/main/bankSlice";
 import { Category } from "types/Category.interface";
 import { Updater } from "use-immer";
 
 class CategoryService {
   resetSelection(
-    setEditedCategories: Updater<bankCategorySchemaType[]>,
+    setEditedCategories: Updater<Category[]>,
     setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>,
   ) {
     setStatus(MENU_STATUSES.DEFAULT); // Reset the status to default
@@ -17,7 +16,7 @@ class CategoryService {
   // Handle the cancel action
   handleCancel(
     setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>,
-    setEditedCategories: Updater<bankCategorySchemaType[]>,
+    setEditedCategories: Updater<Category[]>,
   ) {
     this.resetSelection(setEditedCategories, setStatus); // Reset categories and status
   }
