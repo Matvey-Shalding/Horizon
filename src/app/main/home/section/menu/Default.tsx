@@ -3,6 +3,7 @@ import { MenuStatus } from "constants/MenuStatuses";
 import { Category as CategoryComponent } from "ui/Category";
 import { Updater } from "use-immer";
 import { Menu } from "../../Menu";
+import { Bank } from 'types/Bank.interface';
 
 export function CategorySectionDefault({
   status,
@@ -11,7 +12,9 @@ export function CategorySectionDefault({
   open,
   setOpen,
   setDeletedCategories,
+  currentBank
 }: {
+  currentBank:Bank
   status: MenuStatus;
   setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>;
   categories: any[];
@@ -40,6 +43,7 @@ export function CategorySectionDefault({
       <div className="space-y-4">
         {categories.map((category) => (
           <CategoryComponent
+            currentBank={currentBank}
             key={category.name}
             category={category}
             status={status}

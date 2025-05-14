@@ -59,7 +59,7 @@ export function AddCategory({
     reset();
     setSelectedColor(defaultColor);
     setShowColorPicker(false);
-    onCancel?.()
+    onCancel?.();
   };
 
   const onSubmit = (data: bankCategorySchemaType) => {
@@ -76,7 +76,7 @@ export function AddCategory({
     }
 
     setCategories((draft) => {
-      draft.push({ ...data });
+      draft.push({ ...data, expenses: "0" });
     });
     handleCancel();
   };
