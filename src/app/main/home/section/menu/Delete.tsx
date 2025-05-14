@@ -1,8 +1,9 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { CategoryMenuStatus } from "constants/CategoryMenu";
+import { MenuStatus } from "constants/MenuStatuses";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { deleteCategoryService } from "services/category/DeleteCategory.service";
+import { Bank } from "types/Bank.interface";
 import { Button } from "ui/Button";
 import { Category as CategoryComponent } from "ui/Category";
 import { Checkbox } from "ui/Checkbox";
@@ -18,15 +19,17 @@ export function CategorySectionDelete({
   dispatch,
   deletedCategories,
   setDeletedCategories,
+  currentBank,
 }: {
-  status: CategoryMenuStatus;
-  setStatus: React.Dispatch<React.SetStateAction<CategoryMenuStatus>>;
+  status: MenuStatus;
+  setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>;
   activeTab: number;
   banks: any;
   categories: any[];
   dispatch: Dispatch;
   deletedCategories: string[];
   setDeletedCategories: Updater<string[]>;
+  currentBank: Bank;
 }) {
   const [checkAll, setCheckAll] = useState(false);
   useEffect(() => {
@@ -56,6 +59,7 @@ export function CategorySectionDelete({
       <div className="space-y-4">
         {categories.map((category) => (
           <CategoryComponent
+            currentBank={currentBank}
             key={category.name}
             category={category}
             status={status}

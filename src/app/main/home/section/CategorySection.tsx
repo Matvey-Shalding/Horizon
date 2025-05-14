@@ -98,6 +98,7 @@ export function CategorySection({
     case "DELETE":
       return (
         <CategorySectionDelete
+          currentBank={currentBank}
           {...commonProps}
           deletedCategories={deletedCategories}
           setDeletedCategories={setDeletedCategories}

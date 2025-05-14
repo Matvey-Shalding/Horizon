@@ -1,6 +1,7 @@
 import { MENU_STATUSES, MenuStatus } from "constants/MenuStatuses";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
+import { Bank } from "types/Bank.interface";
 import { Category as type } from "types/Category.interface";
 import { Checkbox } from "ui/Checkbox";
 import { Updater } from "use-immer";
@@ -11,6 +12,7 @@ interface CategoryProps {
   status?: MenuStatus;
   setDeletedCategories: Updater<string[]>;
   deletedCategories?: string[];
+  currentBank: Bank;
 }
 
 export function Category({
@@ -18,19 +20,18 @@ export function Category({
   status = MENU_STATUSES.DEFAULT,
   setDeletedCategories,
   deletedCategories,
+  currentBank,
 }: CategoryProps) {
-  const { budget, color, name } = category;
+  const { expenses, color, name } = category;
 
-  const totalAmount = useMemo(() => parseInt(budget, 10), [budget]);
-  const spending = useMemo(() => totalAmount / 2, [totalAmount]);
+  const currentExpenses = useMemo(() => parseInt(expenses, 10), [expenses]);
   const amountLeft = useMemo(
-    () => totalAmount - spending,
-    [totalAmount, spending],
+    () => Number(currentBank.monthlyBudget) - Number(currentBank.expenses ?? 0),
+    [currentBank],
   );
-  const progress = useMemo(
-    () => (spending / totalAmount) * 100,
-    [spending, totalAmount],
-  );
+  const progress = useMemo(() => {
+    return (Number(currentExpenses) / Number(currentBank.monthlyBudget)) * 100;
+  }, [currentBank, currentExpenses]);
 
   const bgColor = useMemo(() => hexToRgba(color, 0.2), [color]);
   const progressColor = useMemo(() => hexToRgba(color, 0.55), [color]);
