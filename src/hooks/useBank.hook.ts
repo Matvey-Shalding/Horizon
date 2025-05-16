@@ -20,6 +20,7 @@ export function useBank() {
 
   return useQuery({
     queryKey: ["banks"],
+    refetchOnMount: true,
     queryFn: fetchBanks,
     staleTime: 0, // 5 minutes fresh
     // refetchOnWindowFocus: false,

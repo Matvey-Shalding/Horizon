@@ -23,8 +23,8 @@ export async function GET() {
       },
     },
   });
-
-  console.log("user banks in API", user?.banks);
+  console.log("Banks FROM DB")
+  console.dir(user?.banks,{ depth: null });
 
   // 3. Return only the banks
   return NextResponse.json(user?.banks ?? []);

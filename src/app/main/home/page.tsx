@@ -3,18 +3,18 @@
 import Plus from "components/icons/main/home/plus";
 import { MENU_STATUSES, MenuStatus } from "constants/MenuStatuses";
 import { AnimatePresence, motion } from "framer-motion";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { MAIN_ROUTES } from "routes";
 import { RootState } from "state/store";
+import { Button } from "ui/Button";
 import { Label } from "ui/Label";
 import PieChart from "ui/PieChart";
 import { Transaction } from "ui/Transaction";
 import { shortenString } from "utils/shortenTitle";
 import { CardList } from "../connect-bank/CardList";
 import { CategorySection } from "./section/CategorySection";
-import { Button } from 'ui/Button';
-import { MAIN_ROUTES } from 'routes';
 
 export default function Home({}: {}) {
   const user = useSelector((state: RootState) => state.user.user);
@@ -158,7 +158,7 @@ export default function Home({}: {}) {
                     transition={{ duration: 0.2, delay: i * 0.05 }}
                   >
                     <Transaction
-                      transaction={transaction.transaction}
+                      id={transaction.id}
                       amount={transaction.amount}
                       status={transaction.status}
                       date={transaction.date}
@@ -174,8 +174,8 @@ export default function Home({}: {}) {
           <div className="h-30">
             <img src="/img/main/bg.jpg" alt="" />
           </div>
-          <div className="px-6 pt-5 basis-full">
-            <div className="flex flex-col gap-y-8 basis-full h-full">
+          <div className="basis-full px-6 pt-5">
+            <div className="flex h-full basis-full flex-col gap-y-8">
               <div className="flex flex-col gap-y-1">
                 <span className="text-dark text-2xl font-semibold">
                   {user?.firstName + " " + user?.lastName}
@@ -183,7 +183,7 @@ export default function Home({}: {}) {
                 <span className="text-gray">{user?.email}</span>
               </div>
               <div className="flex flex-col gap-y-6">
-                <div className="flex justify-between border-b border-solid border-border pb-1.5">
+                <div className="border-border flex justify-between border-b border-solid pb-1.5">
                   <span className="text-dark text-lg font-semibold">
                     My banks
                   </span>
@@ -237,7 +237,7 @@ export default function Home({}: {}) {
 
           {/* Floating effect on button */}
           <motion.div
-            className='basis-full w-full'
+            className="w-full basis-full"
             animate={{
               y: [0, -5, 0],
             }}
@@ -247,7 +247,10 @@ export default function Home({}: {}) {
               duration: 1.5,
             }}
           >
-            <Button onClick={() => void router.push(MAIN_ROUTES.CONNECT_BANK)} content="Connect bank" />
+            <Button
+              onClick={() => void router.push(MAIN_ROUTES.CONNECT_BANK)}
+              content="Connect bank"
+            />
           </motion.div>
         </motion.div>
       </div>

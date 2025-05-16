@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import Log_out from "components/icons/sidebar/Log_out";
 import Sidebar from "components/icons/sidebar/Sidebar";
 import { SearchInput } from "components/main/SearchInput";
@@ -32,15 +31,15 @@ export default function ClientLayout({
   useEffect(() => {
     const handleUnload = () => {
       const dataToSend = { userData: user, userBanks: banks };
+      const blob = new Blob([JSON.stringify(dataToSend)], {
+        type: "application/json",
+      });
 
-      axios
-        .post("/api/home", dataToSend, {
-          headers: { "Content-Type": "application/json" },
-          timeout: 3000, // Set a short timeout to avoid delays when the page closes
-        })
-        .catch((error) => {
-          console.error("Failed to send data before unload:", error);
-        });
+      const success = navigator.sendBeacon("/api/home", blob);
+
+      if (!success) {
+        console.warn("sendBeacon failed to queue the data for sending.");
+      }
     };
 
     window.addEventListener("beforeunload", handleUnload);

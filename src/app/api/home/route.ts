@@ -8,8 +8,6 @@ export async function POST(request: NextRequest) {
 
     const { userData, userBanks } = body;
 
-    console.log("Data to send", userBanks);
-
     // Call the Server Action to update the database
     await updateOnClose(userData, userBanks);
 

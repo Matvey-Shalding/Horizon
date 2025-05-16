@@ -59,13 +59,11 @@ model Bank {
 model Category {
   id        String   @id @default(cuid())
   name      String
-  budget    Decimal  @db.Decimal
+  expenses  String @default("0")
   color     String
 
   bankId    String
   bank      Bank     @relation(fields: [bankId], references: [cardId], onDelete: Cascade)
-
-  transactions Transaction[] // optional if you want to relate transactions to categories
 }
 
 enum TransactionStatus {
@@ -75,15 +73,16 @@ enum TransactionStatus {
 }
 
 model Transaction {
-  id         String            @id @default(cuid())
-  amount     Decimal           @db.Decimal
+  id         String            @id @default(cuid()) // maps to transaction (interface)
+  amount     String         // passed as string in interface
   status     TransactionStatus
-  date       DateTime
-
-  category   String            // name of the category; or you can link via Category if needed
-
+  date       String
+  category   String                               // optional in interface
+  message    String?                                // optional field
   bankId     String
   bank       Bank              @relation(fields: [bankId], references: [cardId], onDelete: Cascade)
 
-  Category Category[]
+  // ❌ REMOVE THIS: It’s invalid and unnecessary unless you want to define many-to-many
+  // Category Category[] 
 }
+
