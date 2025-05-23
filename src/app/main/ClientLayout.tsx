@@ -29,7 +29,7 @@ export default function ClientLayout({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const handleUnload = () => {
+    const handlePageHide = (event: PageTransitionEvent) => {
       const dataToSend = { userData: user, userBanks: banks };
       const blob = new Blob([JSON.stringify(dataToSend)], {
         type: "application/json",
@@ -40,10 +40,14 @@ export default function ClientLayout({
       if (!success) {
         console.warn("sendBeacon failed to queue the data for sending.");
       }
+
+      // Artificial delay (non-blocking) before the page hides
+      const start = Date.now();
+      while (Date.now() - start < 300) {} // 300ms delay
     };
 
-    window.addEventListener("beforeunload", handleUnload);
-    return () => window.removeEventListener("beforeunload", handleUnload);
+    window.addEventListener("pagehide", handlePageHide);
+    return () => window.removeEventListener("pagehide", handlePageHide);
   }, [user, banks]);
 
   if (isLoading) {

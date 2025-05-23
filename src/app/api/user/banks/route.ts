@@ -23,8 +23,8 @@ export async function GET() {
       },
     },
   });
-  console.log("Banks FROM DB")
-  console.dir(user?.banks,{ depth: null });
+  console.log("Banks FROM DB");
+  console.log(JSON.stringify(user?.banks, null, 2));
 
   // 3. Return only the banks
   return NextResponse.json(user?.banks ?? []);

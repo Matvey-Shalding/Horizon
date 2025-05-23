@@ -10,7 +10,7 @@ export async function updateOnClose(
   console.dir(banks, { depth: null });
 
   try {
-    // Step 1: Get all existing banks for the user
+    // 1. Fetch existing banks
     const existingBanks = await Database.bank.findMany({
       where: { userId: user.id },
       include: { categories: true, transactions: true },
@@ -18,7 +18,7 @@ export async function updateOnClose(
 
     const passedCardIds = banks.map((b) => b.cardId);
 
-    // Step 2: Delete banks not present in the new banks array
+    // 2. Delete removed banks
     const banksToDelete = existingBanks.filter(
       (existingBank) => !passedCardIds.includes(existingBank.cardId),
     );
@@ -27,8 +27,9 @@ export async function updateOnClose(
       await Database.bank.delete({ where: { cardId: bank.cardId } });
     }
 
-    // Step 3: Upsert remaining banks
+    // 3. Upsert banks, categories, and transactions
     for (const bank of banks) {
+      // Upsert bank
       const updatedBank = await Database.bank.upsert({
         where: { cardId: bank.cardId },
         update: {
@@ -47,7 +48,7 @@ export async function updateOnClose(
         },
       });
 
-      // Handle categories
+      // Upsert categories
       const existingCategories = await Database.category.findMany({
         where: { bankId: updatedBank.cardId },
       });
@@ -62,9 +63,7 @@ export async function updateOnClose(
         }
       }
 
-      const incomingNames = Array.from(incomingCategoryMap.keys());
-
-      // Delete removed categories
+      // Delete missing categories
       for (const existing of existingCategories) {
         const nameKey = existing.name.trim().toLowerCase();
         if (!incomingCategoryMap.has(nameKey)) {
@@ -100,43 +99,17 @@ export async function updateOnClose(
         }
       }
 
-      // ✅ Handle transactions too (just like categories)
-      const existingTransactions = await Database.transaction.findMany({
-        where: { bankId: updatedBank.cardId },
-      });
+      const existingTransactions = await Database.transaction.findMany();
 
-      const incomingTransactions = bank.transactions || [];
-
-      const existingTransactionIds = new Set(
-        existingTransactions.map((t) => t.id),
-      );
-      const incomingTransactionIds = new Set(
-        incomingTransactions.map((t: any) => t.transaction),
-      );
-
-      // Delete transactions no longer present
-      for (const existing of existingTransactions) {
-        if (!incomingTransactionIds.has(existing.id)) {
-          await Database.transaction.delete({ where: { id: existing.id } });
-        }
-      }
-
-      // Create or update transactions
-      for (const tx of incomingTransactions) {
-        if (existingTransactionIds.has(tx.transaction)) {
-          // Optionally update existing (you can skip if they’re immutable)
-          await Database.transaction.update({
-            where: { id: tx.transaction },
-            data: {
-              amount: tx.amount,
-              status: tx.status,
-              date: tx.date,
-              category: tx.category ?? "",
-              message: tx.message ?? "",
-              bankId: updatedBank.cardId,
-            },
-          });
-        } else {
+      for (const tx of bank.transactions) {
+        if (
+          !existingTransactions.find((serverTransaction) => {
+            return (
+              serverTransaction.id === tx.id &&
+              serverTransaction.bankId === bank.cardId
+            );
+          })
+        ) {
           await Database.transaction.create({
             data: {
               id: tx.transaction,
@@ -145,11 +118,30 @@ export async function updateOnClose(
               date: tx.date,
               category: tx.category ?? "",
               message: tx.message ?? "",
-              bankId: updatedBank.cardId,
+              bankId: bank.cardId,
             },
           });
         }
       }
+
+      // Upsert transactions (fixed placement)
+      // const existingTransactions = await Database.transaction.findMany({
+      //   where: { bankId: bank.cardId },
+      //   select: { id: true },
+      // });
+
+      // const incomingTransactions = bank.transactions || [];
+
+      // for (const tx of incomingTransactions) {
+      //   const exists = _.some(existingTransactions, { id: tx.transaction });
+      //   if (!exists) {
+      //     await Database.transaction.create({
+      //       data: {
+
+      //       },
+      //     });
+      //   }
+      // }
     }
 
     return {
