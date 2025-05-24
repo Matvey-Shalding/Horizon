@@ -10,7 +10,7 @@ export interface Transaction {
   /**
    * Unique identifier of the transaction.
    */
-  transaction: string;
+  id: string;
 
   /**
    * The monetary amount of the transaction.
