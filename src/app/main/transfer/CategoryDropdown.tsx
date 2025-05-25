@@ -34,7 +34,7 @@ export function CategoryDropdown<T>({
   useEffect(() => {
     setSelected("");
     setIsOpen(false);
-    setValue("category", "");
+    setValue("categoryId", "");
   }, [resetCounter, setValue]);
 
   return (
@@ -83,7 +83,7 @@ export function CategoryDropdown<T>({
                         key={v4()}
                         onClick={() => {
                           setSelected(category.name);
-                          setValue("category", category.name, {
+                          setValue("categoryId", category.name, {
                             shouldValidate: true,
                           });
                           setTimeout(() => setIsOpen(false), 0);

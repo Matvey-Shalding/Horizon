@@ -62,7 +62,7 @@ export default function PaymentTransferPage() {
       sourceBank: data.sourceBank,
       recipientAccount: data.recipientAccount,
       balance: data.balance,
-      category: data.category,
+      categoryId: data.categoryId,
       note: data.note,
       banks,
       dispatch,
@@ -149,7 +149,7 @@ export default function PaymentTransferPage() {
         </div>
 
         <CategoryDropdown
-          errorMessage={errors.category?.message}
+          errorMessage={errors.categoryId?.message}
           resetCounter={resetCounter}
           title="Select Category"
           subtitle="Assign a category"
