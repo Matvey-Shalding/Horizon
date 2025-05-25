@@ -31,7 +31,7 @@ export default function Home({}: {}) {
 
   if (banks.length) {
     return (
-      <div className="flex basis-full">
+      <div className="flex basis-full bg-gray-bg">
         <div className="border-border flex grow-1 basis-full flex-col gap-y-8 overflow-y-scroll border-r border-solid px-8 py-12">
           <div className="flex flex-col gap-y-3.5">
             <span className="text-3xl/snug font-semibold">
@@ -132,22 +132,17 @@ export default function Home({}: {}) {
 
               {/* Transactions */}
               <div className="flex flex-col">
-                <div className="grid h-11 grid-cols-5 border-b border-[#EAECF0] bg-[#f4f4f4]">
-                  <div className="text-gray grid items-center pl-3.5 text-xs font-medium">
-                    Transaction
-                  </div>
-                  <div className="text-gray grid items-center pl-3.5 text-xs font-medium">
-                    Amount
-                  </div>
-                  <div className="text-gray grid items-center pl-3.5 text-xs font-medium">
-                    Status
-                  </div>
-                  <div className="text-gray grid items-center pl-3.5 text-xs font-medium">
-                    Date
-                  </div>
-                  <div className="text-gray grid items-center pl-3.5 text-xs font-medium">
-                    Category
-                  </div>
+                <div className="grid h-11 grid-cols-[1.5fr_0.75fr_1.25fr_1fr] border-b border-[#EAECF0] bg-[#F9FAFB] px-4">
+                  {["Transaction", "Amount", "Date", "Category"].map(
+                    (title) => (
+                      <div
+                        key={title}
+                        className="text-gray grid items-center text-xs font-medium"
+                      >
+                        {title}
+                      </div>
+                    ),
+                  )}
                 </div>
                 {banks[activeTab].transactions.map((transaction, i) => (
                   <motion.div
@@ -158,6 +153,9 @@ export default function Home({}: {}) {
                     transition={{ duration: 0.2, delay: i * 0.05 }}
                   >
                     <Transaction
+                      even={i % 2 === 0}
+                      currentBank={banks[activeTab]}
+                      recipientBankId={transaction.recipientBankId}
                       id={transaction.id}
                       amount={transaction.amount}
                       status={transaction.status}

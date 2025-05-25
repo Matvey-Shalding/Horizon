@@ -1,3 +1,5 @@
+import { Category } from './Category.interface';
+
 /**
  * Possible statuses of a transaction.
  */
@@ -30,7 +32,9 @@ export interface Transaction {
   /**
    * The category associated with the transaction.
    */
-  category?: string;
+  category: Category;
 
   message?: string;
+
+  recipientBankId: string
 }
