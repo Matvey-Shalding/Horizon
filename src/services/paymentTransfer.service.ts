@@ -1,20 +1,15 @@
-import { cloneDeep } from "lodash";
 import { Dispatch } from "@reduxjs/toolkit";
+import { cloneDeep } from "lodash";
+import { UseFormClearErrors } from "react-hook-form";
+import { PaymentTransferSchemaType } from "schemas/paymentTransfer.schema";
 import { setBanks } from "state/main/bankSlice";
 import { Bank } from "types/Bank.interface";
-import { Transaction } from "types/Transaction.interface";
-import { PaymentTransferSchemaType } from "schemas/paymentTransfer.schema";
-import { UseFormClearErrors } from 'react-hook-form';
+import { Category } from "types/Category.interface";
+import { TransactionStatus } from "types/Transaction.interface";
 
 type ResetParams = {
   reset: () => void;
-  clearErrors: UseFormClearErrors<{
-    sourceBank: string;
-    recipientAccount: string;
-    balance: string;
-    note?: string | undefined;
-    category?: string | undefined;
-}>;
+  clearErrors: UseFormClearErrors<PaymentTransferSchemaType>;
   // setSelectedBank: (id: string) => void;
   // setSelectedCategory: (category: string) => void;
   // setIsCategoryDropdownOpen: (open: boolean) => void;
@@ -48,7 +43,7 @@ export class PaymentTransferService {
     sourceBank,
     recipientAccount,
     balance,
-    category,
+    categoryId,
     note,
     banks,
     dispatch,
@@ -71,15 +66,29 @@ export class PaymentTransferService {
     if (sourceBankIndex === -1 || recipientBankIndex === -1) return;
 
     const transactionId = crypto.randomUUID();
-    const now = new Date().toISOString();
+    const date = new Date();
 
-    const transaction: Transaction = {
+    const weekday = date.toLocaleString("en-US", { weekday: "short" }); // Wed
+    const day = String(date.getDate()).padStart(2, "0"); // 28
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 08
+    const year = date.getFullYear(); // 2025
+    const hours = String(date.getHours()).padStart(2, "0"); // 13
+    const minutes = String(date.getMinutes()).padStart(2, "0"); // 00
+
+    // Format string
+    const formatted = `${weekday} ${day}.${month}.${year}, ${hours}:${minutes}`;
+
+    const category = banks
+      .find((currentBank) => currentBank.cardId === sourceBank)
+      ?.categories.find((c) => c.name === categoryId) as Category;
+
+    const transaction = {
       id: transactionId,
-      amount: balance,
-      status: "SUCCESS",
-      date: now,
+      status: "SUCCESS" as TransactionStatus,
+      date: formatted,
       category,
       message: note,
+      //For plus and for minus it`s source bank
     };
 
     copy[sourceBankIndex].balance = String(
@@ -89,8 +98,16 @@ export class PaymentTransferService {
       Number(copy[recipientBankIndex].balance) + Number(balance),
     );
 
-    copy[sourceBankIndex].transactions.push({ ...transaction });
-    copy[recipientBankIndex].transactions.push({ ...transaction });
+    copy[sourceBankIndex].transactions.push({
+      ...transaction,
+      amount: "- " + balance,
+      recipientBankId: recipientAccount,
+    });
+    copy[recipientBankIndex].transactions.push({
+      ...transaction,
+      amount: "+" + balance,
+      recipientBankId: sourceBank,
+    });
 
     dispatch(setBanks(copy));
 

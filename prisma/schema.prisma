@@ -77,9 +77,10 @@ model Transaction {
   amount     String         // passed as string in interface
   status     TransactionStatus
   date       String
-  category   String                               // optional in interface
+  category   Json                               // optional in interface
   message    String?                                // optional field
   bankId     String
+  recipientBankId String
   bank       Bank              @relation(fields: [bankId], references: [cardId], onDelete: Cascade)
 
   // ❌ REMOVE THIS: It’s invalid and unnecessary unless you want to define many-to-many

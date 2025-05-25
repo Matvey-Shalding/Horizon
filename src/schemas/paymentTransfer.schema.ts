@@ -9,7 +9,7 @@ export const getPaymentTransferSchema = (banks: Bank[]) =>
       recipientAccount: z.string().min(1, "Please select a recipient bank"),
       balance: z.string().regex(/^\d+(\.\d{1,2})?$/, "Enter a valid amount"),
       note: z.string().optional(),
-      category: z.string().min(1, "Please select a category"),
+      categoryId: z.string().min(1, "Please select a category"),
     })
     .refine(
       (data) => {

@@ -99,6 +99,8 @@ export async function updateOnClose(
         }
       }
 
+      // await Database.transaction.deleteMany({})
+
       const existingTransactions = await Database.transaction.findMany();
 
       for (const tx of bank.transactions) {
@@ -119,6 +121,7 @@ export async function updateOnClose(
               category: tx.category ?? "",
               message: tx.message ?? "",
               bankId: bank.cardId,
+              recipientBankId: tx.recipientBankId
             },
           });
         }
