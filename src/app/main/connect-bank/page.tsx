@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CategoryList } from "app/main/connect-bank/CategoryItem";
 import { motion } from "framer-motion";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,7 +50,7 @@ export default function ConnectBank({}: {}) {
   const dispatch = useDispatch();
   const banks = useSelector((state: RootState) => state.bank.banks);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const [categories, setCategories] = useImmer<Category[]>([]);
 
@@ -88,7 +88,7 @@ export default function ConnectBank({}: {}) {
     <motion.div
       initial="initial"
       animate="animate"
-      className="flex min-h-screen w-full justify-center overflow-y-auto"
+      className="bg-gray-bg flex min-h-screen w-full justify-center overflow-y-auto"
     >
       <motion.div className="w-115 py-17" {...fadeInUp()}>
         <Logo />
@@ -196,12 +196,9 @@ export default function ConnectBank({}: {}) {
           <ErrorMessage message={errors.root?.message} />
         </motion.div>
 
-        <motion.div
-          {...fadeInUp(1.1)}
-          className="flex gap-3 pb-17"
-        >
-          <CancelButton className='basis-1/2' onClick={handleCancel} />
-          <Button           
+        <motion.div {...fadeInUp(1.1)} className="flex gap-3 pb-17">
+          <CancelButton className="basis-1/2" onClick={handleCancel} />
+          <Button
             onClick={handleSubmit((data) =>
               connectBankService.connect(
                 data,
@@ -209,11 +206,11 @@ export default function ConnectBank({}: {}) {
                 reset,
                 setCategories,
                 dispatch,
-                router
+                router,
               ),
             )}
             content="Connect bank"
-            styles='basis-1/2'
+            styles="basis-1/2"
             props={{
               type: "button",
             }}

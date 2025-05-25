@@ -58,7 +58,7 @@ export default function Banks() {
   };
 
   return (
-    <div className="flex w-full flex-col gap-y-8 overflow-y-auto px-8 py-12">
+    <div className="bg-gray-bg flex w-full flex-col gap-y-8 overflow-y-auto px-8 py-12">
       <Title
         title="My Bank Accounts"
         subtitle="Effortlessly Manage Your Banking Activities"
@@ -151,7 +151,9 @@ export default function Banks() {
                   </AnimatePresence>
 
                   <motion.div
-                    onClick={() => void router.push(MAIN_ROUTES.BANKS + "/" + slug)}
+                    onClick={() =>
+                      void router.push(MAIN_ROUTES.BANKS + "/" + slug)
+                    }
                     layout
                   >
                     <Card
