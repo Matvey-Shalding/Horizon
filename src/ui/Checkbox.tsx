@@ -7,8 +7,8 @@ import { UseFormRegister } from "react-hook-form";
 interface CheckboxProps {
   register?: UseFormRegister<any>;
   name?: string;
-  styles?: string;
-  style?: React.CSSProperties;
+  checkBoxStyles?: string;
+  checkMarkStyles?: React.CSSProperties;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   [key: string]: any;
 }
@@ -19,6 +19,8 @@ export const Checkbox = ({
   styles = "",
   style,
   onChange,
+  checkBoxStyles,
+  checkMarkStyles,
   ...props
 }: CheckboxProps) => {
   const [checked, setChecked] = useState(false);
@@ -48,12 +50,14 @@ export const Checkbox = ({
           "peer-hover:border-light-blue",
           "peer-checked:bg-light-blue peer-checked:border-none",
           "peer-checked:scale-105 peer-active:scale-95",
+          checkBoxStyles
         )}
       >
         <svg
           className={clsx(
             "h-3.5 w-3.5 transition-all duration-300 ease-in-out",
             checked ? "scale-100 opacity-100" : "scale-50 opacity-0",
+            checkMarkStyles
           )}
           viewBox="0 0 24 24"
           fill="none"
