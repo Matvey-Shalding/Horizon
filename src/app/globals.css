@@ -9,7 +9,7 @@ input::-webkit-inner-spin-button {
 
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
-  width: 7px; /* Width of the scrollbar */
+  width: 5px; /* Width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {
@@ -52,6 +52,7 @@ body {
   --color-light-gray: #667085;
   --gradient-blue: linear-gradient(90deg, #0179fe 0%, #4893ff 100%);
   --color-light-blue: #0179fe;
+  --color-dark-blue:  #1570EF;
   --color-dark: #101828;
   --color-dark-gray: #344054;
   --color-green: #027a48;
@@ -111,3 +112,4 @@ body {
     opacity: 1; /* Gradually appears */
   }
 }
+
