@@ -6,9 +6,10 @@ import { motion } from "framer-motion";
 interface CancelButtonProps {
   onClick?: () => void;
   className?: string;
+  content?:string
 }
 
-export function CancelButton({ onClick, className }: CancelButtonProps) {
+export function CancelButton({ onClick, className,content }: CancelButtonProps) {
   return (
     <motion.button
       type="button"
@@ -30,7 +31,7 @@ export function CancelButton({ onClick, className }: CancelButtonProps) {
         damping: 20,
       }}
     >
-      Cancel
+      {content ?? "Cancel"}
     </motion.button>
   );
 }
