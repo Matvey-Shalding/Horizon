@@ -1,0 +1,101 @@
+/* Range start */
+.rdp-range_start .rdp-day_button {
+  background: #0179fe !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0 !important;
+  border-top-left-radius: 8px !important;
+}
+
+/* Range end */
+.rdp-range_end .rdp-day_button {
+  background: #0179fe !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0 !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+/* Range middle */
+.rdp-range_middle .rdp-day_button {
+  background: #69a8ff !important;
+  color: white !important;
+}
+
+.rdp-day_button {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+.rdp-day {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* Today */
+.rdp-today:not(.rdp-selected) .rdp-day_button {
+  border: 1px solid #0179fe !important;
+  color: #0179fe !important;
+}
+
+/* Ensure selected and range overwrite today */
+.rdp-day_selected.rdp-day_today .rdp-day_button,
+.rdp-range_start.rdp-day_today .rdp-day_button,
+.rdp-range_end.rdp-day_today .rdp-day_button,
+.rdp-range_middle.rdp-day_today .rdp-day_button {
+  border: none !important;
+  color: white !important;
+}
+
+/* When the range start and end are the same day (single-day range) */
+.rdp-range_start.rdp-range_end .rdp-day_button {
+  background: #0179fe !important; /* highlight differently */
+  color: white !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.rdp-button_previous svg,
+.rdp-button_next svg {
+  width: 20px !important;
+  height: 20px !important;
+  fill: #0179fe !important;
+}
+
+.rdp-button_previous,
+.rdp-button_next {
+  height: 28px !important;
+}
+
+.rdp-caption_label {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  color: #101828 !important;
+  margin-left: 8px !important;
+}
+
+.rdp-weekday {
+  font-size: 14px !important;
+  font-weight: medium !important;
+  color: #667085 !important;
+  padding-top: 0 !important;
+}
+
+.rdp-month_caption {
+  height: 40px !important;
+  border-bottom: 1px solid #d0d5dd !important;
+  margin-bottom: 0.33rem;
+}
+
+.rdp-month {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+
+.rdp-day_button {
+  color: #667085;
+  font-size: 16px;
+  font-weight: 500;
+}
