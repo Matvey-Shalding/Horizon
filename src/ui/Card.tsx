@@ -11,6 +11,7 @@ interface DeleteCardFormProps {
   cardholderName: string;
   firstName?: string;
   lastName?: string;
+  canCopy?: boolean;
 }
 
 export function Card({
@@ -18,6 +19,7 @@ export function Card({
   cardholderName,
   firstName = "",
   lastName = "",
+  canCopy = false,
 }: DeleteCardFormProps) {
   const [copied, setCopied] = useState(false);
 
@@ -36,30 +38,32 @@ export function Card({
 
         <div className="flex w-full items-end justify-between pr-3">
           <span className="font-semibold">{cardholderName}</span>
-          <div
-            onClick={handleCopy}
-            className="rounded-main grid h-6 w-6 cursor-pointer place-content-center bg-white/30"
-          >
-            {copied ? (
-              <motion.svg
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                exit={{ pathLength: 0, opacity: 0 }}
-                transition={{ duration: 0.35, ease: "easeInOut" }}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-4 w-4"
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </motion.svg>
-            ) : (
-              <Copy />
-            )}
-          </div>
+          {canCopy && (
+            <div
+              onClick={handleCopy}
+              className="rounded-main grid h-6 w-6 cursor-pointer place-content-center bg-white/30"
+            >
+              {copied ? (
+                <motion.svg
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  exit={{ pathLength: 0, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </motion.svg>
+              ) : (
+                <Copy />
+              )}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-y-2">

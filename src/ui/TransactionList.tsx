@@ -1,16 +1,46 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { useMediaQuery } from "@react-hookz/web";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { MEDIA_QUERIES } from "settings/MediaQueries";
 import { Transaction as TransactionType } from "types/Transaction.interface";
 import { Transaction } from "./Transaction";
 
 export function TransactionList({
   transactions,
+  limit,
 }: {
   transactions: TransactionType[];
+  limit?: number;
 }) {
+  const container = useRef<HTMLDivElement>(null);
+  const title = useRef<HTMLDivElement>(null);
+
+  // Set a minimum width for the container (e.g., 600px)
+  const MIN_WIDTH = 600;
+
+  const isSmallDesktop = useMediaQuery(
+    `(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`,
+  );
+
+  const isMobile = useMediaQuery(`(max-width:${MEDIA_QUERIES.MOBILE})`);
+
+  useEffect(() => {
+    if (container.current && isSmallDesktop) {
+      container.current.style.maxWidth =
+        window.innerWidth - (isSmallDesktop && !isMobile ? 64 : 0) + "px";
+    }
+  }, []);
+
   return (
-    <div className="flex flex-col">
+    <div
+      ref={container}
+      className={`flex flex-col overflow-y-hidden ${isSmallDesktop ? "overflow-x-scroll" : "overflow-x-hidden"}`}
+    >
       {/* Table Header */}
-      <div className="grid h-11 grid-cols-[1.5fr_0.75fr_1.25fr_1fr] border-b border-[#EAECF0] bg-[#F9FAFB] px-4">
+      <div
+        ref={title}
+        className={`grid min-h-11 w-full min-w-150 grow-1 basis-full grid-cols-[1fr_0.75fr_1.25fr_1fr] self-stretch border-b border-[#EAECF0] bg-[#F9FAFB] pl-4 md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]`}
+      >
         {["Transaction", "Amount", "Date", "Category"].map((title) => (
           <div
             key={title}
@@ -23,8 +53,9 @@ export function TransactionList({
 
       {/* Table Body with animation */}
       <AnimatePresence>
-        {transactions.map((transaction, i) => (
+        {transactions.slice(0, limit).map((transaction, i) => (
           <motion.div
+            className="min-w-150"
             key={transaction.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

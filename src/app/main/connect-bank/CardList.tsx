@@ -1,25 +1,32 @@
+import { motion } from "framer-motion";
+import { useMemo } from "react";
 import { SingUp } from "types/Auth.types";
 import { Bank } from "types/Bank.interface";
 import { Card } from "ui/Card";
-import { motion } from "framer-motion";
 
 export function CardList({
   banks,
   user,
   activeTab,
+  cardsToShow,
 }: {
   banks: Bank[];
   user: SingUp | null | undefined;
   activeTab: number;
+  cardsToShow?: number;
 }) {
   // Ensure activeTab is within bounds
   const validActiveTab = Math.min(activeTab, banks.length - 1);
 
   // Always show the card corresponding to activeTab at the front, and the next 2 cards.
-  const cardsToDisplay = [
-    banks[validActiveTab], // The active card goes to the front
-    ...banks.filter((_, index) => index !== validActiveTab).slice(0, 2), // The other two cards
-  ];
+  const cardsToDisplay = useMemo(() => {
+    return [
+      banks[validActiveTab], // The active card goes to the front
+      ...banks
+        .filter((_, index) => index !== validActiveTab)
+        .slice(0, cardsToShow ? cardsToShow - 1 : 2), // The other two cards
+    ];
+  }, [banks, activeTab, cardsToShow]);
 
   return (
     <div
@@ -31,7 +38,7 @@ export function CardList({
     >
       {cardsToDisplay.map((bank, index) => {
         const overlapStep = 31; // 47% of card width (136px)
-        const shiftLeftStep = 31; // 5% of card width (15.8px)
+        const shiftLeftStep = 28; // 5% of card width (15.8px)
         const depth = index * -50; // Moves each card further back in 3D space
 
         return (

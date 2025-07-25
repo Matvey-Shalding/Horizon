@@ -1,5 +1,5 @@
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -27,7 +27,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex h-[120px] w-[120px] items-center justify-center">
+    <div className="flex h-25 w-25 items-center justify-center min-[450px]:h-30 min-[450px]:w-30">
       <Doughnut
         data={chartData}
         options={{

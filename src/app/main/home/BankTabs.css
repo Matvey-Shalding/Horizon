@@ -1,0 +1,12 @@
+.bank-tabs-container::-webkit-scrollbar-track {
+  background: #d9dee7 !important;
+}
+
+.bank-tabs-container::-webkit-scrollbar-thumb {
+  background: #4794ff72 !important;
+  border-radius: 4px !important;
+}
+
+.bank-tabs-container::-webkit-scrollbar-thumb:hover {
+  background: green !important;
+}

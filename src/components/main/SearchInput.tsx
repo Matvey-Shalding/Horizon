@@ -18,7 +18,7 @@ export function SearchInput({}: {}) {
         </svg>
         <input
           placeholder="Search..."
-          className="text-light-gray shadow-main min-h-11 w-58 border py-2.5 pr-3.5 pl-8.5 outline-none"
+          className="text-light-gray shadow-main min-h-11 w-full border py-2.5 pr-3.5 pl-8.5 outline-none"
         />
       </div>
       <Search className="absolute top-1/2 left-3.5 block size-4 -translate-y-1/2" />

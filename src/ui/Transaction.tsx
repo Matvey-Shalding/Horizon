@@ -1,8 +1,10 @@
+import { useMediaQuery } from "@react-hookz/web";
 import { Category } from "app/main/home/Category";
 import { motion } from "framer-motion";
 import randomcolor from "randomcolor";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import { MEDIA_QUERIES } from "settings/MediaQueries";
 import { RootState } from "state/store";
 import tinycolor from "tinycolor2";
 import { Transaction as TransactionType } from "types/Transaction.interface";
@@ -35,22 +37,28 @@ export function Transaction({
     );
   }, [banks, recipientBankId]);
 
+  const isNotSmallScreen = useMediaQuery(
+    `(min-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`,
+  );
+
   return (
     <motion.div
       whileHover={{ scale: 1.01 }}
       transition={{ type: "spring", stiffness: 200 }}
       className={`${
         even ? "bg-white" : "bg-[#f6fef9]"
-      } grid min-h-18 grid-cols-[1.5fr_0.75fr_1.25fr_1fr] items-center border-b border-[#EAECF0] px-4 py-3`}
+      } overflow-y-hidden w-full basis-full grid min-h-18 grid-cols-[1fr_0.75fr_1.25fr_1fr] items-center border-b border-[#EAECF0] px-4 py-3 md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]`}
     >
       {/* Transaction Column (Avatar + Name) */}
       <div className="flex items-center gap-x-3">
-        <div
-          style={{ backgroundColor: bgColor, color: textColor }}
-          className="grid h-10 w-10 place-content-center rounded-full text-sm font-semibold"
-        >
-          {shortenString(title)}
-        </div>
+        {isNotSmallScreen && (
+          <div
+            style={{ backgroundColor: bgColor, color: textColor }}
+            className="grid h-10 w-10 place-content-center rounded-full text-sm font-semibold"
+          >
+            {shortenString(title)}
+          </div>
+        )}
         <span className="text-blue text-sm font-medium">{title}</span>
       </div>
 

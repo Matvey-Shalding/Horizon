@@ -3,7 +3,7 @@ import { AddCategory } from "app/main/connect-bank/AddCategory";
 import Dropdown from "components/icons/main/home/dropdown";
 import { MenuStatus } from "constants/MenuStatuses";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -20,6 +20,9 @@ import { Input } from "ui/Input";
 import { useImmer } from "use-immer";
 import { z } from "zod";
 import { Menu } from "../../Menu";
+
+import { useClickOutside } from "@react-hookz/web";
+import "styles/lib/colorPicker.css";
 
 type CategoryForm = {
   categories: bankCategorySchemaType[];
@@ -49,7 +52,27 @@ export function CategorySectionEdit({
     Record<number, boolean>
   >({});
 
-  useEffect(() => {}, [editedCategories]);
+  const colorPicker = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        colorPickerRef.current &&
+        !colorPickerRef.current.contains(event.target as Node)
+      ) {
+        setColorPickerOpen((prev) => {
+          return Object.fromEntries(
+            Object.entries(prev).map(([key, _]) => [Number(key), false]),
+          ) as Record<number, boolean>;
+        });
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const CategoryFormSchema = z.object({
     categories: z.array(bankCategorySchema),
@@ -110,7 +133,7 @@ export function CategorySectionEdit({
           {editedCategories.map((category, index) => (
             <div
               key={index}
-              className="flex flex-col gap-y-2 rounded border p-3.5"
+              className="border-border flex flex-col gap-y-2 rounded border bg-white p-3.5 shadow-sm"
             >
               {/* Category Name Input */}
               <div className="flex flex-col gap-y-1">
@@ -143,7 +166,8 @@ export function CategorySectionEdit({
                   </div>
                 </div>
                 <div
-                  className="mt-2 cursor-pointer"
+                  ref={colorPicker}
+                  className="relative mt-2 cursor-pointer"
                   onClick={() =>
                     setColorPickerOpen((prev) => ({
                       ...prev,
@@ -152,32 +176,33 @@ export function CategorySectionEdit({
                   }
                 >
                   <motion.div
-                    className="h-10 w-10 rounded-full border"
+                    className="border-border preview mb-1 size-11 rounded-full border"
                     style={{ backgroundColor: category.color }}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   />
+                  <AnimatePresence>
+                    {colorPickerOpen[index] && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.7 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full right-0 z-30 mt-2"
+                      >
+                        <HexColorPicker
+                          className="border-border h-40 w-40 rounded-lg border bg-white p-2 shadow-md sm:h-48 sm:w-48 md:h-56 md:w-56"
+                          color={category.color}
+                          onChange={(color) =>
+                            setEditedCategories((draft) => {
+                              draft[index].color = color;
+                            })
+                          }
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-                <AnimatePresence>
-                  {colorPickerOpen[index] && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.7 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute z-30 mt-2"
-                    >
-                      <HexColorPicker
-                        color={category.color}
-                        onChange={(color) =>
-                          setEditedCategories((draft) => {
-                            draft[index].color = color;
-                          })
-                        }
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             </div>
           ))}

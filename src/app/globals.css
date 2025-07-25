@@ -10,6 +10,7 @@ input::-webkit-inner-spin-button {
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
   width: 5px; /* Width of the scrollbar */
+  height: 3px;
 }
 
 ::-webkit-scrollbar-track {
@@ -35,14 +36,22 @@ body {
   overflow-x: hidden !important;
 }
 
+/* "Breakpoint","Minimum Width","Class Prefix","Description"
+"sm","640px","sm:","Small screens (e.g., tablets)"
+"md","768px","md:","Medium screens (e.g., small laptops)"
+"lg","1024px","lg:","Large screens (e.g., desktops)"
+"xl","1280px","xl:","Extra-large screens (e.g., large desktops)"
+"2xl","1536px","2xl:","2x extra-large screens" */
+
 @theme {
   /* Media requests */
 
-  --breakpoint-*: initial;
+  /* --breakpoint-*: initial;
   --breakpoint-laptop: 67.5rem;
   --breakpoint-desktop: 84.375rem;
   --breakpoint-tablet: 48rem;
   --breakpoint-tablet-small: 35rem;
+  --breakpoint-mb: 28rem; 
 
   /* Colors */
   --color-white: #fff;
@@ -52,7 +61,7 @@ body {
   --color-light-gray: #667085;
   --gradient-blue: linear-gradient(90deg, #0179fe 0%, #4893ff 100%);
   --color-light-blue: #0179fe;
-  --color-dark-blue:  #1570EF;
+  --color-dark-blue: #1570ef;
   --color-dark: #101828;
   --color-dark-gray: #344054;
   --color-green: #027a48;
@@ -112,4 +121,3 @@ body {
     opacity: 1; /* Gradually appears */
   }
 }
-
