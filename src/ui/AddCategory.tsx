@@ -16,6 +16,7 @@ import { Button } from "ui/Button";
 import { ErrorMessage } from "ui/Error";
 import { Input } from "ui/Input";
 import { Updater } from "use-immer";
+import { CancelButton } from './CancelButton';
 
 interface AddCategoryFormProps {
   categories: Category[];
@@ -83,7 +84,7 @@ export function AddCategoryForm({
     }
 
     setCategories((draft) => {
-      draft.push({ ...data,expenses: "0" });
+      draft.push({ ...data, expenses: "0" });
     });
     handleCancel();
   };
@@ -129,7 +130,7 @@ export function AddCategoryForm({
         </span>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-2 space-y-3"
+          className="flex flex-col gap-y-1.5 min-[450px]:gap-y-2 min-[640px]:gap-y-3"
         >
           {/* Category Name */}
           <div className="flex flex-col gap-y-1">
@@ -191,27 +192,12 @@ export function AddCategoryForm({
 
           {/* Buttons */}
           <div className="grid grid-cols-2 gap-x-3">
-            <motion.button
-              type="button"
+            <CancelButton
+              content="Cancel"
               onClick={handleCancel}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 5px 10px rgba(0,0,0,0.2)",
-              }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="shadow-main text-dark-gray border p-2 font-semibold"
-            >
-              Cancel
-            </motion.button>
-            <motion.button
-              type="submit"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full"
-            >
-              <Button content="Add Category" props={{ type: "button" }} />
-            </motion.button>
+              props={{ type: "button" }}
+            />
+            <Button content="Add Category" props={{ type: "button" }} />
           </div>
         </form>
       </motion.div>

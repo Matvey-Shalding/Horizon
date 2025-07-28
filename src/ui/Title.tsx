@@ -8,7 +8,7 @@ export function Title({
   subtitle: string;
 }) {
   return (
-    <div className="flex flex-col gap-y-0 min-[450px]:gap-y-1.5 md:gap-y-3">
+    <div className="flex flex-col gap-y-0.5">
       <motion.span
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

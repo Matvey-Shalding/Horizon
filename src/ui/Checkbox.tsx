@@ -1,15 +1,17 @@
 "use client";
 
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 interface CheckboxProps {
   register?: UseFormRegister<any>;
   name?: string;
   checkBoxStyles?: string;
-  checkMarkStyles?: React.CSSProperties;
+  checkMarkStyles?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  checked?: boolean; // allow controlled use
+  defaultChecked?: boolean; // also allow uncontrolled use
   [key: string]: any;
 }
 
@@ -19,11 +21,22 @@ export const Checkbox = ({
   styles = "",
   style,
   onChange,
+  checked,
+  defaultChecked,
   checkBoxStyles,
   checkMarkStyles,
   ...props
 }: CheckboxProps) => {
-  const [checked, setChecked] = useState(false);
+  const [internalChecked, setInternalChecked] = useState(
+    defaultChecked || false,
+  );
+
+  // Sync internal state with controlled checked prop (if provided)
+  useEffect(() => {
+    if (typeof checked === "boolean") {
+      setInternalChecked(checked);
+    }
+  }, [checked]);
 
   return (
     <label
@@ -34,10 +47,12 @@ export const Checkbox = ({
         type="checkbox"
         className="peer absolute h-0 w-0 opacity-0"
         {...(register && register(String(name)))}
-
-        
+        checked={checked}
+        defaultChecked={defaultChecked}
         onChange={(e) => {
-          setChecked(e.target.checked);
+          if (checked === undefined) {
+            setInternalChecked(e.target.checked); // only update internal state in uncontrolled mode
+          }
           onChange?.(e);
         }}
         {...props}
@@ -45,19 +60,18 @@ export const Checkbox = ({
 
       <span
         className={clsx(
-          `border-border n mt-0.5 flex h-4 w-4 items-center justify-center rounded-[4.5px] border-1 border-solid`,
-          "border-border bg-white transition-all duration-300 ease-in-out",
+          "border-border mt-0.5 flex h-4 w-4 items-center justify-center rounded-[4.5px] border-1 border-solid bg-white transition-all duration-300 ease-in-out",
           "peer-hover:border-light-blue",
           "peer-checked:bg-light-blue peer-checked:border-none",
           "peer-checked:scale-105 peer-active:scale-95",
-          checkBoxStyles
+          checkBoxStyles,
         )}
       >
         <svg
           className={clsx(
             "h-3.5 w-3.5 transition-all duration-300 ease-in-out",
-            checked ? "scale-100 opacity-100" : "scale-50 opacity-0",
-            checkMarkStyles
+            internalChecked ? "scale-100 opacity-100" : "scale-50 opacity-0",
+            checkMarkStyles,
           )}
           viewBox="0 0 24 24"
           fill="none"

@@ -13,8 +13,10 @@ import { RootState } from "state/store";
 import { Bank } from "types/Bank.interface";
 import { getBankFromSlug } from "utils/getNameFromSlug";
 
+import { useMediaQuery } from "@react-hookz/web";
 import { CategoryList } from "app/main/connect-bank/CategoryItem";
 import { connectBankSchema } from "schemas/connectBank.schema";
+import { MEDIA_QUERIES } from "settings/MediaQueries";
 import { AddCategoryForm } from "ui/AddCategory";
 import { Button } from "ui/Button";
 import { CancelButton } from "ui/CancelButton";
@@ -84,18 +86,19 @@ export default function BankPage() {
     router.push("/main/banks");
   };
 
+  const isDesktop = useMediaQuery(`(min-width:${MEDIA_QUERIES.DESKTOPS})`);
+
   if (!bank) {
     return <p className="text-center text-red-500">Bank not found</p>;
   }
 
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-y-2 px-12 py-12">
-      <div className="flex justify-center gap-x-12">
-        {/* Card Section */}
-        <div className="relative flex h-full flex-col gap-y-0">
+    <div className="relative flex w-full justify-center gap-x-12 pt-20 overflow-y-scroll max-[450px]:px-4 min-[450px]:px-6 min-[640px]:px-8 min-[768px]:px-12 min-[1024px]:pr-0">
+      {isDesktop && (
+        <div className="border-border relative flex h-[calc(100vh-96px)] flex-col gap-y-4 border-r pr-12 max-[1024px]:hidden">
           <button
             onClick={() => router.push("/main/banks")}
-            className="absolute -top-10 mb-4 flex w-fit items-center text-sm text-blue-600 hover:underline"
+            className="absolute -top-6 left-0 flex w-fit items-center text-sm text-blue-600 hover:underline"
           >
             <Label content="← Back to Banks" onClick={() => {}} />
           </button>
@@ -111,83 +114,87 @@ export default function BankPage() {
             lastName={user?.lastName}
           />
         </div>
+      )}
 
-        {/* Form & Controls Section */}
-        <div className="border-border flex w-115 flex-col gap-y-4 border-l border-solid pl-12">
-          <Title
-            title="Edit Bank Details"
-            subtitle="Update your card information"
-          />
-
-          {/* Form (only inputs) */}
-          <form
-            onSubmit={handleSubmit((data) => onSubmit({ ...data, categories }))}
-            className="flex flex-col gap-y-2.5"
+      {/* Form & Controls Section */}
+      <div className="relative flex w-full max-[1024px]:max-w-160 flex-col gap-y-4 self-stretch max-[640px]:gap-y-2.5 min-[1024px]:basis-full min-[1024px]:overflow-y-auto min-[1024px]:pr-12">
+        {!isDesktop && (
+          <button
+            onClick={() => router.push("/main/banks")}
+            className="absolute -top-6 left-0 flex w-fit items-center text-sm text-blue-600 hover:underline"
           >
-            <div className="flex flex-col gap-y-1">
-              <Input
-                label="Cardholder Name"
-                placeholder="John Doe"
-                register={register}
-                fieldRegister="cardholderName"
-              />
-              <ErrorMessage message={errors.cardholderName?.message} />
-            </div>
+            <Label content="← Back to Banks" onClick={() => {}} />
+          </button>
+        )}
+        <Title
+          title="Edit Bank Details"
+          subtitle="Update your card information"
+        />
 
-            <div className="flex flex-col gap-y-1">
-              <Input
-                label="Monthly Budget"
-                placeholder="0.00"
-                type="number"
-                min="0"
-                register={register}
-                fieldRegister="monthlyBudget"
-              />
-              <ErrorMessage message={errors.monthlyBudget?.message} />
-            </div>
-
-            <div className="flex flex-col gap-y-1">
-              <Input
-                label="Card CVV"
-                placeholder="123"
-                register={register}
-                fieldRegister="cardCvv"
-              />
-              <ErrorMessage message={errors.cardCvv?.message} />
-            </div>
-          </form>
-
-          {/* AddCategory and list */}
-          <div className="flex flex-col gap-y-2">
-            <AddCategoryForm
-              categories={categories}
-              setCategories={setCategories}
+        {/* Form (only inputs) */}
+        <form
+          onSubmit={handleSubmit((data) => onSubmit({ ...data, categories }))}
+          className="flex flex-col gap-y-1 min-[450px]:gap-y-1.5 min-[640px]:gap-y-2.5"
+        >
+          <div className="flex flex-col gap-y-1">
+            <Input
+              label="Cardholder Name"
+              placeholder="John Doe"
+              register={register}
+              fieldRegister="cardholderName"
             />
-            <CategoryList
-              categories={categories}
-              setCategories={setCategories}
-            />
+            <ErrorMessage message={errors.cardholderName?.message} />
           </div>
 
-          {/* Buttons go here now (after categories) */}
-          <div className="flex gap-4 pt-2">
-            <CancelButton
-              className="basis-1/2"
-              onClick={() => {
-                reset();
-                router.push("/main/banks");
-              }}
+          <div className="flex flex-col gap-y-1">
+            <Input
+              label="Monthly Budget"
+              placeholder="0.00"
+              type="number"
+              min="0"
+              register={register}
+              fieldRegister="monthlyBudget"
             />
-            <Button
-              styles="basis-1/2"
-              content="Save Changes"
-              props={{
-                onClick: handleSubmit((data) =>
-                  onSubmit({ ...data, categories }),
-                ),
-              }}
-            />
+            <ErrorMessage message={errors.monthlyBudget?.message} />
           </div>
+
+          <div className="flex flex-col gap-y-1">
+            <Input
+              label="Card CVV"
+              placeholder="123"
+              register={register}
+              fieldRegister="cardCvv"
+            />
+            <ErrorMessage message={errors.cardCvv?.message} />
+          </div>
+        </form>
+
+        {/* AddCategory and list */}
+        <div className="flex flex-col">
+          <AddCategoryForm
+            categories={categories}
+            setCategories={setCategories}
+          />
+          <CategoryList categories={categories} setCategories={setCategories} />
+        </div>
+
+        <div className="flex gap-4 pb-6">
+          <CancelButton
+            className="basis-1/2"
+            onClick={() => {
+              reset();
+              router.push("/main/banks");
+            }}
+          />
+          <Button
+            styles="basis-1/2"
+            content="Save Changes"
+            props={{
+              onClick: handleSubmit((data) =>
+                onSubmit({ ...data, categories }),
+              ),
+            }}
+          />
         </div>
       </div>
     </div>

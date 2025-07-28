@@ -31,7 +31,7 @@ export function Card({
   };
 
   return (
-    <div className="flex min-h-45 w-75">
+    <div className="flex w-65 min-h-45 min-[900px]:w-75">
       {/* Card Content */}
       <div className="bg-dark-gray relative flex basis-3/4 flex-col justify-between rounded-tl-[20px] rounded-bl-[20px] p-5 pr-0 text-white shadow-[8px_10px_16px_0px_rgba(0,0,0,0.05)]">
         {/* Copy Button */}
@@ -66,7 +66,7 @@ export function Card({
           )}
         </div>
 
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 pr-2">
           <span className="text-xs font-semibold">
             {firstName + " " + lastName}
           </span>
@@ -77,9 +77,9 @@ export function Card({
       </div>
 
       {/* Card Branding */}
-      <div className="flex basis-1/4 flex-col justify-between rounded-tr-[20px] rounded-br-[20px] bg-gradient-to-b from-[#6b48ff] to-[#ff6cae] py-5 pl-7">
-        <PayPass className="ml-3" />
-        <Visa />
+      <div className="flex basis-1/4 relative flex-col justify-between rounded-tr-[20px] rounded-br-[20px] bg-gradient-to-b from-[#6b48ff] to-[#ff6cae]">
+        <PayPass className="absolute top-5 right-5" />
+        <Visa className='absolute bottom-5 right-5'/>
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ export function CategoryList({
   setCategories: Updater<Category[]>;
 }) {
   return (
-    <div className="border-border mt-2 flex flex-col gap-2 border-t border-solid pt-2">
+    <div className="border-border mt-0.5 flex flex-col gap-2 border-t border-solid pt-1.5">
       {categories.length === 0 ? (
         <p className="text-center text-sm text-gray-500">
           No categories available.
