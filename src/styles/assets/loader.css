@@ -1,3 +1,5 @@
+/* styles/assets/loader.css */
+
 @property --deg-in {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -13,32 +15,35 @@
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  background-color: rgba(250, 250, 250, 0.5); /* Semi-transparent blue */
+  background-color: rgba(250, 250, 250, 0.5);
   opacity: 0.1;
   position: fixed;
   z-index: 2;
   top: 0;
   left: 0;
-}
 
-.loader {
-  position: absolute;
-  z-index: 3;
-  margin: calc((100vh - var(--size)) / 2) calc((100vw - var(--size)) / 2);
+  display: flex; /* ✅ Centers loader on all screens */
+  justify-content: center;
+  align-items: center;
 }
 
 .loader {
   --color: #0179fe;
-  --size: 20vmin;
+  --size: clamp(60px, 20vmin, 140px); /* ✅ Responsive across 320px+ */
   --border: 10%;
   --duration: 3s;
   --state: running;
+
   width: var(--size);
   aspect-ratio: 1/1;
   border-radius: 50%;
+  position: relative;
+  z-index: 3;
+
   --border-in: calc(100% - (var(--border)) * 3);
   --border-out: calc(100% - (var(--border)) * 4);
   --radial-size: circle calc(var(--size) / 2);
+
   background-image: radial-gradient(
     var(--radial-size),
     #0000 var(--border-out),
@@ -47,6 +52,7 @@
     #0000 var(--border-in),
     #0000
   );
+
   --mask-radial: radial-gradient(
     var(--radial-size),
     #0000 var(--border-in),
@@ -58,18 +64,25 @@
     #fff var(--deg-in),
     #0000 0deg
   );
+
   -webkit-mask-image: var(--mask-radial), var(--mask-conic);
   mask-image: var(--mask-radial), var(--mask-conic);
+
   animation: loading-tri-circular var(--duration) ease-in-out 0s infinite
     forwards var(--state);
 }
-.loader::before {
+
+.loader::before,
+.loader::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.loader::before {
   transform: rotate(120deg);
   background-image: conic-gradient(
     from var(--deg-out) at 50% 50%,
@@ -89,13 +102,8 @@
   animation: loading-tri-circular var(--duration) ease-in-out 0s infinite
     forwards var(--state);
 }
+
 .loader::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   transform: rotate(240deg);
   background-image: conic-gradient(
     from var(--deg-out) at 50% 50%,
