@@ -3,9 +3,9 @@ import Arrow from "components/icons/main/transactions/arrow";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { transactionFilterService } from "services/Transactions.service";
+import { Bank } from "types/Bank.interface";
 import { Checkbox } from "ui/Checkbox";
 import { Input } from "ui/Input";
-import { Bank } from "types/Bank.interface";
 
 interface BankFilterProps {
   isOpen: boolean;
@@ -87,7 +87,7 @@ export function BankFilter({
                 value={bankSearch}
                 onChange={(e) => setBankSearch(e.target.value)}
               />
-              <div ref={bankListRef} className="flex flex-col gap-y-2">
+              <div className="flex max-h-35.5 flex-col gap-y-2 overflow-y-auto">
                 {filteredBanks.length > 0 ? (
                   filteredBanks
                     .slice(0, showAllBanks ? undefined : 3)
@@ -99,6 +99,7 @@ export function BankFilter({
                         )}
                       >
                         <Checkbox
+                          checkBoxStyles="w-5 h-5"
                           checked={selectedBanks.some(
                             (b) => b.cardId === bank.cardId,
                           )}

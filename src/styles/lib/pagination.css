@@ -12,14 +12,23 @@
 }
 
 .pagination li:not(.arrow) a {
-  display: block;
-  padding: 0.5rem 0.9rem;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-content: center;
   border-radius: 0.5rem;
   background-color: #f1f5f9; /* light background */
   color: #334155; /* dark text */
   font-weight: 500;
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 640px) {
+  .pagination li:not(.arrow) a,.pagination li.arrow div {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 .pagination a:not(.arrow):hover {
@@ -45,6 +54,8 @@ li.arrow {
   cursor: not-allowed;
 }
 
-.arrow {
-  flex-grow: 1;
+@media (min-width: 769px) {
+  .arrow {
+    flex-grow: 1;
+  }
 }

@@ -47,7 +47,7 @@ export function Transaction({
       transition={{ type: "spring", stiffness: 200 }}
       className={`${
         even ? "bg-white" : "bg-[#f6fef9]"
-      } overflow-y-hidden w-full basis-full grid min-h-18 grid-cols-[1fr_0.75fr_1.25fr_1fr] items-center border-b border-[#EAECF0] px-4 py-3 md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]`}
+      } grid min-h-18 w-full basis-full grid-cols-[1fr_0.75fr_1.25fr_1fr] items-center overflow-y-hidden border-b border-[#EAECF0] px-4 py-3 max-[768px]:pl-6 md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]`}
     >
       {/* Transaction Column (Avatar + Name) */}
       <div className="flex items-center gap-x-3">

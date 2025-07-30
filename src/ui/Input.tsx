@@ -2,6 +2,7 @@ import { InputHTMLAttributes } from "react";
 import { RegisterOptions } from "react-hook-form";
 import { SingUp } from "types/Auth.types";
 
+import clsx from "clsx";
 import "styles/assets/input.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -10,16 +11,17 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   register?: any;
   fieldRegister?: string;
   options?: RegisterOptions<SingUp, keyof SingUp>;
+  styles?: string;
 }
 
-export function
-  Input({
+export function Input({
   label,
   placeholder,
   register,
   fieldRegister,
   options,
   onChange,
+  styles = "",
   ...props
 }: InputProps) {
   return (
@@ -45,7 +47,9 @@ export function
           {...props}
           {...(register ? register(fieldRegister, options) : {})}
           placeholder={placeholder}
-          className="shadow-main text-dark-gray min-h-11 w-full basis-full border bg-white pr-3.5 pl-3.5 text-base/normal outline-none"
+          className={clsx(
+            "shadow-main text-dark-gray min-h-10 min-[768px]:min-h-11 w-full basis-full border bg-white pr-3.5 pl-3.5 text-base/normal outline-none",
+          )}
         />
       </div>
     </div>

@@ -24,22 +24,22 @@ export function TransactionList({
 
   const isMobile = useMediaQuery(`(max-width:${MEDIA_QUERIES.MOBILE})`);
 
-  useEffect(() => {
-    if (container.current && isSmallDesktop) {
-      container.current.style.maxWidth =
-        window.innerWidth - (isSmallDesktop && !isMobile ? 64 : 0) + "px";
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (container.current && isSmallDesktop) {
+  //     container.current.style.maxWidth =
+  //       window.innerWidth - (isSmallDesktop && !isMobile ? 64 : 0) + "px";
+  //   }
+  // }, []);
 
   return (
     <div
       ref={container}
-      className={`flex flex-col overflow-y-hidden ${isSmallDesktop ? "overflow-x-scroll" : "overflow-x-hidden"}`}
+      className={`flex flex-col overflow-x-auto overflow-y-hidden min-[768px]:overflow-x-hidden`}
     >
       {/* Table Header */}
       <div
         ref={title}
-        className={`grid min-h-11 w-full min-w-150 grow-1 basis-full grid-cols-[1fr_0.75fr_1.25fr_1fr] self-stretch border-b border-[#EAECF0] bg-[#F9FAFB] pl-4 md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]`}
+        className={`grid min-h-11 w-full min-w-150 grow-1 basis-full grid-cols-[1fr_0.75fr_1.25fr_1fr] self-stretch border-b border-[#EAECF0] bg-[#F9FAFB] pl-4 max-[768px]:pl-6 md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]`}
       >
         {["Transaction", "Amount", "Date", "Category"].map((title) => (
           <div

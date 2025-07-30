@@ -24,7 +24,7 @@ export function AmountFilter({
         className={clsx(
           "flex cursor-pointer items-center justify-between select-none",
           "border-border border-t pt-2.5",
-          isOpen && "border-b pb-1",
+          "border-b pb-1",
         )}
         onClick={setIsOpen}
       >
