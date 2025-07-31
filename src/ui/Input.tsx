@@ -1,8 +1,8 @@
-import { InputHTMLAttributes } from 'react';
-import { RegisterOptions } from 'react-hook-form';
+import clsx from 'clsx';
+import { InputHTMLAttributes, memo } from 'react';
+import { RegisterOptions, UseFormRegister } from 'react-hook-form';
 import { SingUp } from 'types/Auth.types';
 
-import clsx from 'clsx';
 import 'styles/assets/input.css';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -14,13 +14,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   styles?: string;
 }
 
-export function Input({
+function InputComponent({
   label,
   placeholder,
   register,
   fieldRegister,
   options,
-  onChange,
   styles = '',
   ...props
 }: InputProps) {
@@ -29,29 +28,32 @@ export function Input({
       {label && <span className="text-dark-gray text-sm/snug font-semibold">{label}</span>}
       <div className="border_container">
         <svg
-          height="100%"
           width="100%"
+          height="100%"
           xmlns="http://www.w3.org/2000/svg"
         >
           <rect
             rx="8"
             ry="8"
             className="line"
-            height="100%"
             width="100%"
+            height="100%"
             strokeLinejoin="round"
           />
         </svg>
         <input
-          onChange={onChange}
           {...props}
-          {...(register ? register(fieldRegister, options) : {})}
+          {...(register && fieldRegister ? register(fieldRegister, options) : {})}
           placeholder={placeholder}
           className={clsx(
-            'shadow-main text-dark-gray min-h-11 w-full basis-full border bg-white pr-3.5 pl-3.5 text-base/normal outline-none'
+            'shadow-main text-dark-gray min-h-11 w-full basis-full',
+            'border bg-white pr-3.5 pl-3.5 text-base/normal outline-none',
+            styles
           )}
         />
       </div>
     </div>
   );
 }
+
+export const Input = memo(InputComponent);

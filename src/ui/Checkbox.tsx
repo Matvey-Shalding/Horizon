@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, memo } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
 interface CheckboxProps {
@@ -10,12 +10,14 @@ interface CheckboxProps {
   checkBoxStyles?: string;
   checkMarkStyles?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  checked?: boolean; // allow controlled use
-  defaultChecked?: boolean; // also allow uncontrolled use
+  checked?: boolean;
+  defaultChecked?: boolean;
+  styles?: string;
+  style?: React.CSSProperties;
   [key: string]: any;
 }
 
-export const Checkbox = ({
+const CheckboxComponent = ({
   register,
   name,
   styles = '',
@@ -29,12 +31,21 @@ export const Checkbox = ({
 }: CheckboxProps) => {
   const [internalChecked, setInternalChecked] = useState(defaultChecked || false);
 
-  // Sync internal state with controlled checked prop (if provided)
   useEffect(() => {
     if (typeof checked === 'boolean') {
       setInternalChecked(checked);
     }
   }, [checked]);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (checked === undefined) {
+        setInternalChecked(e.target.checked);
+      }
+      onChange?.(e);
+    },
+    [checked, onChange]
+  );
 
   return (
     <label
@@ -47,15 +58,9 @@ export const Checkbox = ({
         {...(register && register(String(name)))}
         checked={checked}
         defaultChecked={defaultChecked}
-        onChange={(e) => {
-          if (checked === undefined) {
-            setInternalChecked(e.target.checked); // only update internal state in uncontrolled mode
-          }
-          onChange?.(e);
-        }}
+        onChange={handleChange}
         {...props}
       />
-
       <span
         className={clsx(
           'border-border mt-0.5 flex h-4 w-4 items-center justify-center rounded-[4.5px] border-1 border-solid bg-white transition-all duration-300 ease-in-out',
@@ -84,3 +89,5 @@ export const Checkbox = ({
     </label>
   );
 };
+
+export const Checkbox = memo(CheckboxComponent);

@@ -1,5 +1,5 @@
 // components/Loader.tsx
-import { motion } from 'framer-motion';
+import { m} from 'framer-motion';
 import 'styles/assets/loader.css';
 
 type LoaderProps = {
@@ -8,13 +8,13 @@ type LoaderProps = {
 
 function Loader({ visible }: LoaderProps) {
   return (
-    <motion.div
+    <m.div
       className="loader_bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: visible ? 0.5 : 0 }}
       transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
-      <motion.div
+      <m.div
         className="loader"
         initial={{ scale: 0, rotate: 0 }}
         animate={{
@@ -27,7 +27,7 @@ function Loader({ visible }: LoaderProps) {
           delay: 0.2,
         }}
       />
-    </motion.div>
+    </m.div>
   );
 }
 

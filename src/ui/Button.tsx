@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useMediaQuery } from '@react-hookz/web';
+import clsx from 'clsx';
+import { m } from 'framer-motion';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 export function Button({
   content,
@@ -17,10 +18,13 @@ export function Button({
   const isMobile = useMediaQuery(`(max-width: ${MEDIA_QUERIES.MOBILE})`);
 
   return (
-    <motion.button
+    <m.button
       {...props}
       onClick={onClick}
-      className={`rounded-main gradient min-h-11 w-full text-base/normal text-white disabled:cursor-not-allowed ${styles || ''}`}
+      className={clsx(
+        `rounded-main gradient min-h-11 w-full text-base/normal text-white disabled:cursor-not-allowed`,
+        styles
+      )}
       initial={{ scale: 1 }}
       whileHover={
         !isMobile
@@ -44,6 +48,6 @@ export function Button({
       }}
     >
       {content}
-    </motion.button>
+    </m.button>
   );
 }

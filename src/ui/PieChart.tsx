@@ -1,5 +1,8 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import { BLUE_SHADES } from 'constants/colors';
+import { useMemo } from 'react';
+import clsx from 'clsx';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -8,34 +11,36 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({ data }) => {
-  const backgroundColors = ['#007BFF', '#66B2FF', '#99CCFF', '#CCE5FF', '#E6F2FF']; // Blue shades
-
-  const chartData = {
-    datasets: [
-      {
-        data,
-        backgroundColor: backgroundColors,
-        borderWidth: 0,
-      },
-    ],
-  };
+  const chartData = useMemo(() => {
+    return {
+      datasets: [
+        {
+          data,
+          backgroundColor: BLUE_SHADES,
+          borderWidth: 0,
+        },
+      ],
+    };
+  },[data])
 
   return (
-    <div className="flex h-25 w-25 items-center justify-center min-[450px]:h-30 min-[450px]:w-30">
+    <div className={clsx(
+      'flex items-center justify-center',
+      'h-25 w-25',
+      'min-[450px]:h-30 min-[450px]:w-30'
+    )}
+>
       <Doughnut
         data={chartData}
         options={{
           responsive: true,
           maintainAspectRatio: false,
-          cutout: '70%', // Creates a ring effect
+          cutout: '70%',
           plugins: {
             tooltip: {
-              enabled: true, // Ensure tooltips are enabled
+              enabled: true,
               callbacks: {
-                label: (tooltipItem) => {
-                  // Customize the tooltip to show only the data value, without the label
-                  return `Value: ${tooltipItem.raw}`;
-                },
+                label: (tooltipItem) => `Value: ${tooltipItem.raw}`,
               },
             },
           },

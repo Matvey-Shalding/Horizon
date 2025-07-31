@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useMediaQuery } from '@react-hookz/web';
+import clsx from 'clsx';
+import { m } from 'framer-motion';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 
 interface CancelButtonProps {
@@ -15,10 +16,13 @@ export function CancelButton({ onClick, className, content, props }: CancelButto
   const isMobile = useMediaQuery(`(max-width: ${MEDIA_QUERIES.MOBILE})`);
 
   return (
-    <motion.button
+    <m.button
       type="button"
       onClick={onClick}
-      className={`rounded-lg border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-100 ${className || ''}`}
+      className={clsx(
+ ${className || ''} hover:bg-gray-100`,
+        className
+      )}
       initial={{ scale: 1 }}
       whileHover={
         !isMobile
@@ -41,6 +45,6 @@ export function CancelButton({ onClick, className, content, props }: CancelButto
       {...props}
     >
       {content ?? 'Cancel'}
-    </motion.button>
+    </m.button>
   );
 }

@@ -1,34 +1,34 @@
 import Error from 'components/icons/auth/Error';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 export function ErrorMessage({ message }: { message: string | undefined }) {
   return (
-    <motion.div
-      initial={{ height: 0, opacity: 0 }} // Start with 0 height and opacity 0
+    <m.div
+      initial={{ height: 0, opacity: 0 }}
       animate={{
-        height: message ? 'auto' : 0, // Animate height to auto when the message appears
-        opacity: message ? 1 : 0, // Fade in/out based on message existence
+        height: message ? 'auto' : 0,
+        opacity: message ? 1 : 0,
       }}
       transition={{
-        opacity: { duration: 0.3, ease: 'easeInOut' }, // Smooth opacity transition
-        height: { duration: 0.3, ease: 'easeInOut' }, // Smooth height transition
+        opacity: { duration: 0.3, ease: 'easeInOut' },
+        height: { duration: 0.3, ease: 'easeInOut' },
       }}
       className="text-red flex items-center gap-x-1 text-sm/tight"
     >
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: message ? 1 : 0 }} // Fade in/out the icon
+        animate={{ opacity: message ? 1 : 0 }}
         transition={{
-          delay: 0.1, // Slight delay for the icon fade
-          duration: 0.3, // Smooth fade duration
+          delay: 0.1, 
+          duration: 0.3,
         }}
       >
         <Error
           width={16}
           height={16}
         />
-      </motion.div>
+      </m.div>
       <span>{message}</span>
-    </motion.div>
+    </m.div>
   );
 }
