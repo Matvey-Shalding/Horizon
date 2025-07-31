@@ -48,7 +48,7 @@ export function Input({
           {...(register ? register(fieldRegister, options) : {})}
           placeholder={placeholder}
           className={clsx(
-            "shadow-main text-dark-gray min-h-10 min-[768px]:min-h-11 w-full basis-full border bg-white pr-3.5 pl-3.5 text-base/normal outline-none",
+            "shadow-main text-dark-gray min-h-11 w-full basis-full border bg-white pr-3.5 pl-3.5 text-base/normal outline-none",
           )}
         />
       </div>

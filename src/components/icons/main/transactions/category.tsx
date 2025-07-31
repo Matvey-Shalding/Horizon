@@ -6,6 +6,7 @@ const Category = (props?: React.SVGProps<SVGSVGElement>) => (
     viewBox="0 0 32 32"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
+    {...props}
   >
     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
     <g

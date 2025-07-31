@@ -6,7 +6,7 @@ export function Subtitle({
   subtitle?: string;
 }) {
   return (
-    <div className="flex flex-col gap-y-2 w-70">
+    <div className="flex flex-col gap-y-2 min-w-55">
       <span className="text-dark-gray text-sm font-medium">
         {title}
       </span>
