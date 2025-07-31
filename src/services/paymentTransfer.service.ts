@@ -1,44 +1,43 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { cloneDeep } from 'lodash';
 import { UseFormClearErrors } from 'react-hook-form';
 import { PaymentTransferSchemaType } from 'schemas/paymentTransfer.schema';
 import { setBanks } from 'state/main/bankSlice';
 import { Bank } from 'types/Bank.interface';
-import { Category } from 'types/Category.interface';
 import { TransactionStatus } from 'types/Transaction.interface';
 
-type ResetParams = {
+/**
+ * Parameters for resetting form state.
+ */
+interface ResetParams {
   reset: () => void;
   clearErrors: UseFormClearErrors<PaymentTransferSchemaType>;
-  // setSelectedBank: (id: string) => void;
-  // setSelectedCategory: (category: string) => void;
-  // setIsCategoryDropdownOpen: (open: boolean) => void;
-  // setIsDropdownOpen: (open: boolean) => void;
-};
+}
 
-type TransferParams = PaymentTransferSchemaType &
-  ResetParams & {
-    banks: Bank[];
-    dispatch: Dispatch;
-  };
+/**
+ * Parameters for transferring funds, extending schema and reset params.
+ */
+interface TransferParams extends PaymentTransferSchemaType, ResetParams {
+  banks: Bank[];
+  dispatch: Dispatch;
+}
 
-export class PaymentTransferService {
-  resetFormState({
-    reset,
-    clearErrors,
-    // setSelectedBank,
-    // setSelectedCategory,
-    // setIsCategoryDropdownOpen,
-    // setIsDropdownOpen,
-  }: ResetParams) {
+/**
+ * Service for handling payment transfers and form state management.
+ */
+class PaymentTransferService {
+  /**
+   * Resets the form and UI state after a transfer or cancellation.
+   * @param params - Parameters for resetting form state.
+   */
+  private resetFormState({ reset, clearErrors }: ResetParams): void {
     reset();
     clearErrors();
-    // setSelectedBank("");
-    // setSelectedCategory("");
-    // setIsCategoryDropdownOpen(false);
-    // setIsDropdownOpen(false);
   }
 
+  /**
+   * Processes a fund transfer between banks and updates state.
+   * @param params - Parameters for the transfer operation.
+   */
   transferFunds({
     sourceBank,
     recipientAccount,
@@ -49,69 +48,65 @@ export class PaymentTransferService {
     dispatch,
     reset,
     clearErrors,
-    // setSelectedBank,
-    // setSelectedCategory,
-    // setIsCategoryDropdownOpen,
-    // setIsDropdownOpen,
-  }: TransferParams) {
-    const copy = cloneDeep(banks);
-
-    const sourceBankIndex = copy.findIndex((bank) => bank.cardId === sourceBank);
-    const recipientBankIndex = copy.findIndex((bank) => bank.cardId === recipientAccount);
+  }: TransferParams): void {
+    const sourceBankIndex = banks.findIndex((bank) => bank.cardId === sourceBank);
+    const recipientBankIndex = banks.findIndex((bank) => bank.cardId === recipientAccount);
 
     if (sourceBankIndex === -1 || recipientBankIndex === -1) return;
 
-    const transactionId = crypto.randomUUID();
+    const updatedBanks = [...banks];
+    const amount = Number(balance);
     const date = new Date();
+    const formattedDate = date
+      .toLocaleString('en-US', {
+        weekday: 'short',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
+      .replace(/,/, '');
 
-    const weekday = date.toLocaleString('en-US', { weekday: 'short' }); // Wed
-    const day = String(date.getDate()).padStart(2, '0'); // 28
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 08
-    const year = date.getFullYear(); // 2025
-    const hours = String(date.getHours()).padStart(2, '0'); // 13
-    const minutes = String(date.getMinutes()).padStart(2, '0'); // 00
-
-    // Format string
-    const formatted = `${weekday} ${day}.${month}.${year}, ${hours}:${minutes}`;
-
-    const category = banks
-      .find((currentBank) => currentBank.cardId === sourceBank)
-      ?.categories.find((c) => c.name === categoryId) as Category;
+    const category = banks[sourceBankIndex].categories.find((c) => c.name === categoryId)!;
 
     const transaction = {
-      id: transactionId,
+      id: crypto.randomUUID(),
       status: 'SUCCESS' as TransactionStatus,
-      date: formatted,
+      date: formattedDate,
       category,
       message: note,
-      //For plus and for minus it`s source bank
     };
 
-    copy[sourceBankIndex].balance = String(Number(copy[sourceBankIndex].balance) - Number(balance));
-    copy[recipientBankIndex].balance = String(Number(copy[recipientBankIndex].balance) + Number(balance));
+    updatedBanks[sourceBankIndex] = {
+      ...updatedBanks[sourceBankIndex],
+      balance: String(Number(updatedBanks[sourceBankIndex].balance) - amount),
+      transactions: [
+        ...updatedBanks[sourceBankIndex].transactions,
+        {
+          ...transaction,
+          amount: `- ${balance}`,
+          recipientBankId: recipientAccount,
+        },
+      ],
+    };
 
-    copy[sourceBankIndex].transactions.push({
-      ...transaction,
-      amount: '- ' + balance,
-      recipientBankId: recipientAccount,
-    });
-    copy[recipientBankIndex].transactions.push({
-      ...transaction,
-      amount: '+' + balance,
-      recipientBankId: sourceBank,
-    });
+    updatedBanks[recipientBankIndex] = {
+      ...updatedBanks[recipientBankIndex],
+      balance: String(Number(updatedBanks[recipientBankIndex].balance) + amount),
+      transactions: [
+        ...updatedBanks[recipientBankIndex].transactions,
+        {
+          ...transaction,
+          amount: `+${balance}`,
+          recipientBankId: sourceBank,
+        },
+      ],
+    };
 
-    dispatch(setBanks(copy));
-
-    // Use the reset helper to clean form/UI state after transfer
-    this.resetFormState({
-      reset,
-      clearErrors,
-      // setSelectedBank,
-      // setSelectedCategory,
-      // setIsCategoryDropdownOpen,
-      // setIsDropdownOpen,
-    });
+    dispatch(setBanks(updatedBanks));
+    this.resetFormState({ reset, clearErrors });
   }
 }
 

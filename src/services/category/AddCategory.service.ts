@@ -1,57 +1,89 @@
-// services/addCategoryService.ts
+'use client';
+
 import { DEFAULT_COLOR } from 'constants/DefaultColor';
 import { UseFormReset, UseFormSetError } from 'react-hook-form';
 import { bankCategorySchemaType } from 'schemas/bankCategory.schema';
 import { Category } from 'types/Category.interface';
 import { Updater } from 'use-immer';
+interface CloseFormOptions {
 
-class AddCategoryService {
-  
+  clearErrors: () => void;
 
-  closeForm(
-    clearErrors: () => void,
-    setShowColorPicker: (value: boolean) => void,
-    setOpen: (value: boolean) => void,
-    reset: UseFormReset<bankCategorySchemaType>,
-    setSelectedColor: React.Dispatch<React.SetStateAction<string>>,
-    onCancel?: () => void
-  ) {
-    setSelectedColor(DEFAULT_COLOR);
-    clearErrors();
-    setShowColorPicker(false);
-    reset();
-    setOpen(false);
-    onCancel?.()
-  }
+  setShowColorPicker: (value: boolean) => void;
 
-  submitCategory(
-    data: bankCategorySchemaType,
-    categories: Category[],
-    setError: UseFormSetError<bankCategorySchemaType>,
-    clearErrors: () => void,
-    setShowColorPicker: (value: boolean) => void,
-    setOpen: (value: boolean) => void,
-    setCategories: Updater<Category[]>,
-    reset: UseFormReset<bankCategorySchemaType>,
-    setSelectedColor: React.Dispatch<React.SetStateAction<string>>
-  ) {
-    const duplicate = categories.some(
-      (category) => category.name.trim().toLowerCase() === data.name.trim().toLowerCase()
-    );
+  setOpen: (value: boolean) => void;
 
-    if (duplicate) {
-      setError('root', {
-        type: 'manual',
-        message: 'Category names must be unique.',
-      });
-      return;
-    }
+  reset: UseFormReset<bankCategorySchemaType>;
 
-    setCategories((draft) => {
-      draft.push({ ...data, expenses: '0' });
-    });
-    this.closeForm(clearErrors, setShowColorPicker, setOpen, reset, setSelectedColor);
-  }
+  setSelectedColor: React.Dispatch<React.SetStateAction<string>>;
+
+  onCancel?: () => void;
 }
 
-export const addCategoryService = new AddCategoryService();
+/**
+ * Options for the submitCategory function
+ */
+interface SubmitCategoryOptions extends CloseFormOptions {
+  data: bankCategorySchemaType;
+  categories: Category[];
+  setError: UseFormSetError<bankCategorySchemaType>;
+  setCategories: Updater<Category[]>;
+}
+
+/**
+ * Closes the category form and resets its state
+ * @param options - Configuration for closing the form
+ */
+const closeForm = ({
+  clearErrors,
+  setShowColorPicker,
+  setOpen,
+  reset,
+  setSelectedColor,
+  onCancel,
+}: CloseFormOptions) => {
+  setSelectedColor(DEFAULT_COLOR);
+  clearErrors();
+  setShowColorPicker(false);
+  reset();
+  setOpen(false);
+  onCancel?.();
+};
+
+/**
+ * Submits a new category and handles validation
+ * @param options - Configuration for submitting the category
+ * @returns void
+ */
+const submitCategory = ({
+  data,
+  categories,
+  setError,
+  setCategories,
+  ...closeFormOptions
+}: SubmitCategoryOptions) => {
+  const isDuplicate = categories.some(
+    (category) => category.name.trim().toLowerCase() === data.name.trim().toLowerCase()
+  );
+
+  if (isDuplicate) {
+    setError('root', {
+      type: 'manual',
+      message: 'Category names must be unique.',
+    });
+    return;
+  }
+
+  setCategories((draft) => {
+    draft.push({ ...data, expenses: '0' });
+  });
+  closeForm(closeFormOptions);
+};
+
+/**
+ * Service object for category-related operations
+ */
+export const addCategoryService = {
+  closeForm,
+  submitCategory,
+};
