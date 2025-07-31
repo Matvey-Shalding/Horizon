@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Input } from 'ui/Input';
 
 interface SearchInputProps {
@@ -9,7 +9,7 @@ const SearchInput = ({ isSidebarOpen }: SearchInputProps) => (
   <div className="w-full px-4">
     <AnimatePresence>
       {isSidebarOpen && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
@@ -17,7 +17,7 @@ const SearchInput = ({ isSidebarOpen }: SearchInputProps) => (
           className="w-full"
         >
           <Input placeholder="Search..." />
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   </div>

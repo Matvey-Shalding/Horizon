@@ -5,18 +5,9 @@ import Transaction from 'components/icons/sidebar/nav/Transactions';
 import Transfer from 'components/icons/sidebar/nav/Transfer';
 import type { ComponentType, SVGProps } from 'react';
 import { MAIN_ROUTES } from 'routes';
+import MenuItem from 'types/MenuItem.interface';
 
-/**
- * Represents a single item in the sidebar menu.
- */
-interface MenuItem {
-  /** React component for the icon (e.g., SVG) */
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
-  /** Label to be displayed in the sidebar */
-  label: string;
-  /** Route path to navigate to */
-  path: string;
-}
+
 
 /**
  * Sidebar menu configuration.

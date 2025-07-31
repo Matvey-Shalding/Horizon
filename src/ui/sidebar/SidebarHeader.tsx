@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Logo } from 'ui/Logo';
 import ToggleButton from './ToggleButton';
 
@@ -17,15 +17,15 @@ const SidebarHeader = ({ isSidebarOpen, onToggle }: SidebarHeaderProps) => (
   >
     <AnimatePresence>
       {isSidebarOpen && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="mb-4" // Added 16px margin-bottom
+          className="mb-4"
         >
           <Logo />
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
     <ToggleButton onClick={onToggle} />

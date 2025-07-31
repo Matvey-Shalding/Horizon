@@ -1,17 +1,21 @@
-import { motion } from 'framer-motion';
-import React from 'react';
-import SidebarHeader from './SidebarHeader';
-import SearchInput from './SearchInput';
+import clsx from 'clsx';
+import { m } from 'framer-motion';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import React, { memo } from 'react';
+import { SingUp } from 'types/Auth.types';
+import MenuItem from 'types/MenuItem.interface';
 import Menu from './Menu';
+import SearchInput from './SearchInput';
+import SidebarHeader from './SidebarHeader';
 import UserSection from './UserSection';
 
 interface StaticTogglingSidebarProps {
   isOpen: boolean;
   onToggle: () => void;
-  items: any[]; // Adjust type based on menuItems structure
+  items: MenuItem[];
   pathname: string;
-  router: any; // Adjust type based on useRouter return
-  user: any; // Adjust type based on user state structure
+  router: AppRouterInstance;
+  user: SingUp | null | undefined;
   onLogout: () => void;
 }
 
@@ -20,9 +24,12 @@ const TogglingSidebar = React.forwardRef(
     { isOpen, onToggle, items, pathname, router, user, onLogout }: StaticTogglingSidebarProps,
     ref: React.Ref<HTMLDivElement>
   ) => (
-    <motion.div
+    <m.div
       ref={ref}
-      className="border-border z-30 flex h-screen shrink-0 grow-1 flex-col justify-between overflow-hidden border-r bg-white pt-8 pb-5"
+      className={clsx(
+        'border-border z-30 flex h-screen shrink-0 grow-1',
+        'flex-col justify-between overflow-hidden border-r bg-white pt-8 pb-5'
+      )}
       initial={{ width: 280 }}
       animate={{ width: isOpen ? 280 : 80 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -45,8 +52,8 @@ const TogglingSidebar = React.forwardRef(
           onLogout={onLogout}
         />
       </div>
-    </motion.div>
+    </m.div>
   )
 );
 
-export default TogglingSidebar;
+export default memo(TogglingSidebar);

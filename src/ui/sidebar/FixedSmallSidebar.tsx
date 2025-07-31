@@ -2,11 +2,13 @@ import { motion } from 'framer-motion';
 import LogoHeader from './LogoHeader';
 import Menu from './Menu';
 import UserSection from './UserSection';
+import MenuItem from 'types/MenuItem.interface';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 interface FixedSmallSidebarProps {
-  items: any[]; // Adjust type based on menuItems structure
+  items: MenuItem[]; // Adjust type based on menuItems structure
   pathname: string;
-  router: any; // Adjust type based on useRouter return
+  router: AppRouterInstance; // Adjust type based on useRouter return
   onLogout: () => void;
 }
 

@@ -2,22 +2,32 @@ import { useClickOutside, useMediaQuery } from '@react-hookz/web';
 import { menuItems } from 'data/menuItems';
 import { signOut } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AUTH_ROUTES } from 'routes';
+import { authorizationService } from 'services/Authorization.service';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 import { RootState } from 'state/store';
 import BigSidebar from './BigSidebar';
 import FixedSlidingBigSidebar from './FixedBigSidebar';
-import FixedSmallSidebar from './FixedSmallSidebar';
 import SmallSidebar from './SmallSidebar';
 import TogglingSidebar from './TogglingSidebar';
+import MenuItem from 'types/MenuItem.interface';
+import { SingUp } from 'types/Auth.types';
 
-interface SidebarProps {
-  isLoading: boolean;
+
+interface CommonSidebarProps {
+  isOpen: boolean;
+  onToggle: () => void;
+  items: MenuItem[];
+  pathname: string;
+  router: ReturnType<typeof useRouter>;
+  user: SingUp | null | undefined;
+  onLogout: () => void;
 }
 
-const Sidebar = ({ isLoading }: SidebarProps) => {
+
+const Sidebar = ({ isLoading }: { isLoading: boolean }) => {
   const router = useRouter();
   const pathname = usePathname();
   const user = useSelector((state: RootState) => state.user.user);
@@ -26,25 +36,29 @@ const Sidebar = ({ isLoading }: SidebarProps) => {
   const isLargeScreen = useMediaQuery(`(min-width:${MEDIA_QUERIES.LARGE_DESKTOPS})`);
   const isSmallScreen = useMediaQuery(`(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`);
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(Boolean(isLargeScreen));
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!!isLargeScreen);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handlePageHide = (event: PageTransitionEvent) => {
-      const dataToSend = { userData: user, userBanks: banks };
-      const blob = new Blob([JSON.stringify(dataToSend)], {
-        type: 'application/json',
-      });
-      const success = navigator.sendBeacon('/api/home', blob);
-      if (!success) {
-        console.warn('sendBeacon failed to queue the data for sending.');
-      }
-    };
-    window.addEventListener('pagehide', handlePageHide);
-    return () => window.removeEventListener('pagehide', handlePageHide);
-  }, [user, banks]);
+  const commonProps = useMemo<CommonSidebarProps>(
+    () => ({
+      isOpen: isSidebarOpen,
+      onToggle: useCallback(() => setIsSidebarOpen((prev) => !prev), []),
+      items: menuItems,
+      pathname,
+      router,
+      user,
+      onLogout: useCallback(() => signOut({ callbackUrl: AUTH_ROUTES.LOGIN }), []),
+    }),
+    [isSidebarOpen, pathname, router, user]
+  );
 
-  if (isLoading) return null;
+  useEffect(() => {
+    const handlePageHideWithParams = (e: PageTransitionEvent) => {
+      authorizationService.handlePageHide(user, banks);
+    };
+    window.addEventListener('pagehide', handlePageHideWithParams);
+    return () => window.removeEventListener('pagehide', handlePageHideWithParams);
+  }, [user, banks]);
 
   useClickOutside(sidebarRef, () => {
     if (isSmallScreen) {
@@ -52,50 +66,29 @@ const Sidebar = ({ isLoading }: SidebarProps) => {
     }
   });
 
-  const onToggle = () => setIsSidebarOpen(!isSidebarOpen);
-  const onLogout = () => signOut({ callbackUrl: AUTH_ROUTES.LOGIN });
+  if (isLoading) return null;
 
   if (isSmallScreen) {
     return (
-      <Fragment>
+      <>
         <div
           className="fixed top-4 left-0 z-40 flex gap-x-1 p-2 pl-0"
-          onClick={onToggle}
+          onClick={commonProps.onToggle}
         >
-          <div className="bg-border rounded-r-main h-10 w-1"></div>
+          <div className="bg-border rounded-r-main h-10 w-1" />
         </div>
-        {!isSmallScreen && (
-          <FixedSmallSidebar
-            items={menuItems}
-            pathname={pathname}
-            router={router}
-            onLogout={onLogout}
-          />
-        )}
         <BigSidebar
-          isOpen={isSidebarOpen}
-          onToggle={onToggle}
-          items={menuItems}
-          pathname={pathname}
-          router={router}
-          user={user}
-          onLogout={onLogout}
+          {...commonProps}
           ref={sidebarRef}
         />
-      </Fragment>
+      </>
     );
   }
 
   if (isLargeScreen) {
     return (
       <TogglingSidebar
-        isOpen={isSidebarOpen}
-        onToggle={onToggle}
-        items={menuItems}
-        pathname={pathname}
-        router={router}
-        user={user}
-        onLogout={onLogout}
+        {...commonProps}
         ref={sidebarRef}
       />
     );
@@ -103,25 +96,13 @@ const Sidebar = ({ isLoading }: SidebarProps) => {
 
   return (
     <>
-      <SmallSidebar
-        onToggle={onToggle}
-        items={menuItems}
-        pathname={pathname}
-        router={router}
-        onLogout={onLogout}
-      />
+      <SmallSidebar {...commonProps} />
       <FixedSlidingBigSidebar
-        isOpen={isSidebarOpen}
-        onToggle={onToggle}
-        items={menuItems}
-        pathname={pathname}
-        router={router}
-        user={user}
-        onLogout={onLogout}
+        {...commonProps}
         ref={sidebarRef}
       />
     </>
   );
 };
 
-export default React.memo(Sidebar);
+export default memo(Sidebar);

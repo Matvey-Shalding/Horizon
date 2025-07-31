@@ -1,37 +1,35 @@
-import { motion } from 'framer-motion';
-import React from 'react';
+import { m } from 'framer-motion';
+import { memo, forwardRef } from 'react';
 import Menu from './Menu';
 import SearchInput from './SearchInput';
 import SidebarHeader from './SidebarHeader';
 import UserSection from './UserSection';
+import MenuItem from 'types/MenuItem.interface';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { SingUp } from 'types/Auth.types';
+import clsx from 'clsx';
 
 interface SlidingBigSidebarProps {
   isOpen: boolean;
   onToggle: () => void;
-  items: any[]; // Adjust type based on menuItems structure
+  items: MenuItem[];
   pathname: string;
-  router: any; // Adjust type based on useRouter return
-  user: any; // Adjust type based on user state structure
+  router: AppRouterInstance;
+  user: SingUp | null | undefined;
   onLogout: () => void;
 }
 
-const BigSidebar = React.forwardRef(
+const BigSidebar = forwardRef(
   (
     { isOpen, onToggle, items, pathname, router, user, onLogout }: SlidingBigSidebarProps,
     ref: React.Ref<HTMLDivElement>
   ) => (
-    <motion.div
+    <m.div
       ref={ref}
-      className="fixed z-30 h-screen w-70 shrink-0 flex-col justify-between overflow-hidden bg-white pt-8 pb-5"
+      className={clsx("fixed z-30 h-screen w-70 shrink-0 flex-col justify-between", "overflow-hidden bg-white pt-8 pb-5")}
       initial={{ x: '-100%' }}
-      animate={{
-        x: isOpen ? 0 : '-100%',
-        transition: { duration: 0.4, ease: 'easeInOut' },
-      }}
-      exit={{
-        x: '-100%',
-        transition: { duration: 0.4, ease: 'easeInOut' },
-      }}
+      animate={{ x: isOpen ? 0 : '-100%' }}
+      transition={{ duration: 0.4, ease: 'easeInOut' }}
     >
       <div className="flex h-full basis-full flex-col items-center">
         <SidebarHeader
@@ -51,8 +49,8 @@ const BigSidebar = React.forwardRef(
           onLogout={onLogout}
         />
       </div>
-    </motion.div>
+    </m.div>
   )
 );
 
-export default BigSidebar;
+export default memo(BigSidebar);

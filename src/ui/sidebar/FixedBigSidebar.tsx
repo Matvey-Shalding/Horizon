@@ -1,19 +1,22 @@
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
-import React from 'react';
-import ToggleButton from './ToggleButton';
-import Menu from './Menu';
-import UserSection from './UserSection';
-import { Logo } from 'ui/Logo';
+import { m } from 'framer-motion';
+import React, { memo } from 'react';
 import { Input } from 'ui/Input';
+import { Logo } from 'ui/Logo';
+import Menu from './Menu';
+import ToggleButton from './ToggleButton';
+import UserSection from './UserSection';
+import MenuItem from 'types/MenuItem.interface';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { SingUp } from 'types/Auth.types';
 
 interface FixedSlidingBigSidebarProps {
   isOpen: boolean;
   onToggle: () => void;
-  items: any[]; // Adjust type based on menuItems structure
+  items: MenuItem[];
   pathname: string;
-  router: any; // Adjust type based on useRouter return
-  user: any; // Adjust type based on user state structure
+  router: AppRouterInstance;
+  user: SingUp | null | undefined;
   onLogout: () => void;
 }
 
@@ -22,10 +25,11 @@ const FixedSlidingBigSidebar = React.forwardRef(
     { isOpen, onToggle, items, pathname, router, user, onLogout }: FixedSlidingBigSidebarProps,
     ref: React.Ref<HTMLDivElement>
   ) => (
-    <motion.div
+    <m.div
       ref={ref}
       className={clsx(
-        'border-border fixed z-30 flex h-screen w-70 shrink-0 grow-1 -translate-x-full flex-col justify-between overflow-hidden border-r bg-white pt-8 pb-5 transition-transform duration-500',
+        'border-border fixed z-30 flex h-screen w-70 shrink-0 grow-1 -translate-x-full transition-transform',
+        'flex-col justify-between overflow-hidden border-r bg-white pt-8 pb-5 duration-500',
         isOpen && 'translate-x-0'
       )}
     >
@@ -36,9 +40,9 @@ const FixedSlidingBigSidebar = React.forwardRef(
             <ToggleButton onClick={onToggle} />
           </div>
           <div className="w-full px-4">
-            <motion.div className="w-full">
+            <m.div className="w-full">
               <Input placeholder="Search..." />
-            </motion.div>
+            </m.div>
           </div>
         </div>
         <Menu
@@ -53,8 +57,8 @@ const FixedSlidingBigSidebar = React.forwardRef(
           onLogout={onLogout}
         />
       </div>
-    </motion.div>
+    </m.div>
   )
 );
 
-export default FixedSlidingBigSidebar;
+export default memo(FixedSlidingBigSidebar);
