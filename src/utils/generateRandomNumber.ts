@@ -9,6 +9,7 @@ export function generateRandomNumber(length: number): number {
     throw new Error('Length must be a positive integer.');
   }
 
+  // min for length=1 is 1, max is 9, etc.
   const min = Math.pow(10, length - 1);
   const max = Math.pow(10, length) - 1;
 
