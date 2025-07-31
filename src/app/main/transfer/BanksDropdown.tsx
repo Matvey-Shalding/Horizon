@@ -1,22 +1,22 @@
-import { useClickOutside, useMediaQuery } from "@react-hookz/web";
-import chroma from "chroma-js";
-import clsx from "clsx";
-import Plus from "components/icons/main/home/plus";
-import Arrow from "components/icons/main/transactions/arrow";
-import CheckMark from "components/icons/main/transactions/checkmark";
-import Card from "components/icons/main/transactions/credit-card";
-import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { UseFormSetError, UseFormSetValue } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { MAIN_ROUTES } from "routes";
-import { PaymentTransferSchemaType } from "schemas/paymentTransfer.schema";
-import { MEDIA_QUERIES } from "settings/MediaQueries";
-import { RootState } from "state/store";
-import { ErrorMessage } from "ui/Error";
-import { shortenString } from "utils/shortenTitle";
-import { Subtitle } from "./SubTitle";
+import { useClickOutside, useMediaQuery } from '@react-hookz/web';
+import chroma from 'chroma-js';
+import clsx from 'clsx';
+import Plus from 'components/icons/main/home/plus';
+import Arrow from 'components/icons/main/transactions/arrow';
+import CheckMark from 'components/icons/main/transactions/checkmark';
+import Card from 'components/icons/main/transactions/credit-card';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { UseFormSetError, UseFormSetValue } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { MAIN_ROUTES } from 'routes';
+import { PaymentTransferSchemaType } from 'schemas/paymentTransfer.schema';
+import { MEDIA_QUERIES } from 'settings/MediaQueries';
+import { RootState } from 'state/store';
+import { ErrorMessage } from 'ui/Error';
+import { shortenString } from 'utils/shortenTitle';
+import { Subtitle } from './SubTitle';
 
 export function BanksDropdown<T>({
   title,
@@ -45,7 +45,7 @@ export function BanksDropdown<T>({
   const menuRef = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(""); // cardId
+  const [selected, setSelected] = useState(''); // cardId
 
   // Adaptive breakpoints
   const isDesktop = useMediaQuery(`(min-width:${MEDIA_QUERIES.DESKTOPS})`);
@@ -53,7 +53,7 @@ export function BanksDropdown<T>({
 
   // Reset on counter change
   useEffect(() => {
-    setSelected("");
+    setSelected('');
     setIsOpen(false);
   }, [resetCounter]);
 
@@ -71,9 +71,9 @@ export function BanksDropdown<T>({
     };
     if (isOpen) {
       updateMaxHeight();
-      window.addEventListener("resize", updateMaxHeight);
+      window.addEventListener('resize', updateMaxHeight);
     }
-    return () => window.removeEventListener("resize", updateMaxHeight);
+    return () => window.removeEventListener('resize', updateMaxHeight);
   }, [isOpen]);
 
   // Colors for avatars
@@ -83,31 +83,30 @@ export function BanksDropdown<T>({
         .filter((b) => b.cardId !== currentBankId)
         .map(() => {
           const bg = chroma.random().hex();
-          const text = chroma(bg).luminance() > 0.5 ? "#000" : "#fff";
+          const text = chroma(bg).luminance() > 0.5 ? '#000' : '#fff';
           return { bg, text };
         }),
-    [banks, currentBankId],
+    [banks, currentBankId]
   );
 
   return (
-    <div className="border-border flex min-[640px]:pb-4 min-[640px]:border-b min-[768px]:gap-x-8 min-[768px]:pb-5">
-      {!isTablet && <Subtitle title={title} subtitle={subtitle} />}
+    <div className="border-border flex min-[640px]:border-b min-[640px]:pb-4 min-[768px]:gap-x-8 min-[768px]:pb-5">
+      {!isTablet && (
+        <Subtitle
+          title={title}
+          subtitle={subtitle}
+        />
+      )}
 
       {/* Select container copied from Select component */}
-      <div className="relative min-[640px]:max-w-128 basis-full">
+      <div className="relative basis-full min-[640px]:max-w-128">
         <div className="flex flex-col gap-y-1.5">
-          {isTablet && (
-            <span className="text-dark-gray text-sm/snug font-semibold">
-              {subtitle}
-            </span>
-          )}
+          {isTablet && <span className="text-dark-gray text-sm/snug font-semibold">{subtitle}</span>}
           <div
             ref={dropdownRef}
             className={clsx(
-              "flex min-h-11 cursor-pointer items-center justify-between rounded-lg border bg-white",
-              isDesktop
-                ? "px-4.5"
-                : "shadow-main px-2.5 py-1.5 min-[640px]:px-4 min-[640px]:py-2.5",
+              'flex min-h-11 cursor-pointer items-center justify-between rounded-lg border bg-white',
+              isDesktop ? 'px-4.5' : 'shadow-main px-2.5 py-1.5 min-[640px]:px-4 min-[640px]:py-2.5'
             )}
             onClick={() => setIsOpen((prev) => !prev)}
           >
@@ -118,14 +117,10 @@ export function BanksDropdown<T>({
                 className="text-dark-gray"
               />
               <span className="text-dark-gray text-sm font-medium">
-                {selected
-                  ? banks.find((b) => b.cardId === selected)?.cardholderName
-                  : "Select Account"}
+                {selected ? banks.find((b) => b.cardId === selected)?.cardholderName : 'Select Account'}
               </span>
             </div>
-            <Arrow
-              className={clsx("transition-transform", isOpen && "rotate-180")}
-            />
+            <Arrow className={clsx('transition-transform', isOpen && 'rotate-180')} />
           </div>
         </div>
 
@@ -148,19 +143,17 @@ export function BanksDropdown<T>({
                       key={bank.cardId}
                       onClick={() => {
                         setSelected(bank.cardId);
-                        setValue(
-                          isSourceBank ? "sourceBank" : "recipientAccount",
-                          bank.cardId,
-                          { shouldValidate: true },
-                        );
+                        setValue(isSourceBank ? 'sourceBank' : 'recipientAccount', bank.cardId, {
+                          shouldValidate: true,
+                        });
                         setTimeout(() => setIsOpen(false), 0);
                       }}
                       className={clsx(
-                        "border-border cursor-pointer border-b px-4 py-2 text-sm font-medium",
-                        "transition-colors duration-150 ease-in-out",
+                        'border-border cursor-pointer border-b px-4 py-2 text-sm font-medium',
+                        'transition-colors duration-150 ease-in-out',
                         selected === bank.cardId
-                          ? "bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700"
-                          : "text-gray-700 hover:bg-gray-200 hover:text-gray-900",
+                          ? 'bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700'
+                          : 'text-gray-700 hover:bg-gray-200 hover:text-gray-900'
                       )}
                     >
                       <div className="flex items-center justify-between">
@@ -174,11 +167,14 @@ export function BanksDropdown<T>({
                           >
                             {shortenString(bank.cardholderName)}
                           </div>
-                          <span className="text-dark-gray font-semibold">
-                            {bank.cardholderName}
-                          </span>
+                          <span className="text-dark-gray font-semibold">{bank.cardholderName}</span>
                         </div>
-                        {bank.cardId === selected && <CheckMark width={16} height={16}/>}
+                        {bank.cardId === selected && (
+                          <CheckMark
+                            width={16}
+                            height={16}
+                          />
+                        )}
                       </div>
                     </div>
                   );
@@ -190,10 +186,11 @@ export function BanksDropdown<T>({
                 }}
                 className="flex h-10 items-center gap-x-2 px-4 hover:bg-gray-50"
               >
-                <Plus width={16} height={16} />
-                <span className="text-gray text-sm font-medium">
-                  Add new bank
-                </span>
+                <Plus
+                  width={16}
+                  height={16}
+                />
+                <span className="text-gray text-sm font-medium">Add new bank</span>
               </div>
             </motion.div>
           )}

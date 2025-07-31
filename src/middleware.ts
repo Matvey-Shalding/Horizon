@@ -1,11 +1,7 @@
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
-import { AUTH_ROUTES } from "routes";
-import {
-  apiAuthPrefix,
-  authRoutes,
-  DEFAULT_LOGIN_REDIRECT,
-} from "../routes";
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
+import { AUTH_ROUTES } from 'routes';
+import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT } from '../routes';
 
 export async function middleware(req: NextRequest) {
   const { nextUrl } = req;
@@ -22,7 +18,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Redirect authenticated users visiting "/" to a default route (e.g., /dashboard)
-  if (isLoggedIn && nextUrl.pathname === "/") {
+  if (isLoggedIn && nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
   }
 
@@ -43,6 +39,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
   ],
 };

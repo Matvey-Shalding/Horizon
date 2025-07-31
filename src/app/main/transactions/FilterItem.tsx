@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 interface FilterChipProps {
   label: string;
@@ -22,10 +22,13 @@ export function FilterChip({ label, value, onRemove }: FilterChipProps) {
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.2 }}
       className="rounded-main border-border text-gray flex items-center gap-x-2 border px-2.5 py-1.25 text-sm font-medium"
-      style={{ display: isVisible ? "flex" : "none" }}
+      style={{ display: isVisible ? 'flex' : 'none' }}
     >
       {label}: {value}
-      <button className="text-gray text-sm font-bold" onClick={handleRemove}>
+      <button
+        className="text-gray text-sm font-bold"
+        onClick={handleRemove}
+      >
         ✕
       </button>
     </motion.div>

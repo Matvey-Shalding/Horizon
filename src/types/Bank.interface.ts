@@ -1,5 +1,5 @@
-import { Category } from "./Category.interface";
-import { Transaction } from "./Transaction.interface";
+import { Category } from './Category.interface';
+import { Transaction } from './Transaction.interface';
 
 /**
  * Represents a bank card with essential details, balance,
@@ -44,5 +44,5 @@ export interface Bank {
   /**
    * The total expenses recorded for the card.
    */
-  expenses: string
+  expenses: string;
 }

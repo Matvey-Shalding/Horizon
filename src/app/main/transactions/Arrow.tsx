@@ -1,21 +1,17 @@
-import { useMediaQuery } from "@react-hookz/web";
-import NextArrow from "components/icons/main/transactions/nextArrow";
-import { MEDIA_QUERIES } from "settings/MediaQueries";
+import { useMediaQuery } from '@react-hookz/web';
+import NextArrow from 'components/icons/main/transactions/nextArrow';
+import { MEDIA_QUERIES } from 'settings/MediaQueries';
 
-export function Arrow({ type }: { type: "prev" | "next" }) {
-  const isSmallLaptop = useMediaQuery(
-    `(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`,
-  );
+export function Arrow({ type }: { type: 'prev' | 'next' }) {
+  const isSmallLaptop = useMediaQuery(`(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`);
   if (isSmallLaptop) {
     return (
-      <div className="grid max-[640px]:w-8 size-10 place-content-center rounded-lg bg-slate-100 font-medium text-slate-800">
-        <NextArrow
-          className={`size-4 stroke-[#334155] ${type === "next" && "rotate-180"}`}
-        />
+      <div className="grid size-10 place-content-center rounded-lg bg-slate-100 font-medium text-slate-800 max-[640px]:w-8">
+        <NextArrow className={`size-4 stroke-[#334155] ${type === 'next' && 'rotate-180'}`} />
       </div>
     );
   }
-  if (type === "prev") {
+  if (type === 'prev') {
     return (
       <div className="flex grow-1 gap-x-1">
         <div className="flex h-10 items-center justify-center gap-x-1 rounded-lg px-5">

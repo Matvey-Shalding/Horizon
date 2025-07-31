@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useMediaQuery } from "@react-hookz/web";
-import Plus from "components/icons/main/home/plus";
-import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { MAIN_ROUTES } from "routes";
-import { MEDIA_QUERIES } from "settings/MediaQueries";
-import { RootState } from "state/store";
-import { Button } from "ui/Button";
-import { Label } from "ui/Label";
-import PieChart from "ui/PieChart";
-import { Title } from "ui/Title";
-import { TransactionList } from "ui/TransactionList";
-import { shortenString } from "utils/shortenTitle";
-import { BankTabs } from "./BankTabs";
-import RightSidebar from "./RightSidebar";
-import { ShowMoreButton } from "./ShowMoreButton";
+import { useMediaQuery } from '@react-hookz/web';
+import Plus from 'components/icons/main/home/plus';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { MAIN_ROUTES } from 'routes';
+import { MEDIA_QUERIES } from 'settings/MediaQueries';
+import { RootState } from 'state/store';
+import { Button } from 'ui/Button';
+import { Label } from 'ui/Label';
+import PieChart from 'ui/PieChart';
+import { Title } from 'ui/Title';
+import { TransactionList } from 'ui/TransactionList';
+import { shortenString } from 'utils/shortenTitle';
+import { BankTabs } from './BankTabs';
+import RightSidebar from './RightSidebar';
+import { ShowMoreButton } from './ShowMoreButton';
 
 const TRANSACTIONS_PER_PAGE = 10;
 
@@ -27,9 +27,7 @@ export default function Home({}: {}) {
 
   const moneyData = useMemo(() => banks.map((bank) => bank.balance), [banks]);
   const [activeTab, setActiveTab] = useState(0);
-  const [visibleTransactions, setVisibleTransactions] = useState(
-    TRANSACTIONS_PER_PAGE,
-  );
+  const [visibleTransactions, setVisibleTransactions] = useState(TRANSACTIONS_PER_PAGE);
 
   const router = useRouter();
 
@@ -38,7 +36,7 @@ export default function Home({}: {}) {
   // Sort transactions by date (most recent first)
   const sortedTransactions = useMemo(() => {
     return [...(banks[activeTab]?.transactions || [])].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
   }, [banks, activeTab]);
 
@@ -54,13 +52,11 @@ export default function Home({}: {}) {
 
   useEffect(() => {
     if (containerRef.current) {
-      containerRef.current.style.maxHeight = window.innerHeight + "px";
+      containerRef.current.style.maxHeight = window.innerHeight + 'px';
     }
   }, []);
 
-  const isSmallLaptop = useMediaQuery(
-    `(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`,
-  );
+  const isSmallLaptop = useMediaQuery(`(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`);
 
   const isNotTablet = useMediaQuery(`(min-width:${MEDIA_QUERIES.TABLETS})`);
 
@@ -68,7 +64,7 @@ export default function Home({}: {}) {
 
   useEffect(() => {
     if (tabsRef.current && isSmallLaptop) {
-      tabsRef.current.style.maxWidth = window.innerWidth - 120 + "px";
+      tabsRef.current.style.maxWidth = window.innerWidth - 120 + 'px';
     }
   }, [isSmallLaptop]);
 
@@ -89,16 +85,13 @@ export default function Home({}: {}) {
             <div className="flex items-center gap-x-3 gap-y-2 min-[450px]:flex-row min-[450px]:gap-x-6">
               <PieChart data={moneyData.map((i) => Number(i))} />
               <div className="flex flex-col gap-y-1.5 md:gap-y-6">
-                <span className="text-blue font-semibold">
-                  {banks.length} Bank Accounts
-                </span>
+                <span className="text-blue font-semibold">{banks.length} Bank Accounts</span>
                 <div className="flex flex-col gap-y-1.5 min-[450px]:gap-y-2">
-                  <span className="text-gray text-sm min-[450px]:text-base font-medium">
+                  <span className="text-gray text-sm font-medium min-[450px]:text-base">
                     Total Current Balance
                   </span>
                   <span className="text-blue text-2xl/tight font-semibold min-[450px]:text-3xl/snug">
-                    $
-                    {banks.reduce((acc, item) => acc + Number(item.balance), 0)}
+                    ${banks.reduce((acc, item) => acc + Number(item.balance), 0)}
                   </span>
                 </div>
               </div>
@@ -106,7 +99,7 @@ export default function Home({}: {}) {
             {isNotTablet && (
               <Label
                 content="Add bank"
-                onClick={() => router.push("/main/connect-bank")}
+                onClick={() => router.push('/main/connect-bank')}
               >
                 <Plus className="stroke-light-blue" />
               </Label>
@@ -140,9 +133,9 @@ export default function Home({}: {}) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col min-[450px]:gap-y-5"
+              className="flex flex-col"
             >
-              <div className="bg-light-white rounded-main flex items-start justify-between px-6 py-5">
+              <div className="bg-light-white rounded-t-main flex items-start justify-between px-6 py-5">
                 <div className="flex items-center gap-x-4.5">
                   <div className="gradient grid h-10 w-10 place-content-center rounded-full font-medium text-white">
                     {shortenString(banks[activeTab].cardholderName)}
@@ -151,9 +144,7 @@ export default function Home({}: {}) {
                     <span className="text-xl font-semibold text-[#194185]">
                       {banks[activeTab].cardholderName}
                     </span>
-                    <span className="text-lg font-semibold text-[#1570EF]">
-                      ${banks[activeTab].balance}
-                    </span>
+                    <span className="text-lg font-semibold text-[#1570EF]">${banks[activeTab].balance}</span>
                   </div>
                 </div>
                 {isNotTablet && (
@@ -169,12 +160,12 @@ export default function Home({}: {}) {
                     transactions={sortedTransactions}
                   />
                 </div>
-                  <ShowMoreButton
-                    sortedTransactions={sortedTransactions}
-                    visibleTransactions={visibleTransactions}
-                    handleShowMore={handleShowMore}
-                    handleShowLess={handleShowLess}
-                  />
+                <ShowMoreButton
+                  sortedTransactions={sortedTransactions}
+                  visibleTransactions={visibleTransactions}
+                  handleShowMore={handleShowMore}
+                  handleShowLess={handleShowLess}
+                />
               </div>
             </motion.div>
           </AnimatePresence>
@@ -200,7 +191,7 @@ export default function Home({}: {}) {
             animate={{ y: [0, -5, 0] }}
             transition={{
               repeat: Infinity,
-              repeatType: "reverse",
+              repeatType: 'reverse',
               duration: 1.5,
             }}
             className="text-dark-gray text-2xl font-semibold"
@@ -212,7 +203,7 @@ export default function Home({}: {}) {
             animate={{ y: [0, -5, 0] }}
             transition={{
               repeat: Infinity,
-              repeatType: "reverse",
+              repeatType: 'reverse',
               duration: 1.5,
             }}
           >

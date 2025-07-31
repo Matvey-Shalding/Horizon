@@ -25,7 +25,8 @@
 }
 
 @media (max-width: 640px) {
-  .pagination li:not(.arrow) a,.pagination li.arrow div {
+  .pagination li:not(.arrow) a,
+  .pagination li.arrow div {
     width: 32px;
     height: 32px;
   }

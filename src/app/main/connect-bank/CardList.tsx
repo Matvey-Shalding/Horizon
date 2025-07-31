@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
-import { useMemo } from "react";
-import { SingUp } from "types/Auth.types";
-import { Bank } from "types/Bank.interface";
-import { Card } from "ui/Card";
+import { motion } from 'framer-motion';
+import { useMemo } from 'react';
+import { SingUp } from 'types/Auth.types';
+import { Bank } from 'types/Bank.interface';
+import { Card } from 'ui/Card';
 
 export function CardList({
   banks,
@@ -22,9 +22,7 @@ export function CardList({
   const cardsToDisplay = useMemo(() => {
     return [
       banks[validActiveTab], // The active card goes to the front
-      ...banks
-        .filter((_, index) => index !== validActiveTab)
-        .slice(0, cardsToShow ? cardsToShow - 1 : 2), // The other two cards
+      ...banks.filter((_, index) => index !== validActiveTab).slice(0, cardsToShow ? cardsToShow - 1 : 2), // The other two cards
     ];
   }, [banks, activeTab, cardsToShow]);
 
@@ -32,8 +30,8 @@ export function CardList({
     <div
       className="relative flex min-w-79 flex-col items-center"
       style={{
-        perspective: "1000px",
-        minHeight: 180 + 31 * (cardsToDisplay.length - 1) + "px",
+        perspective: '1000px',
+        minHeight: 180 + 31 * (cardsToDisplay.length - 1) + 'px',
       }}
     >
       {cardsToDisplay.map((bank, index) => {
@@ -58,7 +56,7 @@ export function CardList({
             }}
             transition={{
               duration: 0.5, // Duration for the transition
-              ease: "easeInOut", // Smooth easing
+              ease: 'easeInOut', // Smooth easing
             }}
           >
             <Card

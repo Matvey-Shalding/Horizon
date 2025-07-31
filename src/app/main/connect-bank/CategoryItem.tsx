@@ -1,7 +1,7 @@
-import Delete from "components/icons/main/home/delete";
-import { AnimatePresence, motion } from "framer-motion";
-import { Category } from "types/Category.interface";
-import { Updater } from "use-immer";
+import Delete from 'components/icons/main/home/delete';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Category } from 'types/Category.interface';
+import { Updater } from 'use-immer';
 
 export function CategoryList({
   categories,
@@ -13,9 +13,7 @@ export function CategoryList({
   return (
     <div className="border-border mt-0.5 flex flex-col gap-2 border-t border-solid pt-1.5">
       {categories.length === 0 ? (
-        <p className="text-center text-sm text-gray-500">
-          No categories available.
-        </p>
+        <p className="text-center text-sm text-gray-500">No categories available.</p>
       ) : (
         <AnimatePresence>
           {categories.map(({ color, name }) => (
@@ -32,15 +30,11 @@ export function CategoryList({
                   className="h-4 w-4 rounded-[7px]"
                   style={{ backgroundColor: color }}
                 />
-                <span className="text-dark-gray text-base font-medium">
-                  {name}
-                </span>
+                <span className="text-dark-gray text-base font-medium">{name}</span>
               </div>
               <button
                 onClick={() => {
-                  setCategories((array) =>
-                    array.filter((item) => item.name !== name),
-                  );
+                  setCategories((array) => array.filter((item) => item.name !== name));
                 }}
                 aria-label={`Delete category ${name}`}
                 className="flex items-center justify-center rounded p-1"

@@ -1,5 +1,5 @@
-import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -8,13 +8,7 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({ data }) => {
-  const backgroundColors = [
-    "#007BFF",
-    "#66B2FF",
-    "#99CCFF",
-    "#CCE5FF",
-    "#E6F2FF",
-  ]; // Blue shades
+  const backgroundColors = ['#007BFF', '#66B2FF', '#99CCFF', '#CCE5FF', '#E6F2FF']; // Blue shades
 
   const chartData = {
     datasets: [
@@ -33,7 +27,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
         options={{
           responsive: true,
           maintainAspectRatio: false,
-          cutout: "70%", // Creates a ring effect
+          cutout: '70%', // Creates a ring effect
           plugins: {
             tooltip: {
               enabled: true, // Ensure tooltips are enabled

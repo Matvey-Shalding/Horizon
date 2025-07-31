@@ -4,7 +4,7 @@ const Plus = (props?: React.SVGProps<SVGSVGElement>) => (
     height="20"
     viewBox="0 0 20 20"
     fill="none"
-    stroke='gray'
+    stroke="gray"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
@@ -24,7 +24,10 @@ const Plus = (props?: React.SVGProps<SVGSVGElement>) => (
         gradientUnits="userSpaceOnUse"
       >
         <stop stop-color="#0179FE" />
-        <stop offset="1" stop-color="#4893FF" />
+        <stop
+          offset="1"
+          stop-color="#4893FF"
+        />
       </linearGradient>
     </defs>
   </svg>

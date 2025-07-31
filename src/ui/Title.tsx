@@ -1,12 +1,6 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-export function Title({
-  title,
-  subtitle,
-}: {
-  title: string;
-  subtitle: string;
-}) {
+export function Title({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div className="flex flex-col gap-y-0.5">
       <motion.span

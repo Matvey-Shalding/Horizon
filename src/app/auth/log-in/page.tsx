@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
-import { useEffect, useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { motion } from 'framer-motion';
+import { useEffect, useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
-import { FormFields } from "constants/FormFields";
-import { LogInSchema, LogInSchemaType } from "schemas/logIn.schema";
-import { authorizationService } from "services/Authorization.service";
-import { setPending } from "state/auth/authSlice";
+import { FormFields } from 'constants/FormFields';
+import { LogInSchema, LogInSchemaType } from 'schemas/logIn.schema';
+import { authorizationService } from 'services/Authorization.service';
+import { setPending } from 'state/auth/authSlice';
 
-import { Notification } from "components/auth/Notification";
-import { Button } from "ui/Button";
-import { ErrorMessage } from "ui/Error";
-import { Input } from "ui/Input";
-import { Logo } from "ui/Logo";
-import { Title } from "ui/Title";
+import { Notification } from 'components/auth/Notification';
+import { Button } from 'ui/Button';
+import { ErrorMessage } from 'ui/Error';
+import { Input } from 'ui/Input';
+import { Logo } from 'ui/Logo';
+import { Title } from 'ui/Title';
 
 import { useRouter } from 'next/navigation';
 import { AUTH_ROUTES } from 'routes';
@@ -29,8 +29,8 @@ export default function LogIn() {
   } = useForm<LogInSchemaType>({
     resolver: zodResolver(LogInSchema),
     defaultValues: {
-      email: "John_doe@email.com",
-      password: "12345678",
+      email: 'John_doe@email.com',
+      password: '12345678',
     },
   });
 
@@ -43,14 +43,14 @@ export default function LogIn() {
     dispatch(setPending(isSubmitting));
   }, [isSubmitting, dispatch]);
 
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
       className="max-tablet-small:px-6 max-tablet-small:min-w-screen tablet:max-laptop:max-w-172.5 flex max-w-115 flex-col"
     >
       <div className="laptop:mb-6 max-tablet:mb-2 max-tablet-small:mb-1 mb-4">
@@ -63,13 +63,7 @@ export default function LogIn() {
 
       <form
         onSubmit={handleSubmit(
-          (data) =>
-            void authorizationService.logIn(
-              data,
-              setError,
-              setSuccess,
-              startTransition,
-            ),
+          (data) => void authorizationService.logIn(data, setError, setSuccess, startTransition)
         )}
         className="tablet:max-laptop:grid-cols-3 max-tablet-small:flex max-tablet-small:flex-col max-tablet-small:gap-y-2 grid gap-x-6 gap-y-3.5"
       >
@@ -79,7 +73,10 @@ export default function LogIn() {
           transition={{ delay: 0.1 }}
           className="tablet:max-laptop:col-span-3 col-span-2 flex flex-col gap-y-1"
         >
-          <Input register={register} {...FormFields.email} />
+          <Input
+            register={register}
+            {...FormFields.email}
+          />
           <ErrorMessage message={errors.email?.message} />
         </motion.div>
 
@@ -89,7 +86,10 @@ export default function LogIn() {
           transition={{ delay: 0.2 }}
           className="tablet:max-laptop:col-span-3 col-span-2 flex flex-col gap-y-1"
         >
-          <Input register={register} {...FormFields.password} />
+          <Input
+            register={register}
+            {...FormFields.password}
+          />
           <ErrorMessage message={errors.password?.message} />
         </motion.div>
 
@@ -99,8 +99,14 @@ export default function LogIn() {
           transition={{ delay: 0.3 }}
           className={`col-span-2 -mt-1`}
         >
-          <Notification message={success} type="success" />
-          <Notification message={error} type="error" />
+          <Notification
+            message={success}
+            type="success"
+          />
+          <Notification
+            message={error}
+            type="error"
+          />
         </motion.div>
 
         <motion.div
@@ -109,7 +115,10 @@ export default function LogIn() {
           transition={{ delay: 0.4, duration: 0.3 }}
           className="tablet:max-laptop:col-span-3 col-span-2"
         >
-          <Button props={{ type: "submit" }} content="Log in" />
+          <Button
+            props={{ type: 'submit' }}
+            content="Log in"
+          />
         </motion.div>
 
         <motion.div

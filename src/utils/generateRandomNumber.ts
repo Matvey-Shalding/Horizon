@@ -6,7 +6,7 @@
  */
 export function generateRandomNumber(length: number): number {
   if (!Number.isInteger(length) || length <= 0) {
-    throw new Error("Length must be a positive integer.");
+    throw new Error('Length must be a positive integer.');
   }
 
   const min = Math.pow(10, length - 1);

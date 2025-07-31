@@ -18,7 +18,11 @@ const Copy = (props?: React.SVGProps<SVGSVGElement>) => (
     </g>
     <defs>
       <clipPath id="clip0_8_4300">
-        <rect width="12" height="12" fill="white" />
+        <rect
+          width="12"
+          height="12"
+          fill="white"
+        />
       </clipPath>
     </defs>
   </svg>

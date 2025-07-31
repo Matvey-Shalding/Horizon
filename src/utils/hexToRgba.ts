@@ -9,7 +9,7 @@
 export const hexToRgba = (hex: string, opacity: number): string => {
   // Validate hex input format
   if (!/^#([0-9A-Fa-f]{3}){1,2}$/.test(hex)) {
-    throw new Error("Invalid hex color code");
+    throw new Error('Invalid hex color code');
   }
 
   // Remove the '#' from the hex string
@@ -18,9 +18,9 @@ export const hexToRgba = (hex: string, opacity: number): string => {
   // If hex is 3 characters long, expand it to 6 characters (e.g., "#fff" -> "#ffffff")
   if (hex.length === 3) {
     hex = hex
-      .split("")
+      .split('')
       .map((c) => c + c)
-      .join("");
+      .join('');
   }
 
   // Convert hex to RGB values
@@ -30,7 +30,7 @@ export const hexToRgba = (hex: string, opacity: number): string => {
 
   // Ensure opacity is a valid number between 0 and 1
   if (opacity < 0 || opacity > 1) {
-    throw new Error("Opacity must be between 0 and 1");
+    throw new Error('Opacity must be between 0 and 1');
   }
 
   // Return RGBA string

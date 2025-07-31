@@ -1,14 +1,14 @@
-import { Dispatch } from "@reduxjs/toolkit";
-import { MenuStatus } from "constants/MenuStatuses";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { deleteCategoryService } from "services/category/DeleteCategory.service";
-import { Bank } from "types/Bank.interface";
-import { Button } from "ui/Button";
-import { Category as CategoryComponent } from "ui/Category";
-import { Checkbox } from "ui/Checkbox";
-import { Label } from "ui/Label";
-import { Updater } from "use-immer";
+import { Dispatch } from '@reduxjs/toolkit';
+import { MenuStatus } from 'constants/MenuStatuses';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { deleteCategoryService } from 'services/category/DeleteCategory.service';
+import { Bank } from 'types/Bank.interface';
+import { Button } from 'ui/Button';
+import { Category as CategoryComponent } from 'ui/Category';
+import { Checkbox } from 'ui/Checkbox';
+import { Label } from 'ui/Label';
+import { Updater } from 'use-immer';
 
 export function CategorySectionDelete({
   status,
@@ -45,15 +45,14 @@ export function CategorySectionDelete({
           <Checkbox
             checked={checkAll}
             onChange={(e) =>
-              deleteCategoryService.handleCheckAll(
-                e,
-                categories,
-                setCheckAll,
-                setDeletedCategories,
-              )
+              deleteCategoryService.handleCheckAll(e, categories, setCheckAll, setDeletedCategories)
             }
           />
-          <Label onClick={() => {}} color="#475467" content="Select all" />
+          <Label
+            onClick={() => {}}
+            color="#475467"
+            content="Select all"
+          />
         </label>
       </div>
       <div className="space-y-4">
@@ -70,16 +69,10 @@ export function CategorySectionDelete({
       </div>
       <div className="grid grid-cols-2 gap-x-3">
         <motion.button
-          onClick={() =>
-            deleteCategoryService.handleCancel(
-              setStatus,
-              setDeletedCategories,
-              setCheckAll,
-            )
-          }
-          whileHover={{ scale: 1.05, boxShadow: "0 5px 10px rgba(0,0,0,0.2)" }}
+          onClick={() => deleteCategoryService.handleCancel(setStatus, setDeletedCategories, setCheckAll)}
+          whileHover={{ scale: 1.05, boxShadow: '0 5px 10px rgba(0,0,0,0.2)' }}
           whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           className="shadow-main text-dark-gray border p-2 font-semibold"
         >
           Cancel
@@ -94,7 +87,7 @@ export function CategorySectionDelete({
               dispatch,
               setStatus,
               setDeletedCategories,
-              setCheckAll,
+              setCheckAll
             )
           }
           styles="text-white"

@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { findUserByEmail } from "utils/findUser";
+import { findUserByEmail } from 'utils/findUser';
 import { auth } from '../../auth';
 
 export async function getUser() {

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistReducer, persistStore } from "redux-persist";
-import sessionStorage from "redux-persist/lib/storage/session"; // Uses sessionStorage
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import sessionStorage from 'redux-persist/lib/storage/session'; // Uses sessionStorage
 
-import authReducer from "state/auth/authSlice";
-import userReducer from "state/auth/userSlice";
-import bankReducer from "state/main/bankSlice";
+import authReducer from 'state/auth/authSlice';
+import userReducer from 'state/auth/userSlice';
+import bankReducer from 'state/main/bankSlice';
 
 // // ✅ Configuration for persisting the bank slice
 // const persistConfig = {
@@ -28,7 +28,7 @@ const rootReducer = combineReducers({
 // ✅ Configure Redux store
 export const store = configureStore({
   reducer: rootReducer,
-  devTools: process.env.NODE_ENV !== "production",
+  devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // Avoids warnings for non-serializable values

@@ -1,11 +1,11 @@
-import { signOut } from "../../../../auth";
+import { signOut } from '../../../../auth';
 
 export default async function SettingsPage() {
   return (
     <div>
       <div
         onClick={async () => {
-          "use server";
+          'use server';
           await signOut();
         }}
       >

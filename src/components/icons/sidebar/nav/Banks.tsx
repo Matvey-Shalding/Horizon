@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 const Banks = (props?: SVGProps<SVGSVGElement>) => (
   <svg

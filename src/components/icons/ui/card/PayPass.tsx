@@ -17,7 +17,11 @@ const PayPass = (props?: React.SVGProps<SVGSVGElement>) => (
     </g>
     <defs>
       <clipPath id="clip0_8_3582">
-        <rect width="20" height="24" fill="white" />
+        <rect
+          width="20"
+          height="24"
+          fill="white"
+        />
       </clipPath>
     </defs>
   </svg>

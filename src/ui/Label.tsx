@@ -1,12 +1,12 @@
 export function Label({
   onClick,
-  color = "#0179fe",
+  color = '#0179fe',
   children,
-  content
+  content,
 }: {
   onClick: () => void;
   color?: string;
-    children?: React.ReactNode;
+  children?: React.ReactNode;
   content: string;
 }) {
   return (

@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&display=swap");
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -29,7 +29,7 @@ input::-webkit-inner-spin-button {
 }
 
 * {
-  font-family: "IBM Plex Serif", serif;
+  font-family: 'IBM Plex Serif', serif;
 }
 
 body {
@@ -109,7 +109,7 @@ body {
 
   .gradient_hover::before {
     z-index: 1;
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background: var(--gradient-blue); /* Gradient to fade in */

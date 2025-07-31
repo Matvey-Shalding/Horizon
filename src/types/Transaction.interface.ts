@@ -3,7 +3,7 @@ import { Category } from './Category.interface';
 /**
  * Possible statuses of a transaction.
  */
-export type TransactionStatus = "PROCESSING" | "SUCCESS" | "DECLINED";
+export type TransactionStatus = 'PROCESSING' | 'SUCCESS' | 'DECLINED';
 
 /**
  * Represents a financial transaction.
@@ -36,5 +36,5 @@ export interface Transaction {
 
   message?: string;
 
-  recipientBankId: string
+  recipientBankId: string;
 }

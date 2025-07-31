@@ -1,6 +1,6 @@
-import Menu from "./Menu";
-import ToggleButton from "./ToggleButton";
-import UserSection from "./UserSection";
+import Menu from './Menu';
+import ToggleButton from './ToggleButton';
+import UserSection from './UserSection';
 
 interface StaticSmallSidebarProps {
   onToggle: () => void;
@@ -10,13 +10,7 @@ interface StaticSmallSidebarProps {
   onLogout: () => void;
 }
 
-const SmallSidebar = ({
-  onToggle,
-  items,
-  pathname,
-  router,
-  onLogout,
-}: StaticSmallSidebarProps) => (
+const SmallSidebar = ({ onToggle, items, pathname, router, onLogout }: StaticSmallSidebarProps) => (
   <div className="border-border static z-30 flex h-screen w-20 shrink-0 grow-1 flex-col justify-between overflow-hidden border-r bg-white pt-8 pb-5">
     <div className="flex basis-full flex-col items-center">
       <div className="flex w-full flex-col gap-y-4">
@@ -30,7 +24,11 @@ const SmallSidebar = ({
         pathname={pathname}
         router={router}
       />
-      <UserSection user={null} showInfo={false} onLogout={onLogout} />
+      <UserSection
+        user={null}
+        showInfo={false}
+        onLogout={onLogout}
+      />
     </div>
   </div>
 );

@@ -24,9 +24,12 @@ const CheckMark = (props?: React.SVGProps<SVGSVGElement>) => (
         gradientUnits="userSpaceOnUse"
       >
         <stop stop-color="#0179FE" />
-        <stop offset="1" stop-color="#4893FF" />
+        <stop
+          offset="1"
+          stop-color="#4893FF"
+        />
       </linearGradient>
     </defs>
   </svg>
 );
-;export default CheckMark;
+export default CheckMark;

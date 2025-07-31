@@ -1,10 +1,10 @@
-import { useMediaQuery } from "@react-hookz/web";
-import clsx from "clsx";
-import router from "next/router";
-import { MAIN_ROUTES } from "routes";
-import { MEDIA_QUERIES } from "settings/MediaQueries";
-import { Transaction } from "types/Transaction.interface";
-import { CancelButton } from "ui/CancelButton";
+import { useMediaQuery } from '@react-hookz/web';
+import clsx from 'clsx';
+import router from 'next/router';
+import { MAIN_ROUTES } from 'routes';
+import { MEDIA_QUERIES } from 'settings/MediaQueries';
+import { Transaction } from 'types/Transaction.interface';
+import { CancelButton } from 'ui/CancelButton';
 
 export function ShowMoreButton({
   sortedTransactions,
@@ -22,10 +22,7 @@ export function ShowMoreButton({
 
   return sortedTransactions.length > visibleTransactions ? (
     <div
-      className={clsx(
-        "flex w-full items-center justify-center gap-2 px-3",
-        isMobile && "grid grid-cols-2",
-      )}
+      className={clsx('flex w-full items-center justify-center gap-2 px-3', isMobile && 'grid grid-cols-2')}
     >
       <CancelButton
         onClick={handleShowMore}

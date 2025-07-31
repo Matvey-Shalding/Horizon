@@ -16,4 +16,4 @@ const Search = (props?: React.SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
-;export default Search;
+export default Search;

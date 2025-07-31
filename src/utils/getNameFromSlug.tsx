@@ -1,5 +1,5 @@
-import { Bank } from "@prisma/client";
-import { createSlug } from "./createSlug";
+import { Bank } from '@prisma/client';
+import { createSlug } from './createSlug';
 
 /**
  * Finds and returns a Bank object by slug from a list of banks.

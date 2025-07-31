@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 const Home = (props?: SVGProps<SVGSVGElement>) => (
   <svg
@@ -13,5 +13,3 @@ const Home = (props?: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 export default Home;
-
-

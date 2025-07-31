@@ -1,7 +1,7 @@
-import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
-import { Logo } from "ui/Logo";
-import ToggleButton from "./ToggleButton";
+import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Logo } from 'ui/Logo';
+import ToggleButton from './ToggleButton';
 
 interface SidebarHeaderProps {
   isSidebarOpen: boolean;
@@ -11,9 +11,8 @@ interface SidebarHeaderProps {
 const SidebarHeader = ({ isSidebarOpen, onToggle }: SidebarHeaderProps) => (
   <div
     className={clsx(
-      "flex items-center justify-between self-stretch px-6",
-      !isSidebarOpen &&
-        "border-border justify-center border-b border-solid px-0 pb-4",
+      'flex items-center justify-between self-stretch px-6',
+      !isSidebarOpen && 'border-border justify-center border-b border-solid px-0 pb-4'
     )}
   >
     <AnimatePresence>

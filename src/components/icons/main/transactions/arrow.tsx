@@ -16,4 +16,4 @@ const Arrow = (props?: React.SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
-;export default Arrow;
+export default Arrow;

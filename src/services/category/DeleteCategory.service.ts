@@ -1,13 +1,13 @@
-import { Dispatch } from "@reduxjs/toolkit";
-import { MenuStatus } from "constants/MenuStatuses";
-import { ChangeEvent } from "react";
-import { setBanks } from "state/main/bankSlice";
-import { Updater } from "use-immer";
+import { Dispatch } from '@reduxjs/toolkit';
+import { MenuStatus } from 'constants/MenuStatuses';
+import { ChangeEvent } from 'react';
+import { setBanks } from 'state/main/bankSlice';
+import { Updater } from 'use-immer';
 
 class CategoryService {
   resetSelection(
     setDeletedCategories: Updater<string[]>,
-    setCheckAll: React.Dispatch<React.SetStateAction<boolean>>,
+    setCheckAll: React.Dispatch<React.SetStateAction<boolean>>
   ) {
     setDeletedCategories([]);
     setCheckAll(false);
@@ -17,7 +17,7 @@ class CategoryService {
     e: ChangeEvent<HTMLInputElement>,
     categories: any[],
     setCheckAll: React.Dispatch<React.SetStateAction<boolean>>,
-    setDeletedCategories: Updater<string[]>,
+    setDeletedCategories: Updater<string[]>
   ) {
     const isChecked = e.target.checked;
     setCheckAll(isChecked);
@@ -27,9 +27,9 @@ class CategoryService {
   handleCancel(
     setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>,
     setDeletedCategories: Updater<string[]>,
-    setCheckAll: React.Dispatch<React.SetStateAction<boolean>>,
+    setCheckAll: React.Dispatch<React.SetStateAction<boolean>>
   ) {
-    setStatus("DEFAULT");
+    setStatus('DEFAULT');
     this.resetSelection(setDeletedCategories, setCheckAll);
   }
 
@@ -41,7 +41,7 @@ class CategoryService {
     dispatch: Dispatch,
     setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>,
     setDeletedCategories: Updater<string[]>,
-    setCheckAll: React.Dispatch<React.SetStateAction<boolean>>,
+    setCheckAll: React.Dispatch<React.SetStateAction<boolean>>
   ) {
     const updatedBanks = [...banks];
     updatedBanks[activeTab] = {
@@ -49,7 +49,7 @@ class CategoryService {
       categories: categories.filter((c) => !deletedCategories.includes(c.name)),
     };
     dispatch(setBanks(updatedBanks));
-    setStatus("DEFAULT");
+    setStatus('DEFAULT');
     this.resetSelection(setDeletedCategories, setCheckAll);
   }
 }

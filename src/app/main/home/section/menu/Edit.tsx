@@ -1,28 +1,25 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AddCategory } from "app/main/connect-bank/AddCategory";
-import Dropdown from "components/icons/main/home/dropdown";
-import { MenuStatus } from "constants/MenuStatuses";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { HexColorPicker } from "react-colorful";
-import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  bankCategorySchema,
-  bankCategorySchemaType,
-} from "schemas/bankCategory.schema";
-import { editCategoryService } from "services/category/EditCategory.service";
-import { setBanks } from "state/main/bankSlice";
-import { Category } from "types/Category.interface";
-import { Button } from "ui/Button";
-import { CancelButton } from "ui/CancelButton";
-import { ErrorMessage } from "ui/Error";
-import { Input } from "ui/Input";
-import { useImmer } from "use-immer";
-import { z } from "zod";
-import { Menu } from "../../Menu";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AddCategory } from 'app/main/connect-bank/AddCategory';
+import Dropdown from 'components/icons/main/home/dropdown';
+import { MenuStatus } from 'constants/MenuStatuses';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { bankCategorySchema, bankCategorySchemaType } from 'schemas/bankCategory.schema';
+import { editCategoryService } from 'services/category/EditCategory.service';
+import { setBanks } from 'state/main/bankSlice';
+import { Category } from 'types/Category.interface';
+import { Button } from 'ui/Button';
+import { CancelButton } from 'ui/CancelButton';
+import { ErrorMessage } from 'ui/Error';
+import { Input } from 'ui/Input';
+import { useImmer } from 'use-immer';
+import { z } from 'zod';
+import { Menu } from '../../Menu';
 
-import { useClickOutside } from "@react-hookz/web";
-import "styles/lib/colorPicker.css";
+import { useClickOutside } from '@react-hookz/web';
+import 'styles/lib/colorPicker.css';
 
 type CategoryForm = {
   categories: bankCategorySchemaType[];
@@ -48,29 +45,25 @@ export function CategorySectionEdit({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [editedCategories, setEditedCategories] = useImmer(categories);
-  const [colorPickerOpen, setColorPickerOpen] = useState<
-    Record<number, boolean>
-  >({});
+  const [colorPickerOpen, setColorPickerOpen] = useState<Record<number, boolean>>({});
 
   const colorPicker = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        colorPickerRef.current &&
-        !colorPickerRef.current.contains(event.target as Node)
-      ) {
+      if (colorPickerRef.current && !colorPickerRef.current.contains(event.target as Node)) {
         setColorPickerOpen((prev) => {
-          return Object.fromEntries(
-            Object.entries(prev).map(([key, _]) => [Number(key), false]),
-          ) as Record<number, boolean>;
+          return Object.fromEntries(Object.entries(prev).map(([key, _]) => [Number(key), false])) as Record<
+            number,
+            boolean
+          >;
         });
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -93,14 +86,14 @@ export function CategorySectionEdit({
   }, [categories, reset]);
 
   const onSubmit: SubmitHandler<CategoryForm> = (data) => {
-    alert("hello");
+    alert('hello');
     const updatedBanks = [...banks];
     updatedBanks[activeTab] = {
       ...updatedBanks[activeTab],
       categories: data.categories,
     };
     dispatch(setBanks(updatedBanks));
-    setStatus("DEFAULT");
+    setStatus('DEFAULT');
   };
 
   return (
@@ -124,7 +117,7 @@ export function CategorySectionEdit({
       {/* Category Form */}
       <form
         onSubmit={handleSubmit(onSubmit, (errors) => {
-          alert("An error occurred");
+          alert('An error occurred');
           console.log(errors);
         })}
         id="my-form"
@@ -144,9 +137,7 @@ export function CategorySectionEdit({
                   register={register}
                   fieldRegister={`categories.${index}.name`}
                 />
-                <ErrorMessage
-                  message={errors.categories?.[index]?.name?.message}
-                />
+                <ErrorMessage message={errors.categories?.[index]?.name?.message} />
               </div>
 
               {/* Category Color Input */}
@@ -160,9 +151,7 @@ export function CategorySectionEdit({
                       register={register}
                       fieldRegister={`categories.${index}.color`}
                     />
-                    <ErrorMessage
-                      message={errors.categories?.[index]?.color?.message}
-                    />
+                    <ErrorMessage message={errors.categories?.[index]?.color?.message} />
                   </div>
                 </div>
                 <div
@@ -219,16 +208,12 @@ export function CategorySectionEdit({
 
       {/* Buttons Outside but Linked to the Form */}
       <div className="mt-4 grid grid-cols-2 gap-x-3">
-        <CancelButton
-          onClick={() =>
-            editCategoryService.handleCancel(setStatus, setEditedCategories)
-          }
-        />
+        <CancelButton onClick={() => editCategoryService.handleCancel(setStatus, setEditedCategories)} />
         <Button
           // onClick={() => handleSubmit(onSubmit)()} // ✅ This also works
           styles="text-white"
           content="Save"
-          props={{ type: "submit", form: "my-form" }}
+          props={{ type: 'submit', form: 'my-form' }}
         />
       </div>
     </div>

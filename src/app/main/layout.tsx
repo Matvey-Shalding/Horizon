@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useBank } from "hooks/useBank.hook";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setBanks } from "state/main/bankSlice";
-import { LayoutProvider } from "./layoutProvider";
+import { useBank } from 'hooks/useBank.hook';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setBanks } from 'state/main/bankSlice';
+import { LayoutProvider } from './layoutProvider';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();

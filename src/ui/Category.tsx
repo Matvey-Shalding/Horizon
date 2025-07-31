@@ -1,11 +1,11 @@
-import { MENU_STATUSES, MenuStatus } from "constants/MenuStatuses";
-import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
-import { Bank } from "types/Bank.interface";
-import { Category as type } from "types/Category.interface";
-import { Checkbox } from "ui/Checkbox";
-import { Updater } from "use-immer";
-import { hexToRgba } from "utils/hexToRgba";
+import { MENU_STATUSES, MenuStatus } from 'constants/MenuStatuses';
+import { motion } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
+import { Bank } from 'types/Bank.interface';
+import { Category as type } from 'types/Category.interface';
+import { Checkbox } from 'ui/Checkbox';
+import { Updater } from 'use-immer';
+import { hexToRgba } from 'utils/hexToRgba';
 
 interface CategoryProps {
   category: type;
@@ -27,7 +27,7 @@ export function Category({
   const currentExpenses = useMemo(() => parseInt(expenses, 10), [expenses]);
   const amountLeft = useMemo(
     () => Number(currentBank.monthlyBudget) - Number(currentBank.expenses ?? 0),
-    [currentBank],
+    [currentBank]
   );
   const progress = useMemo(() => {
     return (Number(currentExpenses) / Number(currentBank.monthlyBudget)) * 100;
@@ -72,10 +72,16 @@ export function Category({
         style={{ backgroundColor: bgColor }}
       >
         <div className="mb-2 flex items-center justify-between">
-          <span style={{ color }} className="text-sm font-medium">
+          <span
+            style={{ color }}
+            className="text-sm font-medium"
+          >
             {name}
           </span>
-          <span style={{ color: labelColor }} className="text-sm">
+          <span
+            style={{ color: labelColor }}
+            className="text-sm"
+          >
             ${amountLeft} left
           </span>
         </div>
@@ -86,9 +92,9 @@ export function Category({
           <motion.div
             style={{ backgroundColor: color }}
             className="h-2.5 rounded-full"
-            initial={{ width: "0%" }}
+            initial={{ width: '0%' }}
             animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           />
         </div>
       </motion.div>

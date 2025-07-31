@@ -1,21 +1,18 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import Plus from "components/icons/main/home/plus";
-import { DEFAULT_COLOR } from "constants/DefaultColor";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { HexColorPicker } from "react-colorful";
-import { useForm } from "react-hook-form";
-import {
-  bankCategorySchema,
-  bankCategorySchemaType,
-} from "schemas/bankCategory.schema";
-import { Category } from "types/Category.interface";
-import { Button } from "ui/Button";
-import { ErrorMessage } from "ui/Error";
-import { Input } from "ui/Input";
-import { Updater } from "use-immer";
+import { zodResolver } from '@hookform/resolvers/zod';
+import Plus from 'components/icons/main/home/plus';
+import { DEFAULT_COLOR } from 'constants/DefaultColor';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
+import { useForm } from 'react-hook-form';
+import { bankCategorySchema, bankCategorySchemaType } from 'schemas/bankCategory.schema';
+import { Category } from 'types/Category.interface';
+import { Button } from 'ui/Button';
+import { ErrorMessage } from 'ui/Error';
+import { Input } from 'ui/Input';
+import { Updater } from 'use-immer';
 import { CancelButton } from './CancelButton';
 
 interface AddCategoryFormProps {
@@ -46,19 +43,19 @@ export function AddCategoryForm({
   } = useForm<bankCategorySchemaType>({
     resolver: zodResolver(bankCategorySchema),
     defaultValues: {
-      name: "",
+      name: '',
       color: defaultColor,
     },
   });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest(".color-picker-container")) {
+      if (!(event.target as HTMLElement).closest('.color-picker-container')) {
         setShowColorPicker(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleCancel = () => {
@@ -72,19 +69,19 @@ export function AddCategoryForm({
 
   const onSubmit = (data: bankCategorySchemaType) => {
     const isDuplicate = categories.some(
-      (cat) => cat.name.trim().toLowerCase() === data.name.trim().toLowerCase(),
+      (cat) => cat.name.trim().toLowerCase() === data.name.trim().toLowerCase()
     );
 
     if (isDuplicate) {
-      setError("name", {
-        type: "manual",
-        message: "This category already exists",
+      setError('name', {
+        type: 'manual',
+        message: 'This category already exists',
       });
       return;
     }
 
     setCategories((draft) => {
-      draft.push({ ...data, expenses: "0" });
+      draft.push({ ...data, expenses: '0' });
     });
     handleCancel();
   };
@@ -95,7 +92,7 @@ export function AddCategoryForm({
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
         className="flex basis-full items-center justify-between"
       >
         <span className="text-dark text-lg font-medium">Categories</span>
@@ -103,13 +100,11 @@ export function AddCategoryForm({
           onClick={() => setIsOpen(true)}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 300, damping: 15 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 15 }}
           className="flex cursor-pointer items-center gap-x-1"
         >
           <Plus className="fill-light-blue stroke-light-blue text-light-blue" />
-          <span className="text-light-blue text-sm font-semibold">
-            Add category
-          </span>
+          <span className="text-light-blue text-sm font-semibold">Add category</span>
         </motion.div>
       </motion.div>
     );
@@ -120,14 +115,12 @@ export function AddCategoryForm({
       <motion.div
         key="add-category"
         initial={{ height: 0, opacity: 0, scale: 0.9 }}
-        animate={{ height: "auto", opacity: 1, scale: 1 }}
+        animate={{ height: 'auto', opacity: 1, scale: 1 }}
         exit={{ height: 0, opacity: 0, scale: 0.9 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
         className="border-border flex flex-col gap-2 border-t border-solid py-2"
       >
-        <span className="text-dark border-border border-b pb-1 text-lg font-semibold">
-          Add new category
-        </span>
+        <span className="text-dark border-border border-b pb-1 text-lg font-semibold">Add new category</span>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-y-1.5 min-[450px]:gap-y-2 min-[640px]:gap-y-3"
@@ -155,7 +148,7 @@ export function AddCategoryForm({
                   fieldRegister="color"
                   onChange={(e) => {
                     setSelectedColor(e.target.value);
-                    setValue("color", e.target.value);
+                    setValue('color', e.target.value);
                   }}
                 />
               </div>
@@ -180,7 +173,7 @@ export function AddCategoryForm({
                       color={selectedColor}
                       onChange={(color) => {
                         setSelectedColor(color);
-                        setValue("color", color);
+                        setValue('color', color);
                       }}
                     />
                   </motion.div>
@@ -195,9 +188,12 @@ export function AddCategoryForm({
             <CancelButton
               content="Cancel"
               onClick={handleCancel}
-              props={{ type: "button" }}
+              props={{ type: 'button' }}
             />
-            <Button content="Add Category" props={{ type: "button" }} />
+            <Button
+              content="Add Category"
+              props={{ type: 'submit' }}
+            />
           </div>
         </form>
       </motion.div>

@@ -1,4 +1,4 @@
-import SidebarIcon from "components/icons/sidebar/Sidebar";
+import SidebarIcon from 'components/icons/sidebar/Sidebar';
 
 interface ToggleButtonProps {
   onClick: () => void;

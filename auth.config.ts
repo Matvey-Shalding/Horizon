@@ -1,7 +1,7 @@
-import type { NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { LogInSchema } from "schemas/logIn.schema";
-import { findUserByEmail } from "utils/findUser";
+import type { NextAuthConfig } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { LogInSchema } from 'schemas/logIn.schema';
+import { findUserByEmail } from 'utils/findUser';
 
 const authConfig: NextAuthConfig = {
   providers: [

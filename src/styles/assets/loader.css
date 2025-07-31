@@ -1,12 +1,12 @@
 /* styles/assets/loader.css */
 
 @property --deg-in {
-  syntax: "<angle>";
+  syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
 }
 @property --deg-out {
-  syntax: "<angle>";
+  syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
 }
@@ -53,28 +53,18 @@
     #0000
   );
 
-  --mask-radial: radial-gradient(
-    var(--radial-size),
-    #0000 var(--border-in),
-    #fff var(--border-in),
-    #fff
-  );
-  --mask-conic: conic-gradient(
-    from var(--deg-out) at 50% 50%,
-    #fff var(--deg-in),
-    #0000 0deg
-  );
+  --mask-radial: radial-gradient(var(--radial-size), #0000 var(--border-in), #fff var(--border-in), #fff);
+  --mask-conic: conic-gradient(from var(--deg-out) at 50% 50%, #fff var(--deg-in), #0000 0deg);
 
   -webkit-mask-image: var(--mask-radial), var(--mask-conic);
   mask-image: var(--mask-radial), var(--mask-conic);
 
-  animation: loading-tri-circular var(--duration) ease-in-out 0s infinite
-    forwards var(--state);
+  animation: loading-tri-circular var(--duration) ease-in-out 0s infinite forwards var(--state);
 }
 
 .loader::before,
 .loader::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -84,11 +74,7 @@
 
 .loader::before {
   transform: rotate(120deg);
-  background-image: conic-gradient(
-    from var(--deg-out) at 50% 50%,
-    var(--color) var(--deg-in),
-    #0000 0deg
-  );
+  background-image: conic-gradient(from var(--deg-out) at 50% 50%, var(--color) var(--deg-in), #0000 0deg);
   --mask-radial: radial-gradient(
     var(--radial-size),
     #0000 calc(100% - var(--border)),
@@ -99,17 +85,12 @@
   );
   -webkit-mask-image: var(--mask-radial);
   mask-image: var(--mask-radial);
-  animation: loading-tri-circular var(--duration) ease-in-out 0s infinite
-    forwards var(--state);
+  animation: loading-tri-circular var(--duration) ease-in-out 0s infinite forwards var(--state);
 }
 
 .loader::after {
   transform: rotate(240deg);
-  background-image: conic-gradient(
-    from var(--deg-out) at 50% 50%,
-    var(--color) var(--deg-in),
-    #0000 0deg
-  );
+  background-image: conic-gradient(from var(--deg-out) at 50% 50%, var(--color) var(--deg-in), #0000 0deg);
   --mask-radial: radial-gradient(
     var(--radial-size),
     #0000 calc(100% - (var(--border)) * 2.5),
@@ -120,8 +101,7 @@
   );
   -webkit-mask-image: var(--mask-radial);
   mask-image: var(--mask-radial);
-  animation: loading-tri-circular var(--duration) ease-in-out 0s infinite
-    forwards var(--state);
+  animation: loading-tri-circular var(--duration) ease-in-out 0s infinite forwards var(--state);
 }
 
 @keyframes loading-tri-circular {

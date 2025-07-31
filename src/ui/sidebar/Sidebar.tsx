@@ -1,17 +1,17 @@
-import { useClickOutside, useMediaQuery } from "@react-hookz/web";
-import { menuItems } from "data/menuItems";
-import { signOut } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { AUTH_ROUTES } from "routes";
-import { MEDIA_QUERIES } from "settings/MediaQueries";
-import { RootState } from "state/store";
-import BigSidebar from "./BigSidebar";
-import FixedSlidingBigSidebar from "./FixedBigSidebar";
-import FixedSmallSidebar from "./FixedSmallSidebar";
-import SmallSidebar from "./SmallSidebar";
-import TogglingSidebar from "./TogglingSidebar";
+import { useClickOutside, useMediaQuery } from '@react-hookz/web';
+import { menuItems } from 'data/menuItems';
+import { signOut } from 'next-auth/react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { AUTH_ROUTES } from 'routes';
+import { MEDIA_QUERIES } from 'settings/MediaQueries';
+import { RootState } from 'state/store';
+import BigSidebar from './BigSidebar';
+import FixedSlidingBigSidebar from './FixedBigSidebar';
+import FixedSmallSidebar from './FixedSmallSidebar';
+import SmallSidebar from './SmallSidebar';
+import TogglingSidebar from './TogglingSidebar';
 
 interface SidebarProps {
   isLoading: boolean;
@@ -23,12 +23,8 @@ const Sidebar = ({ isLoading }: SidebarProps) => {
   const user = useSelector((state: RootState) => state.user.user);
   const banks = useSelector((state: RootState) => state.bank.banks);
 
-  const isLargeScreen = useMediaQuery(
-    `(min-width:${MEDIA_QUERIES.LARGE_DESKTOPS})`,
-  );
-  const isSmallScreen = useMediaQuery(
-    `(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`,
-  );
+  const isLargeScreen = useMediaQuery(`(min-width:${MEDIA_QUERIES.LARGE_DESKTOPS})`);
+  const isSmallScreen = useMediaQuery(`(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(Boolean(isLargeScreen));
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -37,15 +33,15 @@ const Sidebar = ({ isLoading }: SidebarProps) => {
     const handlePageHide = (event: PageTransitionEvent) => {
       const dataToSend = { userData: user, userBanks: banks };
       const blob = new Blob([JSON.stringify(dataToSend)], {
-        type: "application/json",
+        type: 'application/json',
       });
-      const success = navigator.sendBeacon("/api/home", blob);
+      const success = navigator.sendBeacon('/api/home', blob);
       if (!success) {
-        console.warn("sendBeacon failed to queue the data for sending.");
+        console.warn('sendBeacon failed to queue the data for sending.');
       }
     };
-    window.addEventListener("pagehide", handlePageHide);
-    return () => window.removeEventListener("pagehide", handlePageHide);
+    window.addEventListener('pagehide', handlePageHide);
+    return () => window.removeEventListener('pagehide', handlePageHide);
   }, [user, banks]);
 
   if (isLoading) return null;

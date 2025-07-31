@@ -1,15 +1,11 @@
-"use client";
+'use client';
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useRef } from "react";
-import { Provider } from "react-redux";
-import { store } from "state/store";
-import "./globals.css";
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useRef } from 'react';
+import { Provider } from 'react-redux';
+import { store } from 'state/store';
+import './globals.css';
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const queryClient = useRef(
     new QueryClient({
       defaultOptions: {
@@ -20,7 +16,7 @@ export default function RootLayout({
           retry: 1,
         },
       },
-    }),
+    })
   );
   return (
     <html lang="en">
@@ -32,6 +28,7 @@ export default function RootLayout({
         ></link>
       </head>
       <body>
+        <div id="portal-root"></div>
         <QueryClientProvider client={queryClient.current!}>
           <Provider store={store}>
             {/* <PersistGate loading={null} persistor={persistor}> */}

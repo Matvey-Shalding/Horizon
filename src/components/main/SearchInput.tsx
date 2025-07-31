@@ -1,12 +1,16 @@
-import Search from "components/icons/sidebar/Search";
+import Search from 'components/icons/sidebar/Search';
 
-import "styles/assets/input.css";
+import 'styles/assets/input.css';
 
 export function SearchInput({}: {}) {
   return (
     <div className="relative">
       <div className="border_container">
-        <svg height="100%" width="232px" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          height="100%"
+          width="232px"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <rect
             rx="8"
             ry="8"

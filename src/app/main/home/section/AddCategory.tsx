@@ -1,18 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { DEFAULT_COLOR } from "constants/DefaultColor";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { HexColorPicker } from "react-colorful";
-import { useForm } from "react-hook-form";
-import {
-  bankCategorySchema,
-  bankCategorySchemaType,
-} from "schemas/bankCategory.schema";
-import { Category } from "types/Category.interface";
-import { Button } from "ui/Button";
-import { ErrorMessage } from "ui/Error";
-import { Input } from "ui/Input";
-import { Updater } from "use-immer";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { DEFAULT_COLOR } from 'constants/DefaultColor';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
+import { useForm } from 'react-hook-form';
+import { bankCategorySchema, bankCategorySchemaType } from 'schemas/bankCategory.schema';
+import { Category } from 'types/Category.interface';
+import { Button } from 'ui/Button';
+import { ErrorMessage } from 'ui/Error';
+import { Input } from 'ui/Input';
+import { Updater } from 'use-immer';
 
 export function AddCategory({
   categories,
@@ -39,19 +36,19 @@ export function AddCategory({
   } = useForm<bankCategorySchemaType>({
     resolver: zodResolver(bankCategorySchema),
     defaultValues: {
-      name: "",
+      name: '',
       color: defaultColor,
     },
   });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest(".color-picker-container")) {
+      if (!(event.target as HTMLElement).closest('.color-picker-container')) {
         setShowColorPicker(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleCancel = () => {
@@ -64,19 +61,19 @@ export function AddCategory({
 
   const onSubmit = (data: bankCategorySchemaType) => {
     const isDuplicate = categories.some(
-      (cat) => cat.name.trim().toLowerCase() === data.name.trim().toLowerCase(),
+      (cat) => cat.name.trim().toLowerCase() === data.name.trim().toLowerCase()
     );
 
     if (isDuplicate) {
-      setError("name", {
-        type: "manual",
-        message: "This category already exists",
+      setError('name', {
+        type: 'manual',
+        message: 'This category already exists',
       });
       return;
     }
 
     setCategories((draft) => {
-      draft.push({ ...data, expenses: "0" });
+      draft.push({ ...data, expenses: '0' });
     });
     handleCancel();
   };
@@ -85,14 +82,12 @@ export function AddCategory({
       <motion.div
         key="add-category"
         initial={{ height: 0, opacity: 0, scale: 0.9 }}
-        animate={{ height: "auto", opacity: 1, scale: 1 }}
+        animate={{ height: 'auto', opacity: 1, scale: 1 }}
         exit={{ height: 0, opacity: 0, scale: 0.9 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
         className="border-border flex flex-col gap-2 border-t border-solid py-2"
       >
-        <span className="text-dark border-border border-b pb-1 text-lg font-semibold">
-          Add new category
-        </span>
+        <span className="text-dark border-border border-b pb-1 text-lg font-semibold">Add new category</span>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-2 space-y-3"
@@ -120,7 +115,7 @@ export function AddCategory({
                   fieldRegister="color"
                   onChange={(e) => {
                     setSelectedColor(e.target.value);
-                    setValue("color", e.target.value);
+                    setValue('color', e.target.value);
                   }}
                 />
               </div>
@@ -145,7 +140,7 @@ export function AddCategory({
                       color={selectedColor}
                       onChange={(color) => {
                         setSelectedColor(color);
-                        setValue("color", color);
+                        setValue('color', color);
                       }}
                     />
                   </motion.div>
@@ -162,10 +157,10 @@ export function AddCategory({
               onClick={handleCancel}
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 5px 10px rgba(0,0,0,0.2)",
+                boxShadow: '0 5px 10px rgba(0,0,0,0.2)',
               }}
               whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               className="shadow-main text-dark-gray border p-2 font-semibold"
             >
               Cancel
@@ -176,7 +171,10 @@ export function AddCategory({
               whileTap={{ scale: 0.95 }}
               className="w-full"
             >
-              <Button content="Add Category" props={{ type: "button" }} />
+              <Button
+                content="Add Category"
+                props={{ type: 'button' }}
+              />
             </motion.button>
           </div>
         </form>

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { useEffect, useRef } from "react";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
-import "styles/lib/calendar.css";
-import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import clsx from 'clsx';
+import { useEffect, useRef } from 'react';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
+import 'styles/lib/calendar.css';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface CalendarPortalProps {
   position: { top: number; left: number };
@@ -23,26 +23,20 @@ export default function CalendarPortal({
   onClose,
   isOpen,
 }: CalendarPortalProps) {
-  const portalRoot =
-    typeof window !== "undefined"
-      ? document.getElementById("portal-root")
-      : null;
+  const portalRoot = typeof window !== 'undefined' ? document.getElementById('portal-root') : null;
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
 
-      if (
-        !menuRef.current?.contains(target) &&
-        !target.closest("._custom_preset")
-      ) {
+      if (!menuRef.current?.contains(target) && !target.closest('._custom_preset')) {
         onClose();
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
   if (!portalRoot) return null;
@@ -61,7 +55,7 @@ export default function CalendarPortal({
             left: position.left,
           }}
           className={clsx(
-            "absolute w-70 z-50 -translate-x-2 min-[768px]:-translate-x-[calc(100%+15px)] -translate-y-full rounded-lg bg-white p-2 shadow-lg"
+            'absolute z-50 w-70 -translate-x-2 -translate-y-full rounded-lg bg-white p-2 shadow-lg min-[768px]:-translate-x-[calc(100%+15px)]'
           )}
         >
           <DayPicker

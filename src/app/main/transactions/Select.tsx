@@ -1,31 +1,24 @@
-"use client";
+'use client';
 
-import { useClickOutside, useMediaQuery } from "@react-hookz/web";
-import chroma from "chroma-js";
-import clsx from "clsx";
-import Plus from "components/icons/main/home/plus";
-import Arrow from "components/icons/main/transactions/arrow";
-import CheckMark from "components/icons/main/transactions/checkmark";
-import Card from "components/icons/main/transactions/credit-card";
-import Downshift from "downshift";
-import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { useSelector } from "react-redux";
-import { MAIN_ROUTES } from "routes";
-import { MEDIA_QUERIES } from "settings/MediaQueries";
-import { RootState } from "state/store";
-import { Bank } from "types/Bank.interface";
-import { Input } from "ui/Input";
-import { shortenString } from "utils/shortenTitle";
-import { v4 } from "uuid";
+import { useClickOutside, useMediaQuery } from '@react-hookz/web';
+import chroma from 'chroma-js';
+import clsx from 'clsx';
+import Plus from 'components/icons/main/home/plus';
+import Arrow from 'components/icons/main/transactions/arrow';
+import CheckMark from 'components/icons/main/transactions/checkmark';
+import Card from 'components/icons/main/transactions/credit-card';
+import Downshift from 'downshift';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { MAIN_ROUTES } from 'routes';
+import { MEDIA_QUERIES } from 'settings/MediaQueries';
+import { RootState } from 'state/store';
+import { Bank } from 'types/Bank.interface';
+import { Input } from 'ui/Input';
+import { shortenString } from 'utils/shortenTitle';
+import { v4 } from 'uuid';
 
 export function Select({
   selected,
@@ -49,7 +42,7 @@ export function Select({
   const colors = useMemo(() => {
     return new Array(banks.length - 1).fill(0).map(() => {
       const bg = chroma.random().hex();
-      const text = chroma(bg).luminance() > 0.5 ? "#000" : "#fff";
+      const text = chroma(bg).luminance() > 0.5 ? '#000' : '#fff';
       return { bg, text };
     });
   }, [banks]);
@@ -67,16 +60,19 @@ export function Select({
 
     if (isOpen) {
       updateMaxHeight();
-      window.addEventListener("resize", updateMaxHeight);
+      window.addEventListener('resize', updateMaxHeight);
     }
 
     return () => {
-      window.removeEventListener("resize", updateMaxHeight);
+      window.removeEventListener('resize', updateMaxHeight);
     };
   }, [isOpen]);
 
   return (
-    <div ref={dropdownRef} className="flex flex-col gap-y-1">
+    <div
+      ref={dropdownRef}
+      className="flex flex-col gap-y-1"
+    >
       <Downshift
         onChange={(item) => {
           if (item) {
@@ -84,16 +80,10 @@ export function Select({
             setTimeout(() => setIsOpen(false), 0);
           }
         }}
-        itemToString={(item) => (item ? item.cardholderName : "")}
+        itemToString={(item) => (item ? item.cardholderName : '')}
         initialIsOpen={isOpen}
       >
-        {({
-          getInputProps,
-          getMenuProps,
-          getItemProps,
-          inputValue,
-          highlightedIndex,
-        }) => (
+        {({ getInputProps, getMenuProps, getItemProps, inputValue, highlightedIndex }) => (
           <div className="input relative">
             {isDesktop ? (
               <div
@@ -101,29 +91,29 @@ export function Select({
                 onClick={() => setIsOpen((prev) => !prev)}
               >
                 <div className="flex basis-full items-center">
-                  <Card width={24} height={24} className="stroke-light-blue" />
+                  <Card
+                    width={24}
+                    height={24}
+                    className="stroke-light-blue"
+                  />
                   <span className="text-dark-gray basis-full text-center text-sm font-medium">
                     {selected.cardholderName}
                   </span>
                 </div>
-                <Arrow
-                  className={`${isOpen ? "rotate-180" : ""} transition-transform`}
-                />
+                <Arrow className={`${isOpen ? 'rotate-180' : ''} transition-transform`} />
               </div>
             ) : (
               <div
                 className="shadow-main flex cursor-pointer items-center gap-x-2 rounded-lg border border-solid px-2.5 py-1.5 min-[640px]:px-4 min-[640px]:py-2.5"
                 onClick={() => setIsOpen((prev) => !prev)}
               >
-                <Card width={20} height={20} className="text-dark-gray" />
-                <span className="text-dark-gray text-sm font-semibold">
-                  {selected.cardholderName}
-                </span>
-                {!isTablet && (
-                  <Arrow
-                    className={`${isOpen ? "rotate-180" : ""} transition-transform`}
-                  />
-                )}
+                <Card
+                  width={20}
+                  height={20}
+                  className="text-dark-gray"
+                />
+                <span className="text-dark-gray text-sm font-semibold">{selected.cardholderName}</span>
+                {!isTablet && <Arrow className={`${isOpen ? 'rotate-180' : ''} transition-transform`} />}
               </div>
             )}
 
@@ -138,7 +128,7 @@ export function Select({
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.2 }}
                     className={clsx(
-                      "absolute top-[calc(100%+8px)] right-0 z-50 flex w-60 min-[768px]:w-70 flex-col overflow-y-auto rounded-lg border border-gray-200 bg-white pt-3 shadow-md",
+                      'absolute top-[calc(100%+8px)] right-0 z-50 flex w-60 flex-col overflow-y-auto rounded-lg border border-gray-200 bg-white pt-3 shadow-md min-[768px]:w-70'
                     )}
                   >
                     <span className="text-blue mb-1.5 inline-block pl-4 font-semibold min-[768px]:text-lg">
@@ -147,7 +137,7 @@ export function Select({
                     <div className="border-border border-b px-4 pb-2">
                       <Input
                         styles="min-h-8"
-                        {...getInputProps({ placeholder: "Search bank" })}
+                        {...getInputProps({ placeholder: 'Search bank' })}
                       />
                     </div>
                     <ul>
@@ -158,20 +148,19 @@ export function Select({
                               bank.cardholderName.toLowerCase().trim() !==
                               (inputValue
                                 ? inputValue.toLowerCase().trim()
-                                : selected.cardholderName.toLowerCase().trim()),
+                                : selected.cardholderName.toLowerCase().trim())
                           )
                           .map((bank, index, filteredBanks) => (
                             <li
                               key={v4()}
                               {...getItemProps({ item: bank, index })}
                               className={clsx(
-                                index < filteredBanks.length - 1 &&
-                                  "border-b border-gray-200",
-                                "cursor-pointer px-4 py-2 text-sm font-medium",
-                                "transition-colors duration-150 ease-in-out",
+                                index < filteredBanks.length - 1 && 'border-b border-gray-200',
+                                'cursor-pointer px-4 py-2 text-sm font-medium',
+                                'transition-colors duration-150 ease-in-out',
                                 highlightedIndex === index
-                                  ? "bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700"
-                                  : "text-gray-700 hover:bg-gray-200 hover:text-gray-900",
+                                  ? 'bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700'
+                                  : 'text-gray-700 hover:bg-gray-200 hover:text-gray-900'
                               )}
                             >
                               <div className="flex items-center gap-x-2 min-[768px]:gap-x-3">
@@ -185,13 +174,9 @@ export function Select({
                                   {shortenString(bank.cardholderName)}
                                 </div>
                                 <div className="flex flex-col">
-                                  <span className="text-dark-gray font-semibold">
-                                    {bank.cardholderName}
-                                  </span>
+                                  <span className="text-dark-gray font-semibold">{bank.cardholderName}</span>
                                 </div>
-                                {bank.cardId === selected.cardId && (
-                                  <CheckMark />
-                                )}
+                                {bank.cardId === selected.cardId && <CheckMark />}
                               </div>
                             </li>
                           ))
@@ -207,10 +192,11 @@ export function Select({
                         }}
                         className="flex h-10 items-center gap-x-2 border-t border-gray-200 pl-4"
                       >
-                        <Plus width={16} height={16} />
-                        <span className="text-gray text-sm font-medium">
-                          Add new bank
-                        </span>
+                        <Plus
+                          width={16}
+                          height={16}
+                        />
+                        <span className="text-gray text-sm font-medium">Add new bank</span>
                       </li>
                     </ul>
                   </motion.div>

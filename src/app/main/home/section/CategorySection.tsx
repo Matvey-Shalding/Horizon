@@ -1,15 +1,15 @@
-import { MenuStatus } from "constants/MenuStatuses";
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setBanks } from "state/main/bankSlice";
-import { RootState } from "state/store";
-import { Category } from "types/Category.interface";
-import { Button } from "ui/Button";
-import { useImmer } from "use-immer";
-import { AddCategory } from "./AddCategory";
-import { CategorySectionDefault } from "./menu/Default";
-import { CategorySectionDelete } from "./menu/Delete";
-import { CategorySectionEdit } from "./menu/Edit";
+import { MenuStatus } from 'constants/MenuStatuses';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBanks } from 'state/main/bankSlice';
+import { RootState } from 'state/store';
+import { Category } from 'types/Category.interface';
+import { Button } from 'ui/Button';
+import { useImmer } from 'use-immer';
+import { AddCategory } from './AddCategory';
+import { CategorySectionDefault } from './menu/Default';
+import { CategorySectionDelete } from './menu/Delete';
+import { CategorySectionEdit } from './menu/Edit';
 
 export function CategorySection({
   status,
@@ -24,10 +24,7 @@ export function CategorySection({
   const banks = useSelector((state: RootState) => state.bank.banks);
 
   // Derive the categories for the active tab.
-  const categories = useMemo(
-    () => banks[activeTab].categories,
-    [banks, activeTab],
-  );
+  const categories = useMemo(() => banks[activeTab].categories, [banks, activeTab]);
 
   // Common state used by various modes
   const [open, setOpen] = useState(false);
@@ -58,7 +55,7 @@ export function CategorySection({
 
   useEffect(() => {
     const updatedBanks = banks.map((bank, index) =>
-      index === activeTab ? { ...bank, categories: myCategories } : bank,
+      index === activeTab ? { ...bank, categories: myCategories } : bank
     );
 
     dispatch(setBanks(updatedBanks));
@@ -68,7 +65,7 @@ export function CategorySection({
     if (menuOpen) {
       return (
         <div className="pb-13">
-          {" "}
+          {' '}
           <AddCategory
             onCancel={() => void setMenuOpen(false)}
             categories={myCategories}
@@ -79,17 +76,18 @@ export function CategorySection({
     } else {
       return (
         <div className="border-border flex h-full basis-full flex-col items-center justify-center gap-y-4 border-t border-solid">
-          <span className="text-dark-gray text-xl font-semibold">
-            You have no banks yet
-          </span>
-          <Button onClick={() => setMenuOpen(true)} content="Add category" />
+          <span className="text-dark-gray text-xl font-semibold">You have no banks yet</span>
+          <Button
+            onClick={() => setMenuOpen(true)}
+            content="Add category"
+          />
         </div>
       );
     }
   }
 
   switch (status) {
-    case "DEFAULT":
+    case 'DEFAULT':
       return (
         <CategorySectionDefault
           currentBank={currentBank}
@@ -97,9 +95,9 @@ export function CategorySection({
           setDeletedCategories={setDeletedCategories}
         />
       );
-    case "EDIT":
+    case 'EDIT':
       return <CategorySectionEdit {...commonProps} />;
-    case "DELETE":
+    case 'DELETE':
       return (
         <CategorySectionDelete
           currentBank={currentBank}

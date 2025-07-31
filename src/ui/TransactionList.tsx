@@ -1,9 +1,9 @@
-import { useMediaQuery } from "@react-hookz/web";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { MEDIA_QUERIES } from "settings/MediaQueries";
-import { Transaction as TransactionType } from "types/Transaction.interface";
-import { Transaction } from "./Transaction";
+import { useMediaQuery } from '@react-hookz/web';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { MEDIA_QUERIES } from 'settings/MediaQueries';
+import { Transaction as TransactionType } from 'types/Transaction.interface';
+import { Transaction } from './Transaction';
 
 export function TransactionList({
   transactions,
@@ -18,9 +18,7 @@ export function TransactionList({
   // Set a minimum width for the container (e.g., 600px)
   const MIN_WIDTH = 600;
 
-  const isSmallDesktop = useMediaQuery(
-    `(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`,
-  );
+  const isSmallDesktop = useMediaQuery(`(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`);
 
   const isMobile = useMediaQuery(`(max-width:${MEDIA_QUERIES.MOBILE})`);
 
@@ -41,7 +39,7 @@ export function TransactionList({
         ref={title}
         className={`grid min-h-11 w-full min-w-150 grow-1 basis-full grid-cols-[1fr_0.75fr_1.25fr_1fr] self-stretch border-b border-[#EAECF0] bg-[#F9FAFB] pl-4 max-[768px]:pl-6 md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]`}
       >
-        {["Transaction", "Amount", "Date", "Category"].map((title) => (
+        {['Transaction', 'Amount', 'Date', 'Category'].map((title) => (
           <div
             key={title}
             className="text-gray grid items-center text-xs font-medium"

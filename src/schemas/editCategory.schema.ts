@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { bankCategorySchema } from "./bankCategory.schema";
+import { z } from 'zod';
+import { bankCategorySchema } from './bankCategory.schema';
 
 /**
  * Zod schema for the Edit Category form.

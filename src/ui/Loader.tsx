@@ -1,6 +1,6 @@
 // components/Loader.tsx
-import { motion } from "framer-motion";
-import "styles/assets/loader.css";
+import { motion } from 'framer-motion';
+import 'styles/assets/loader.css';
 
 type LoaderProps = {
   visible: boolean;
@@ -12,7 +12,7 @@ function Loader({ visible }: LoaderProps) {
       className="loader_bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: visible ? 0.5 : 0 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
       <motion.div
         className="loader"
@@ -23,7 +23,7 @@ function Loader({ visible }: LoaderProps) {
         }}
         transition={{
           duration: 1.2,
-          ease: "easeInOut",
+          ease: 'easeInOut',
           delay: 0.2,
         }}
       />

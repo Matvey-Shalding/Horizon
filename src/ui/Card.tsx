@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Copy from "components/icons/main/home/copy";
-import PayPass from "components/icons/ui/card/PayPass";
-import Visa from "components/icons/ui/card/Visa";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import Copy from 'components/icons/main/home/copy';
+import PayPass from 'components/icons/ui/card/PayPass';
+import Visa from 'components/icons/ui/card/Visa';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 interface DeleteCardFormProps {
   cardId: string;
@@ -17,8 +17,8 @@ interface DeleteCardFormProps {
 export function Card({
   cardId,
   cardholderName,
-  firstName = "",
-  lastName = "",
+  firstName = '',
+  lastName = '',
   canCopy = false,
 }: DeleteCardFormProps) {
   const [copied, setCopied] = useState(false);
@@ -31,7 +31,7 @@ export function Card({
   };
 
   return (
-    <div className="flex w-65 min-h-45 min-[900px]:w-75">
+    <div className="flex min-h-45 w-65 min-[900px]:w-75">
       {/* Card Content */}
       <div className="bg-dark-gray relative flex basis-3/4 flex-col justify-between rounded-tl-[20px] rounded-bl-[20px] p-5 pr-0 text-white shadow-[8px_10px_16px_0px_rgba(0,0,0,0.05)]">
         {/* Copy Button */}
@@ -48,7 +48,7 @@ export function Card({
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   exit={{ pathLength: 0, opacity: 0 }}
-                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  transition={{ duration: 0.35, ease: 'easeInOut' }}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="white"
@@ -67,19 +67,15 @@ export function Card({
         </div>
 
         <div className="flex flex-col gap-y-2 pr-2">
-          <span className="text-xs font-semibold">
-            {firstName + " " + lastName}
-          </span>
-          <span className="font-semibold">
-            {cardId.match(/.{1,4}/g)?.join(" ")}
-          </span>
+          <span className="text-xs font-semibold">{firstName + ' ' + lastName}</span>
+          <span className="font-semibold">{cardId.match(/.{1,4}/g)?.join(' ')}</span>
         </div>
       </div>
 
       {/* Card Branding */}
-      <div className="flex basis-1/4 relative flex-col justify-between rounded-tr-[20px] rounded-br-[20px] bg-gradient-to-b from-[#6b48ff] to-[#ff6cae]">
+      <div className="relative flex basis-1/4 flex-col justify-between rounded-tr-[20px] rounded-br-[20px] bg-gradient-to-b from-[#6b48ff] to-[#ff6cae]">
         <PayPass className="absolute top-5 right-5" />
-        <Visa className='absolute bottom-5 right-5'/>
+        <Visa className="absolute right-5 bottom-5" />
       </div>
     </div>
   );

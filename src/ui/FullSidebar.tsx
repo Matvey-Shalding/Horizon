@@ -1,25 +1,19 @@
-import { useClickOutside } from "@react-hookz/web";
-import clsx from "clsx";
-import Log_out from "components/icons/sidebar/Log_out";
-import SidebarIcon from "components/icons/sidebar/Sidebar";
-import { menuItems } from "data/menuItems";
-import { AnimatePresence, motion } from "framer-motion";
-import { signOut } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AUTH_ROUTES } from "routes";
-import { RootState } from "state/store";
-import { Logo } from "ui/Logo";
-import { Input } from "./Input";
+import { useClickOutside } from '@react-hookz/web';
+import clsx from 'clsx';
+import Log_out from 'components/icons/sidebar/Log_out';
+import SidebarIcon from 'components/icons/sidebar/Sidebar';
+import { menuItems } from 'data/menuItems';
+import { AnimatePresence, motion } from 'framer-motion';
+import { signOut } from 'next-auth/react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AUTH_ROUTES } from 'routes';
+import { RootState } from 'state/store';
+import { Logo } from 'ui/Logo';
+import { Input } from './Input';
 
-export const FullSidebar = ({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean | undefined;
-  onClose: () => void;
-}) => {
+export const FullSidebar = ({ isOpen, onClose }: { isOpen: boolean | undefined; onClose: () => void }) => {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
@@ -33,17 +27,17 @@ export const FullSidebar = ({
     const handlePageHide = (event: PageTransitionEvent) => {
       const dataToSend = { userData: user, userBanks: banks };
       const blob = new Blob([JSON.stringify(dataToSend)], {
-        type: "application/json",
+        type: 'application/json',
       });
-      const success = navigator.sendBeacon("/api/home", blob);
+      const success = navigator.sendBeacon('/api/home', blob);
 
       if (!success) {
-        console.warn("sendBeacon failed to queue the data for sending.");
+        console.warn('sendBeacon failed to queue the data for sending.');
       }
     };
 
-    window.addEventListener("pagehide", handlePageHide);
-    return () => window.removeEventListener("pagehide", handlePageHide);
+    window.addEventListener('pagehide', handlePageHide);
+    return () => window.removeEventListener('pagehide', handlePageHide);
   }, [user, banks]);
 
   useClickOutside(sidebarRef, () => {
@@ -58,10 +52,10 @@ export const FullSidebar = ({
         <motion.div
           ref={sidebarRef}
           className="border-border fixed z-30 h-screen w-80 shrink-0 flex-col justify-between overflow-hidden border-r bg-white pt-8 pb-5"
-          initial={{ x: "-100%" }}
+          initial={{ x: '-100%' }}
           animate={{ x: 80 }}
-          exit={{ x: "-100%" }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
+          exit={{ x: '-100%' }}
+          transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
           <div className="flex basis-full flex-col items-center">
             <div className="flex w-full flex-col gap-y-6">
@@ -88,7 +82,7 @@ export const FullSidebar = ({
                 <AnimatePresence>
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
+                    animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
                     className="w-full"
@@ -100,7 +94,7 @@ export const FullSidebar = ({
             </div>
             <nav
               className={clsx(
-                "text-dark-gray fill-light-gray mt-4 mb-6 flex basis-full flex-col self-stretch px-4 font-semibold",
+                'text-dark-gray fill-light-gray mt-4 mb-6 flex basis-full flex-col self-stretch px-4 font-semibold'
               )}
             >
               {menuItems.map((item, index) => {
@@ -112,16 +106,15 @@ export const FullSidebar = ({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={clsx(
-                      "rounded-main flex items-center gap-x-2 px-4 py-4 transition-colors duration-500 hover:text-white",
-                      isActive &&
-                        "bg-[linear-gradient(90deg,#0179fe_0%,#4893ff_100%)] fill-white text-white",
-                      "hover:bg-light-blue hover:fill-white",
+                      'rounded-main flex items-center gap-x-2 px-4 py-4 transition-colors duration-500 hover:text-white',
+                      isActive && 'bg-[linear-gradient(90deg,#0179fe_0%,#4893ff_100%)] fill-white text-white',
+                      'hover:bg-light-blue hover:fill-white'
                     )}
                   >
                     <item.icon />
                     <motion.span
                       initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "auto" }}
+                      animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden whitespace-nowrap"
@@ -136,19 +129,15 @@ export const FullSidebar = ({
               <AnimatePresence>
                 <motion.div
                   initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "auto" }}
+                  animate={{ opacity: 1, width: 'auto' }}
                   exit={{ opacity: 0, width: 0 }}
                   transition={{ duration: 0.2 }}
                 >
                   <div className="flex flex-col gap-y-0.5">
                     <span className="text-dark-gray text-sm font-semibold">
-                      {user
-                        ? `${user.firstName?.trim()} ${user.lastName?.trim()}`
-                        : "Loading..."}
+                      {user ? `${user.firstName?.trim()} ${user.lastName?.trim()}` : 'Loading...'}
                     </span>
-                    <span className="text-sm">
-                      {user ? user.email?.trim() : ""}
-                    </span>
+                    <span className="text-sm">{user ? user.email?.trim() : ''}</span>
                   </div>
                 </motion.div>
               </AnimatePresence>
