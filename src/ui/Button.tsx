@@ -1,29 +1,27 @@
 'use client';
 
+import { memo } from 'react';
 import { useMediaQuery } from '@react-hookz/web';
 import clsx from 'clsx';
 import { m } from 'framer-motion';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
-export function Button({
-  content,
-  props,
-  styles,
-  onClick,
-}: {
+
+interface ButtonProps {
   content: string;
-  props?: any;
-  styles?: string;
+  className?: string;
   onClick?: () => void;
-}) {
+}
+
+function Button({ content, className, onClick }: ButtonProps) {
   const isMobile = useMediaQuery(`(max-width: ${MEDIA_QUERIES.MOBILE})`);
 
   return (
     <m.button
-      {...props}
+      type="button"
       onClick={onClick}
       className={clsx(
-        `rounded-main gradient min-h-11 w-full text-base/normal text-white disabled:cursor-not-allowed`,
-        styles
+        'rounded-main gradient min-h-11 w-full text-base/normal text-white disabled:cursor-not-allowed',
+        className
       )}
       initial={{ scale: 1 }}
       whileHover={
@@ -44,10 +42,11 @@ export function Button({
         type: 'spring',
         stiffness: 300,
         damping: 25,
-        duration: 0.3,
       }}
     >
       {content}
     </m.button>
   );
 }
+
+export default memo(Button);

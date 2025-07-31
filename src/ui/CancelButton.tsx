@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { useMediaQuery } from '@react-hookz/web';
 import clsx from 'clsx';
 import { m } from 'framer-motion';
@@ -9,20 +10,16 @@ interface CancelButtonProps {
   onClick?: () => void;
   className?: string;
   content?: string;
-  props?: any;
 }
 
-export function CancelButton({ onClick, className, content, props }: CancelButtonProps) {
+function CancelButton({ onClick, className, content }: CancelButtonProps) {
   const isMobile = useMediaQuery(`(max-width: ${MEDIA_QUERIES.MOBILE})`);
 
   return (
     <m.button
       type="button"
       onClick={onClick}
-      className={clsx(
- ${className || ''} hover:bg-gray-100`,
-        className
-      )}
+      className={clsx('hover:bg-gray-100', className)}
       initial={{ scale: 1 }}
       whileHover={
         !isMobile
@@ -42,9 +39,10 @@ export function CancelButton({ onClick, className, content, props }: CancelButto
         stiffness: 300,
         damping: 20,
       }}
-      {...props}
     >
       {content ?? 'Cancel'}
     </m.button>
   );
 }
+
+export default memo(CancelButton);
