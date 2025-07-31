@@ -1,4 +1,5 @@
 const NON_ALPHANUMERIC_REGEX = /[^a-z0-9]+/g;
+
 const TRIM_DASHES_REGEX = /^-+|-+$/g;
 
 /**

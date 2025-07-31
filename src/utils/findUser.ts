@@ -3,6 +3,7 @@ import type { User } from '@prisma/client';
 
 /**
  * Finds a user by email.
+ *
  * @param {string} email - Email to search for.
  * @returns {Promise<User | null>} The user if found, otherwise null.
  */
@@ -21,6 +22,7 @@ export const findUserByEmail = async (email: string): Promise<User | null> => {
 
 /**
  * Finds a user by id.
+ *
  * @param {string} id - User id to search for.
  * @returns {Promise<User | null>} The user if found, otherwise null.
  */
