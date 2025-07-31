@@ -1,4 +1,4 @@
-/* pagination.css */
+/* Pagination container */
 .pagination {
   display: flex;
   justify-content: center;
@@ -7,23 +7,26 @@
   flex-wrap: wrap;
 }
 
+/* Pagination list items */
 .pagination li {
   list-style: none;
 }
 
+/* Non-arrow pagination buttons */
 .pagination li:not(.arrow) a {
   display: grid;
+  place-content: center;
   width: 40px;
   height: 40px;
-  place-content: center;
   border-radius: 0.5rem;
-  background-color: #f1f5f9; /* light background */
-  color: #334155; /* dark text */
+  background-color: #f1f5f9; /* Light background */
+  color: #334155; /* Dark text */
   font-weight: 500;
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+/* Responsive adjustments for small screens */
 @media (max-width: 640px) {
   .pagination li:not(.arrow) a,
   .pagination li.arrow div {
@@ -32,31 +35,35 @@
   }
 }
 
-.pagination a:not(.arrow):hover {
-  background-color: #e2e8f0; /* hover effect */
+/* Hover effect for non-arrow buttons */
+.pagination li:not(.arrow) a:hover {
+  background-color: #e2e8f0;
   color: #1e293b;
 }
 
-li.arrow {
-  background: none !important;
+/* Arrow buttons */
+.pagination li.arrow {
   background-color: transparent !important;
 }
 
-.pagination .active a:not(.arrow) {
-  background-color: #3b82f6; /* primary blue */
+/* Active non-arrow button */
+.pagination .active li:not(.arrow) a {
+  background-color: #3b82f6; /* Primary blue */
   color: white;
   font-weight: 600;
   transform: scale(1.05);
   box-shadow: 0 2px 3px rgba(59, 130, 246, 0.4);
 }
 
-.pagination .disabled a:not(.arrow) {
+/* Disabled non-arrow button */
+.pagination .disabled li:not(.arrow) a {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
+/* Arrow buttons on larger screens */
 @media (min-width: 769px) {
-  .arrow {
+  .pagination li.arrow {
     flex-grow: 1;
   }
 }

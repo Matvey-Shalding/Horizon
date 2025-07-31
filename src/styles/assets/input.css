@@ -15,19 +15,20 @@
   position: absolute;
   display: none;
 }
+
 .border_container .line {
   stroke-dasharray: 260;
   stroke-width: 2px;
   fill: transparent;
-  stroke: transparent;
   stroke: var(--color-light-blue);
   animation: svgAnimation 2.5s linear infinite;
 }
+
 .border_container:has(input:focus) svg {
   display: block;
 }
+
 .border_container:has(input:focus) .line {
-  display: block;
   stroke: var(--color-light-blue);
   animation: svgAnimation 3.5s linear infinite;
 }
