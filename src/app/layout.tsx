@@ -1,23 +1,12 @@
 'use client';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { domAnimation, LazyMotion } from 'framer-motion';
+import { queryClient } from 'lib/queryClient';
 import { Provider } from 'react-redux';
 import { store } from 'state/store';
 import './globals.css';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const queryClient = useRef(
-    new QueryClient({
-      defaultOptions: {
-        queries: {
-          refetchOnWindowFocus: false,
-          refetchOnMount: false,
-          staleTime: 1 * 60 * 60 * 1000,
-          retry: 1,
-        },
-      },
-    })
-  );
   return (
     <html lang="en">
       <head>
@@ -29,11 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <div id="portal-root"></div>
-        <QueryClientProvider client={queryClient.current!}>
+        <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            {/* <PersistGate loading={null} persistor={persistor}> */}
-            {children}
-            {/* </PersistGate> */}
+            <LazyMotion features={domAnimation}>{children}</LazyMotion>
           </Provider>
         </QueryClientProvider>
       </body>

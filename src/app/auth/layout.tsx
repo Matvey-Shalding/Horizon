@@ -1,34 +1,44 @@
 'use client';
 
-import { motion } from 'framer-motion'; // Import framer-motion
-import { useEffect } from 'react'; // Import useEffect to manage overflow
+import clsx from 'clsx';
+import { m } from 'framer-motion';
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'state/store';
 import Loader from 'ui/Loader';
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const visible = useSelector((state: RootState) => state.auth.isPending);
 
   return (
     <div className="relative">
       <Loader visible={visible} />
-      <div className="flex">
-        <div className="max-tablet:pt-[10vh] max-tablet:pb-[10vh] grid w-full place-content-center bg-white pt-[14vh] pb-[14vh]">
+      <div className="flex min-h-screen">
+        <div
+          className={clsx(
+            'tablet:pt-[10vh] tablet:pb-[10vh] grid',
+            'w-full place-content-center bg-white pt-[14vh] pb-[14vh]'
+          )}
+        >
           {children}
         </div>
-
-        <motion.div
-          className="bg-light-white laptop:pt-[14vh] laptop:place-content-start laptop:grid desktop:min-w-1/2 hidden min-w-4/10 place-content-center pl-3"
-          initial={{ x: '100%' }} // Start from off-screen on the right
-          animate={{ x: 0 }} // Animate to original position
-          transition={{ type: 'spring', stiffness: 50 }} // Add spring animation for smoother effect
+        <m.div
+          className={clsx(
+            'laptop:grid laptop:min-w-[50%] laptop:place-content-start',
+            'laptop:pt-[14vh] bg-light-white hidden min-w-[40%] pl-3'
+          )}
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          transition={{ type: 'spring', stiffness: 50 }}
         >
           <img
             src="/img/auth/bg.jpg"
-            alt=""
+            alt="Authentication background"
           />
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );
-}
+};
+
+export default memo(AuthLayout);

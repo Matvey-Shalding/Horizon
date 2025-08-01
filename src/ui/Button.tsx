@@ -3,16 +3,17 @@
 import { memo } from 'react';
 import { useMediaQuery } from '@react-hookz/web';
 import clsx from 'clsx';
-import { m } from 'framer-motion';
+import { HTMLMotionProps, m } from 'framer-motion';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 
 interface ButtonProps {
   content: string;
   className?: string;
   onClick?: () => void;
+  props: HTMLMotionProps<'button'>;
 }
 
-function Button({ content, className, onClick }: ButtonProps) {
+function ButtonComponent({ content, className, onClick,props }: ButtonProps) {
   const isMobile = useMediaQuery(`(max-width: ${MEDIA_QUERIES.MOBILE})`);
 
   return (
@@ -43,10 +44,11 @@ function Button({ content, className, onClick }: ButtonProps) {
         stiffness: 300,
         damping: 25,
       }}
+      {...props}
     >
       {content}
     </m.button>
   );
 }
 
-export default memo(Button);
+export const Button =  memo(ButtonComponent);

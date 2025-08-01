@@ -1,23 +1,24 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
-import { FormFields } from 'constants/FormFields';
+import { FormFields } from 'constants/formFields';
 import { LogInSchema, LogInSchemaType } from 'schemas/logIn.schema';
 import { authorizationService } from 'services/Authorization.service';
 import { setPending } from 'state/auth/authSlice';
 
-import { Notification } from 'components/auth/Notification';
+import { Notification } from 'app/auth/Notification';
 import { Button } from 'ui/Button';
 import { ErrorMessage } from 'ui/Error';
 import { Input } from 'ui/Input';
 import { Logo } from 'ui/Logo';
 import { Title } from 'ui/Title';
 
+import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { AUTH_ROUTES } from 'routes';
 
@@ -46,12 +47,15 @@ export default function LogIn() {
   const router = useRouter();
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="max-tablet-small:px-6 max-tablet-small:min-w-screen tablet:max-laptop:max-w-172.5 flex max-w-115 flex-col"
+      className={clsx(
+        'max-tablet-small:px-6 max-tablet-small:min-w-screen',
+        'tablet:max-laptop:max-w-172.5 flex max-w-115 flex-col'
+      )}
     >
       <div className="laptop:mb-6 max-tablet:mb-2 max-tablet-small:mb-1 mb-4">
         <Logo />
@@ -65,9 +69,12 @@ export default function LogIn() {
         onSubmit={handleSubmit(
           (data) => void authorizationService.logIn(data, setError, setSuccess, startTransition)
         )}
-        className="tablet:max-laptop:grid-cols-3 max-tablet-small:flex max-tablet-small:flex-col max-tablet-small:gap-y-2 grid gap-x-6 gap-y-3.5"
+        className={clsx(
+          'tablet:max-laptop:grid-cols-3 max-tablet-small:flex',
+          'max-tablet-small:flex-col max-tablet-small:gap-y-2 grid gap-x-6 gap-y-3.5'
+        )}
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -78,9 +85,9 @@ export default function LogIn() {
             {...FormFields.email}
           />
           <ErrorMessage message={errors.email?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -91,9 +98,9 @@ export default function LogIn() {
             {...FormFields.password}
           />
           <ErrorMessage message={errors.password?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -107,9 +114,9 @@ export default function LogIn() {
             message={error}
             type="error"
           />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.3 }}
@@ -119,13 +126,16 @@ export default function LogIn() {
             props={{ type: 'submit' }}
             content="Log in"
           />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="tablet:max-laptop:col-span-3 col-span-2 flex gap-x-1 self-center justify-self-center text-sm"
+          className={clsx(
+            'tablet:max-laptop:col-span-3 col-span-2 flex gap-x-1',
+            'self-center justify-self-center text-sm'
+          )}
         >
           <span className="text-gray">Don’t have an account?</span>
           <span
@@ -134,8 +144,8 @@ export default function LogIn() {
           >
             Sign up
           </span>
-        </motion.div>
+        </m.div>
       </form>
-    </motion.div>
+    </m.div>
   );
 }

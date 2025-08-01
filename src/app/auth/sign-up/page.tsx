@@ -1,11 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Notification } from 'components/auth/Notification';
-import { FormFields } from 'constants/FormFields';
-import { motion } from 'framer-motion';
+import { Notification } from 'app/auth/Notification';
+import clsx from 'clsx';
+import { FormFields } from 'constants/formFields';
+import { SIGN_UP_FORM_FIELDS } from 'constants/signUpFormFields';
+import { m } from 'framer-motion';
+import { useSignUp } from 'hooks/useSignUp.hook';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { AUTH_ROUTES } from 'routes';
@@ -14,7 +17,6 @@ import { authorizationService } from 'services/Authorization.service';
 import { setPending } from 'state/auth/authSlice';
 import { Logo } from 'ui/Logo';
 import { Title } from 'ui/Title';
-import { useImmer } from 'use-immer';
 import { Button } from '../../../ui/Button';
 import { ErrorMessage } from '../../../ui/Error';
 import { Input } from '../../../ui/Input';
@@ -26,30 +28,15 @@ export default function SingUp() {
     formState: { errors },
   } = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
-    defaultValues: {
-      firstName: 'John',
-      lastName: 'Doe',
-      address: 'Avenue street',
-      postalCode: '121212',
-      state: 'NY',
-      dateOfBirth: '2009-12-23',
-      SSN: '1234',
-      email: 'John_doe@email.com',
-      password: '12345678',
-    },
+    defaultValues: SIGN_UP_FORM_FIELDS,
   });
 
   const router = useRouter();
 
   const dispatch = useDispatch();
-  const [isSubmitting, startTransition] = useTransition();
-  const [error, setError] = useState<string | undefined>();
-  const [success, setSuccess] = useState<string | undefined>();
 
-  const [userData, setUserData] = useImmer<{
-    email?: string;
-    password?: string;
-  }>({});
+  const { isSubmitting, startTransition, error, setError, setSuccess, success, userData, setUserData } =
+    useSignUp();
 
   useEffect(() => {
     dispatch(setPending(isSubmitting));
@@ -60,12 +47,15 @@ export default function SingUp() {
   }, [success]);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="max-tablet-small:px-6 max-tablet-small:min-w-screen tablet:max-laptop:max-w-172.5 flex max-w-115 flex-col"
+      className={clsx(
+        'max-tablet-small:px-6 max-tablet-small:min-w-screen',
+        'tablet:max-laptop:max-w-172.5 flex max-w-115 flex-col'
+      )}
     >
       <div className="laptop:mb-6 max-tablet:mb-2 max-tablet-small:mb-1 mb-4">
         <Logo />
@@ -79,9 +69,12 @@ export default function SingUp() {
         onSubmit={handleSubmit(
           (data) => void authorizationService.singUp(data, setError, setSuccess, startTransition, setUserData)
         )}
-        className="laptop:grid-cols-2 max-tablet-small:flex max-tablet-small:flex-col max-tablet-small:gap-y-2 tablet:max-laptop:grid-cols-3 grid gap-x-6 gap-y-3.5"
+        className={clsx(
+          'laptop:grid-cols-2 max-tablet-small:flex max-tablet-small:flex-col',
+          'max-tablet-small:gap-y-2 tablet:max-laptop:grid-cols-3 grid gap-x-6 gap-y-3.5'
+        )}
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -92,9 +85,9 @@ export default function SingUp() {
             {...FormFields.firstName}
           />
           <ErrorMessage message={errors.firstName?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -105,22 +98,25 @@ export default function SingUp() {
             {...FormFields.lastName}
           />
           <ErrorMessage message={errors.lastName?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="tablet:max-laptop:order-4 tablet:max-laptop:col-span-3 order-3 col-span-2 flex flex-col gap-y-1"
+          className={clsx(
+            'tablet:max-laptop:order-4 tablet:max-laptop:col-span-3',
+            'order-3 col-span-2 flex flex-col gap-y-1'
+          )}
         >
           <Input
             register={register}
             {...FormFields.address}
           />
           <ErrorMessage message={errors.address?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
@@ -131,9 +127,9 @@ export default function SingUp() {
             {...FormFields.state}
           />
           <ErrorMessage message={errors.state?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -144,9 +140,9 @@ export default function SingUp() {
             {...FormFields.postalCode}
           />
           <ErrorMessage message={errors.postalCode?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
@@ -157,9 +153,9 @@ export default function SingUp() {
             {...FormFields.dateOfBirth}
           />
           <ErrorMessage message={errors.dateOfBirth?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
@@ -170,9 +166,9 @@ export default function SingUp() {
             {...FormFields.SSN}
           />
           <ErrorMessage message={errors.SSN?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
@@ -183,9 +179,9 @@ export default function SingUp() {
             {...FormFields.email}
           />
           <ErrorMessage message={errors.email?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
@@ -196,9 +192,9 @@ export default function SingUp() {
             {...FormFields.password}
           />
           <ErrorMessage message={errors.password?.message} />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
@@ -212,9 +208,9 @@ export default function SingUp() {
             message={error}
             type="error"
           />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.1, duration: 0.3 }}
@@ -224,13 +220,16 @@ export default function SingUp() {
             props={{ type: 'submit' }}
             content="Sign up"
           />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
-          className="tablet:max-laptop:col-span-3 tablet-small:-mt-2 order-12 col-span-2 flex gap-x-1 self-center justify-self-center text-sm"
+          className={clsx(
+            'tablet:max-laptop:col-span-3 tablet-small:-mt-2 order-12',
+            'col-span-2 flex gap-x-1 self-center justify-self-center text-sm'
+          )}
         >
           <span className="text-gray">Already have an account?</span>
           <span
@@ -239,8 +238,8 @@ export default function SingUp() {
           >
             Log in
           </span>
-        </motion.div>
+        </m.div>
       </form>
-    </motion.div>
+    </m.div>
   );
 }
