@@ -1,4 +1,5 @@
 'use server';
+
 import bcrypt from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { LogInSchema } from 'schemas/logIn.schema';
@@ -7,6 +8,11 @@ import { findUserByEmail } from 'utils/findUser';
 import { signIn } from '../../auth';
 import { DEFAULT_LOGIN_REDIRECT } from '../../routes';
 
+/**
+ * Authenticates a user with provided login credentials.
+ * @param data - Login credentials (email and password).
+ * @returns Object with error message if authentication fails.
+ */
 export const login = async (data: LogIn) => {
   const validatedFields = LogInSchema.safeParse(data);
   if (!validatedFields.success) {
@@ -14,7 +20,6 @@ export const login = async (data: LogIn) => {
   }
 
   const { email, password } = validatedFields.data;
-
   const user = await findUserByEmail(email);
 
   if (!user) {
@@ -22,26 +27,25 @@ export const login = async (data: LogIn) => {
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    return { error: 'Invalid credentials' };
+  }
 
-  if (isPasswordValid) {
-    try {
-      await signIn('credentials', {
-        email,
-        password: user.password,
-        redirectTo: DEFAULT_LOGIN_REDIRECT,
-      });
-    } catch (error) {
-      if (error instanceof AuthError) {
-        switch (error.type) {
-          case 'CredentialsSignin':
-            return { error: 'Invalid credentials!' };
-
-          default:
-            return { error: 'Something went wrong...Please try again later' };
-        }
-      }
-
-      throw error;
+  try {
+    await signIn('credentials', {
+      email,
+      password: user.password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return {
+        error:
+          error.type === 'CredentialsSignin'
+            ? 'Invalid credentials'
+            : 'Something went wrong. Please try again later',
+      };
     }
+    throw error;
   }
 };
