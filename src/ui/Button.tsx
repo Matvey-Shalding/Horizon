@@ -10,7 +10,7 @@ interface ButtonProps {
   content: string;
   className?: string;
   onClick?: () => void;
-  props: HTMLMotionProps<'button'>;
+  props?: HTMLMotionProps<'button'>;
 }
 
 function ButtonComponent({ content, className, onClick,props }: ButtonProps) {

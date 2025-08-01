@@ -1,6 +1,7 @@
 import { useMediaQuery } from '@react-hookz/web';
 import clsx from 'clsx';
 import router from 'next/router';
+import { useMemo } from 'react';
 import { MAIN_ROUTES } from 'routes';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 import { Transaction } from 'types/Transaction.interface';
@@ -18,7 +19,8 @@ export function ShowMoreButton({
   handleShowLess: () => void;
 }) {
   const isMobile = useMediaQuery(`(max-width:${MEDIA_QUERIES.MOBILE})`);
-  const minTransactions = 5;
+
+  const MIN_TRANSACTIONS = useMemo(() => 5, []);
 
   return sortedTransactions.length > visibleTransactions ? (
     <div
@@ -29,7 +31,7 @@ export function ShowMoreButton({
         content="Show More"
         className={`self-start`}
       />
-      {visibleTransactions > minTransactions && (
+      {visibleTransactions > MIN_TRANSACTIONS && (
         <CancelButton
           onClick={handleShowLess}
           content="Show Less"

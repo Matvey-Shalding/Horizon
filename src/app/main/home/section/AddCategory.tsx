@@ -1,85 +1,44 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { DEFAULT_COLOR } from 'constants/DefaultColor';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { DEFAULT_COLOR } from 'constants/defaultColor';
+import { AnimatePresence, m } from 'framer-motion';
+import { useAddCategoryState } from 'hooks/useAddCategory.hook';
 import { HexColorPicker } from 'react-colorful';
-import { useForm } from 'react-hook-form';
-import { bankCategorySchema, bankCategorySchemaType } from 'schemas/bankCategory.schema';
 import { Category } from 'types/Category.interface';
 import { Button } from 'ui/Button';
 import { ErrorMessage } from 'ui/Error';
 import { Input } from 'ui/Input';
 import { Updater } from 'use-immer';
 
+interface AddCategoryProps {
+  categories: Category[];
+  setCategories: Updater<Category[]>;
+  defaultColor?: string;
+  onCancel?: () => void;
+}
+
 export function AddCategory({
   categories,
   setCategories,
   defaultColor = DEFAULT_COLOR,
   onCancel,
-}: {
-  categories: Category[];
-  setCategories: Updater<Category[]>;
-  defaultColor?: string;
-  onCancel?: () => void;
-}) {
-  const [selectedColor, setSelectedColor] = useState(defaultColor);
-  const [showColorPicker, setShowColorPicker] = useState(false);
-
+}: AddCategoryProps) {
   const {
+    selectedColor,
+    setSelectedColor,
+    showColorPicker,
+    setShowColorPicker,
     register,
     handleSubmit,
-    reset,
+    errors,
     setValue,
-    clearErrors,
-    setError,
-    formState: { errors },
-  } = useForm<bankCategorySchemaType>({
-    resolver: zodResolver(bankCategorySchema),
-    defaultValues: {
-      name: '',
-      color: defaultColor,
-    },
-  });
+    onSubmit,
+    handleCancel,
+    onColorPick,
+    onInputChange
+  } = useAddCategoryState({ categories, setCategories, defaultColor, onCancel });
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest('.color-picker-container')) {
-        setShowColorPicker(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleCancel = () => {
-    clearErrors();
-    reset();
-    setSelectedColor(defaultColor);
-    setShowColorPicker(false);
-    onCancel?.();
-  };
-
-  const onSubmit = (data: bankCategorySchemaType) => {
-    const isDuplicate = categories.some(
-      (cat) => cat.name.trim().toLowerCase() === data.name.trim().toLowerCase()
-    );
-
-    if (isDuplicate) {
-      setError('name', {
-        type: 'manual',
-        message: 'This category already exists',
-      });
-      return;
-    }
-
-    setCategories((draft) => {
-      draft.push({ ...data, expenses: '0' });
-    });
-    handleCancel();
-  };
   return (
     <AnimatePresence>
-      <motion.div
+      <m.div
         key="add-category"
         initial={{ height: 0, opacity: 0, scale: 0.9 }}
         animate={{ height: 'auto', opacity: 1, scale: 1 }}
@@ -113,13 +72,10 @@ export function AddCategory({
                   placeholder="Enter color code"
                   register={register}
                   fieldRegister="color"
-                  onChange={(e) => {
-                    setSelectedColor(e.target.value);
-                    setValue('color', e.target.value);
-                  }}
+                  onChange={onInputChange}
                 />
               </div>
-              <motion.div
+              <m.div
                 className="color-picker-container h-11 basis-12 cursor-pointer rounded-full border border-solid"
                 style={{ backgroundColor: selectedColor }}
                 onClick={() => setShowColorPicker((prev) => !prev)}
@@ -128,7 +84,7 @@ export function AddCategory({
               />
               <AnimatePresence>
                 {showColorPicker && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.7 }}
@@ -138,12 +94,9 @@ export function AddCategory({
                     <HexColorPicker
                       className="h-25 w-25"
                       color={selectedColor}
-                      onChange={(color) => {
-                        setSelectedColor(color);
-                        setValue('color', color);
-                      }}
+                      onChange={onColorPick}
                     />
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </div>
@@ -152,20 +105,17 @@ export function AddCategory({
 
           {/* Buttons */}
           <div className="grid grid-cols-2 gap-x-3">
-            <motion.button
+            <m.button
               type="button"
               onClick={handleCancel}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: '0 5px 10px rgba(0,0,0,0.2)',
-              }}
+              whileHover={{ scale: 1.05, boxShadow: '0 5px 10px rgba(0,0,0,0.2)' }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               className="shadow-main text-dark-gray border p-2 font-semibold"
             >
               Cancel
-            </motion.button>
-            <motion.button
+            </m.button>
+            <m.button
               type="submit"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -173,12 +123,12 @@ export function AddCategory({
             >
               <Button
                 content="Add Category"
-                props={{ type: 'button' }}
+                props={{ type: 'submit' }}
               />
-            </motion.button>
+            </m.button>
           </div>
         </form>
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   );
 }

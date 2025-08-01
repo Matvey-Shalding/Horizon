@@ -1,26 +1,34 @@
+import React, { useMemo } from 'react';
+import { m } from 'framer-motion';
+import clsx from 'clsx';
 import { useMediaQuery } from '@react-hookz/web';
-import { Category } from 'app/main/home/Category';
-import { motion } from 'framer-motion';
 import randomcolor from 'randomcolor';
-import { useMemo } from 'react';
+import tinycolor from 'tinycolor2';
 import { useSelector } from 'react-redux';
+
+import { Category } from 'app/main/home/Category';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 import { RootState } from 'state/store';
-import tinycolor from 'tinycolor2';
 import { Transaction as TransactionType } from 'types/Transaction.interface';
 import { shortenString } from 'utils/shortenTitle';
 
-interface props extends TransactionType {
+interface Props extends TransactionType {
   even?: boolean;
 }
 
-export function Transaction({ id, amount, status, date, category, even, recipientBankId }: props) {
+const TransactionComponent: React.FC<Props> = ({
+  id,
+  amount,
+  status,
+  date,
+  category,
+  even,
+  recipientBankId,
+}) => {
   const banks = useSelector((state: RootState) => state.bank.banks);
 
   const bgColor = useMemo(() => randomcolor(), []);
-  const textColor = useMemo(() => {
-    return tinycolor(bgColor).isLight() ? '#000000' : '#FFFFFF';
-  }, [bgColor]);
+  const textColor = useMemo(() => (tinycolor(bgColor).isLight() ? '#000000' : '#FFFFFF'), [bgColor]);
 
   const title = useMemo(() => {
     return banks.find((bank) => bank.cardId === recipientBankId)?.cardholderName ?? '';
@@ -28,13 +36,24 @@ export function Transaction({ id, amount, status, date, category, even, recipien
 
   const isNotSmallScreen = useMediaQuery(`(min-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`);
 
+  const formattedAmount = useMemo(() => {
+    const trimmed = amount.trim();
+    return amount.startsWith('-') ? `- $${trimmed}` : `+ $${trimmed}`;
+  }, [amount]);
+
+
   return (
-    <motion.div
+    <m.div
       whileHover={{ scale: 1.01 }}
       transition={{ type: 'spring', stiffness: 200 }}
-      className={`${
-        even ? 'bg-white' : 'bg-[#f6fef9]'
-      } grid min-h-18 w-full basis-full grid-cols-[1fr_0.75fr_1.25fr_1fr] items-center overflow-y-hidden border-b border-[#EAECF0] px-4 py-3 max-[768px]:pl-6 md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]`}
+      className={clsx(
+        even ? 'bg-white' : 'bg-[#f6fef9]',
+        'grid min-h-18 w-full basis-full',
+        'grid-cols-[1fr_0.75fr_1.25fr_1fr]',
+        'items-center overflow-y-hidden border-b border-[#EAECF0]',
+        'px-4 py-3 max-[768px]:pl-6',
+        'md:grid-cols-[1.5fr_0.75fr_1.25fr_1fr]'
+      )}
     >
       {/* Transaction Column (Avatar + Name) */}
       <div className="flex items-center gap-x-3">
@@ -50,8 +69,8 @@ export function Transaction({ id, amount, status, date, category, even, recipien
       </div>
 
       {/* Amount */}
-      <div className={`text-sm font-semibold ${amount.startsWith('-') ? 'text-red' : 'text-green'}`}>
-        {amount.startsWith('-') ? `- $${amount.trim()}` : `+ $${amount.trim()}`}
+      <div className={clsx('text-sm font-semibold', amount.startsWith('-') ? 'text-red' : 'text-green')}>
+        {formattedAmount}
       </div>
 
       {/* Date */}
@@ -61,6 +80,8 @@ export function Transaction({ id, amount, status, date, category, even, recipien
       <div>
         <Category category={category} />
       </div>
-    </motion.div>
+    </m.div>
   );
-}
+};
+
+export const Transaction = React.memo(TransactionComponent);

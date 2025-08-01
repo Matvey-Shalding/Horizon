@@ -1,9 +1,10 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { MenuStatus } from 'constants/MenuStatuses';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { MenuStatus } from 'constants/menuStatuses';
+import { m } from 'framer-motion';
+import { useCallback, useEffect, useState } from 'react';
 import { deleteCategoryService } from 'services/category/DeleteCategory.service';
 import { Bank } from 'types/Bank.interface';
+import { Category } from 'types/Category.interface';
 import { Button } from 'ui/Button';
 import { Category as CategoryComponent } from 'ui/Category';
 import { Checkbox } from 'ui/Checkbox';
@@ -24,17 +25,41 @@ export function CategorySectionDelete({
   status: MenuStatus;
   setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>;
   activeTab: number;
-  banks: any;
-  categories: any[];
+  banks: Bank[];
+  categories: Category[];
   dispatch: Dispatch;
   deletedCategories: string[];
   setDeletedCategories: Updater<string[]>;
   currentBank: Bank;
 }) {
   const [checkAll, setCheckAll] = useState(false);
+
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    deleteCategoryService.handleCheckAll(e, categories, setCheckAll, setDeletedCategories);
+  }, []);
+
+  const onCancel = useCallback(
+    () => deleteCategoryService.handleCancel(setStatus, setDeletedCategories, setCheckAll),
+    []
+  );
+
+  const onSubmit = useCallback(() => {
+    deleteCategoryService.handleDelete(
+      banks,
+      activeTab,
+      categories,
+      deletedCategories,
+      dispatch,
+      setStatus,
+      setDeletedCategories,
+      setCheckAll
+    );
+  }, []);
+
   useEffect(() => {
     setCheckAll(deletedCategories.length === categories.length);
   }, [deletedCategories, categories]);
+
   return (
     <div className="border-border relative flex flex-col gap-y-6 border-t border-solid pt-6 pb-10">
       <div className="border-border flex items-center justify-between border-b border-solid pb-1">
@@ -44,9 +69,7 @@ export function CategorySectionDelete({
         <label className="flex items-center gap-x-1.5">
           <Checkbox
             checked={checkAll}
-            onChange={(e) =>
-              deleteCategoryService.handleCheckAll(e, categories, setCheckAll, setDeletedCategories)
-            }
+            onChange={onChange}
           />
           <Label
             onClick={() => {}}
@@ -68,29 +91,18 @@ export function CategorySectionDelete({
         ))}
       </div>
       <div className="grid grid-cols-2 gap-x-3">
-        <motion.button
-          onClick={() => deleteCategoryService.handleCancel(setStatus, setDeletedCategories, setCheckAll)}
+        <m.button
+          onClick={onCancel}
           whileHover={{ scale: 1.05, boxShadow: '0 5px 10px rgba(0,0,0,0.2)' }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           className="shadow-main text-dark-gray border p-2 font-semibold"
         >
           Cancel
-        </motion.button>
+        </m.button>
         <Button
-          onClick={() =>
-            deleteCategoryService.handleDelete(
-              banks,
-              activeTab,
-              categories,
-              deletedCategories,
-              dispatch,
-              setStatus,
-              setDeletedCategories,
-              setCheckAll
-            )
-          }
-          styles="text-white"
+          onClick={onSubmit}
+          className="text-white"
           content="Delete"
         />
       </div>

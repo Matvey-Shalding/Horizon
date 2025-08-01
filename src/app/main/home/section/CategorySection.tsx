@@ -1,11 +1,10 @@
-import { MenuStatus } from 'constants/MenuStatuses';
-import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import clsx from 'clsx';
+import { MenuStatus } from 'constants/menuStatuses';
+import { useCategorySectionState } from 'hooks/useCategorySectionState.hook';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { setBanks } from 'state/main/bankSlice';
-import { RootState } from 'state/store';
-import { Category } from 'types/Category.interface';
 import { Button } from 'ui/Button';
-import { useImmer } from 'use-immer';
 import { AddCategory } from './AddCategory';
 import { CategorySectionDefault } from './menu/Default';
 import { CategorySectionDelete } from './menu/Delete';
@@ -20,38 +19,20 @@ export function CategorySection({
   setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>;
   activeTab: number;
 }) {
+  const {
+    banks,
+    categories,
+    menuOpen,
+    setMenuOpen,
+    deletedCategories,
+    setDeletedCategories,
+    myCategories,
+    setMyCategories,
+    currentBank,
+    commonProps,
+  } = useCategorySectionState({ status, setStatus, activeTab });
+
   const dispatch = useDispatch();
-  const banks = useSelector((state: RootState) => state.bank.banks);
-
-  // Derive the categories for the active tab.
-  const categories = useMemo(() => banks[activeTab].categories, [banks, activeTab]);
-
-  // Common state used by various modes
-  const [open, setOpen] = useState(false);
-
-  const currentBank = useMemo(() => {
-    return banks[activeTab];
-  }, [activeTab, banks]);
-  // For DELETE mode:
-  const [deletedCategories, setDeletedCategories] = useImmer<string[]>([]);
-
-  const [myCategories, setMyCategories] = useImmer<Category[]>([...categories]);
-
-  // Props to pass down to the subcomponents
-  const commonProps = useMemo(() => {
-    return {
-      status,
-      setStatus,
-      categories,
-      open,
-      setOpen,
-      banks,
-      activeTab,
-      dispatch,
-    };
-  }, [status, setStatus, open, setOpen, banks, activeTab, dispatch]);
-
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const updatedBanks = banks.map((bank, index) =>
@@ -75,7 +56,12 @@ export function CategorySection({
       );
     } else {
       return (
-        <div className="border-border flex h-full basis-full flex-col items-center justify-center gap-y-4 border-t border-solid">
+        <div
+          className={clsx(
+            'border-border flex h-full basis-full flex-col',
+            'items-center justify-center gap-y-4 border-t border-solid'
+          )}
+        >
           <span className="text-dark-gray text-xl font-semibold">You have no banks yet</span>
           <Button
             onClick={() => setMenuOpen(true)}

@@ -1,9 +1,9 @@
 'use client';
 
-import { memo } from 'react';
 import { useMediaQuery } from '@react-hookz/web';
 import clsx from 'clsx';
 import { m } from 'framer-motion';
+import { memo } from 'react';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 
 interface CancelButtonProps {
@@ -12,7 +12,7 @@ interface CancelButtonProps {
   content?: string;
 }
 
-function CancelButton({ onClick, className, content }: CancelButtonProps) {
+function Button({ onClick, className, content }: CancelButtonProps) {
   const isMobile = useMediaQuery(`(max-width: ${MEDIA_QUERIES.MOBILE})`);
 
   return (
@@ -45,4 +45,4 @@ function CancelButton({ onClick, className, content }: CancelButtonProps) {
   );
 }
 
-export default memo(CancelButton);
+export const CancelButton = memo(Button);

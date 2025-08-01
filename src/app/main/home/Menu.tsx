@@ -1,7 +1,8 @@
+import clsx from 'clsx';
 import Delete from 'components/icons/main/home/delete';
 import Edit from 'components/icons/main/home/edit';
-import { MENU_STATUSES, MenuStatus } from 'constants/MenuStatuses';
-import { AnimatePresence, motion } from 'framer-motion';
+import { MENU_STATUSES, MenuStatus } from 'constants/menuStatuses';
+import { AnimatePresence, m } from 'framer-motion';
 import { SetStateAction } from 'react';
 
 export function Menu({
@@ -18,24 +19,30 @@ export function Menu({
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -10, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.95 }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
-          className="absolute right-0 z-10 mt-2 w-44 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg"
+          className={clsx(
+            'absolute right-0 z-10 mt-2 w-44 overflow-hidden',
+            'rounded-lg border border-gray-200 bg-white shadow-lg'
+          )}
         >
           <div className="flex flex-col">
-            <motion.button
+            <m.button
               onClick={() => {
                 setStatus(MENU_STATUSES.EDIT);
                 setOpen(false);
               }}
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.02 }}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-gray-100"
+              className={clsx(
+                'flex items-center gap-2 px-4 py-2 text-sm',
+                'font-medium text-gray-700 transition-all duration-200 hover:bg-gray-100'
+              )}
             >
-              <motion.div
+              <m.div
                 whileHover={{ x: 4 }}
                 transition={{ duration: 0.2 }}
               >
@@ -44,19 +51,22 @@ export function Menu({
                   height={16}
                   className="stroke-gray-600"
                 />
-              </motion.div>
+              </m.div>
               Edit
-            </motion.button>
-            <motion.button
+            </m.button>
+            <m.button
               onClick={() => {
                 setStatus(MENU_STATUSES.DELETE);
                 setOpen(false);
               }}
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.02 }}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-100"
+              className={clsx(
+                'flex items-center gap-2 px-4 py-2 text-sm',
+                'font-medium text-red-600 transition-all duration-200 hover:bg-red-100'
+              )}
             >
-              <motion.div
+              <m.div
                 whileHover={{ x: 4 }}
                 transition={{ duration: 0.2 }}
               >
@@ -65,11 +75,11 @@ export function Menu({
                   height={16}
                   className="stroke-red-600"
                 />
-              </motion.div>
+              </m.div>
               Delete
-            </motion.button>
+            </m.button>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

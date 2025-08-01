@@ -1,20 +1,17 @@
 'use client';
 
-import { useMediaQuery } from '@react-hookz/web';
+import clsx from 'clsx';
 import Plus from 'components/icons/main/home/plus';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
+import { useHomeState } from 'hooks/useHomeState.hook';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { MAIN_ROUTES } from 'routes';
-import { MEDIA_QUERIES } from 'settings/MediaQueries';
-import { RootState } from 'state/store';
 import { Button } from 'ui/Button';
 import { Label } from 'ui/Label';
 import PieChart from 'ui/PieChart';
 import { Title } from 'ui/Title';
 import { TransactionList } from 'ui/TransactionList';
-import { shortenString } from 'utils/shortenTitle';
 import { BankTabs } from './BankTabs';
 import RightSidebar from './RightSidebar';
 import { ShowMoreButton } from './ShowMoreButton';
@@ -22,33 +19,30 @@ import { ShowMoreButton } from './ShowMoreButton';
 const TRANSACTIONS_PER_PAGE = 10;
 
 export default function Home({}: {}) {
-  const user = useSelector((state: RootState) => state.user.user);
-  const banks = useSelector((state: RootState) => state.bank.banks);
-
-  const moneyData = useMemo(() => banks.map((bank) => bank.balance), [banks]);
-  const [activeTab, setActiveTab] = useState(0);
-  const [visibleTransactions, setVisibleTransactions] = useState(TRANSACTIONS_PER_PAGE);
+  const {
+    user,
+    banks,
+    activeTab,
+    setActiveTab,
+    visibleTransactions,
+    isCollapsed,
+    setIsCollapsed,
+    containerRef,
+    tabsRef,
+    isSmallLaptop,
+    isNotTablet,
+    isMobile,
+    moneyData,
+    totalBalance,
+    sortedTransactions,
+    shortenTitle,
+    currentBank,
+    currentBankBalance,
+    handleShowMore,
+    handleShowLess,
+  } = useHomeState();
 
   const router = useRouter();
-
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  // Sort transactions by date (most recent first)
-  const sortedTransactions = useMemo(() => {
-    return [...(banks[activeTab]?.transactions || [])].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-  }, [banks, activeTab]);
-
-  const handleShowMore = () => {
-    setVisibleTransactions((prev) => prev + TRANSACTIONS_PER_PAGE);
-  };
-
-  const handleShowLess = () => {
-    setVisibleTransactions((prev) => Math.max(5, prev - TRANSACTIONS_PER_PAGE));
-  };
-
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -56,24 +50,22 @@ export default function Home({}: {}) {
     }
   }, []);
 
-  const isSmallLaptop = useMediaQuery(`(max-width:${MEDIA_QUERIES.SMALL_DESKTOPS})`);
-
-  const isNotTablet = useMediaQuery(`(min-width:${MEDIA_QUERIES.TABLETS})`);
-
-  const tabsRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (tabsRef.current && isSmallLaptop) {
       tabsRef.current.style.maxWidth = window.innerWidth - 120 + 'px';
     }
   }, [isSmallLaptop]);
 
-  const isMobile = useMediaQuery(`(max-width:${MEDIA_QUERIES.MOBILE})`);
-
   if (banks.length) {
     return (
       <div className="bg-gray-bg flex basis-full overflow-x-hidden">
-        <div className="border-border flex grow-1 basis-full flex-col gap-y-4 overflow-x-hidden overflow-y-scroll border-r border-solid py-8 transition-[width] min-[450px]:gap-y-5 min-[450px]:px-8 md:gap-y-8">
+        <div
+          className={clsx(
+            'border-border flex grow-1 basis-full flex-col gap-y-4',
+            'overflow-x-hidden overflow-y-scroll border-r border-solid py-8',
+            'transition-[width] min-[450px]:gap-y-5 min-[450px]:px-8 md:gap-y-8'
+          )}
+        >
           <div className="flex justify-between px-3">
             <Title
               title={`Welcome, ${user?.firstName.trim()}`}
@@ -81,7 +73,12 @@ export default function Home({}: {}) {
             />
           </div>
 
-          <div className="shadow-main mx-3 flex items-start justify-between border px-1 py-4 min-[450px]:mr-0 min-[450px]:px-4 min-[450px]:py-6 sm:p-8">
+          <div
+            className={clsx(
+              'shadow-main mx-3 flex items-start justify-between border',
+              'px-1 py-4 min-[450px]:mr-0 min-[450px]:px-4 min-[450px]:py-6 sm:p-8'
+            )}
+          >
             <div className="flex items-center gap-x-3 gap-y-2 min-[450px]:flex-row min-[450px]:gap-x-6">
               <PieChart data={moneyData.map((i) => Number(i))} />
               <div className="flex flex-col gap-y-1.5 md:gap-y-6">
@@ -91,7 +88,7 @@ export default function Home({}: {}) {
                     Total Current Balance
                   </span>
                   <span className="text-blue text-2xl/tight font-semibold min-[450px]:text-3xl/snug">
-                    ${banks.reduce((acc, item) => acc + Number(item.balance), 0)}
+                    ${totalBalance}
                   </span>
                 </div>
               </div>
@@ -106,7 +103,6 @@ export default function Home({}: {}) {
             )}
           </div>
 
-          {/* Bank tabs with local horizontal scroll */}
           <BankTabs
             banks={banks}
             activeTab={activeTab}
@@ -114,7 +110,12 @@ export default function Home({}: {}) {
           />
 
           <div className="flex items-center justify-between">
-            <span className="text-blue -mt-1 -mb-2 inline-block px-3 text-xl font-semibold min-[450px]:px-0 min-[450px]:text-2xl">
+            <span
+              className={clsx(
+                'text-blue -mt-1 -mb-2 inline-block px-3 text-xl',
+                'font-semibold min-[450px]:px-0 min-[450px]:text-2xl'
+              )}
+            >
               Recent transactions
             </span>
             {!isMobile && (
@@ -127,7 +128,7 @@ export default function Home({}: {}) {
             )}
           </div>
           <AnimatePresence mode="wait">
-            <motion.div
+            <m.div
               key={activeTab}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -138,13 +139,11 @@ export default function Home({}: {}) {
               <div className="bg-light-white rounded-t-main flex items-start justify-between px-6 py-5">
                 <div className="flex items-center gap-x-4.5">
                   <div className="gradient grid h-10 w-10 place-content-center rounded-full font-medium text-white">
-                    {shortenString(banks[activeTab].cardholderName)}
+                    {shortenTitle}
                   </div>
                   <div className="flex flex-col gap-y-1">
-                    <span className="text-xl font-semibold text-[#194185]">
-                      {banks[activeTab].cardholderName}
-                    </span>
-                    <span className="text-lg font-semibold text-[#1570EF]">${banks[activeTab].balance}</span>
+                    <span className="text-xl font-semibold text-[#194185]">{currentBank}</span>
+                    <span className="text-lg font-semibold text-[#1570EF]">${currentBankBalance}</span>
                   </div>
                 </div>
                 {isNotTablet && (
@@ -167,7 +166,7 @@ export default function Home({}: {}) {
                   handleShowLess={handleShowLess}
                 />
               </div>
-            </motion.div>
+            </m.div>
           </AnimatePresence>
         </div>
         <RightSidebar
@@ -180,14 +179,14 @@ export default function Home({}: {}) {
   } else {
     return (
       <div className="flex h-screen w-full items-center justify-center">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
           transition={{ duration: 0.4 }}
           className="flex flex-col items-center gap-y-4"
         >
-          <motion.span
+          <m.span
             animate={{ y: [0, -5, 0] }}
             transition={{
               repeat: Infinity,
@@ -197,8 +196,8 @@ export default function Home({}: {}) {
             className="text-dark-gray text-2xl font-semibold"
           >
             You have no banks yet
-          </motion.span>
-          <motion.div
+          </m.span>
+          <m.div
             className="w-full basis-full"
             animate={{ y: [0, -5, 0] }}
             transition={{
@@ -211,8 +210,8 @@ export default function Home({}: {}) {
               onClick={() => void router.push(MAIN_ROUTES.CONNECT_BANK)}
               content="Connect bank"
             />
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </div>
     );
   }
