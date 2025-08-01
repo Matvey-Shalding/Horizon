@@ -1,7 +1,7 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 
 import clsx from 'clsx';
 import { usePaymentTransferState } from 'hooks/usePaymentTransferState.hook';
@@ -16,7 +16,7 @@ import { CategoryDropdown } from './CategoryDropdown';
 import { SectionTitle } from './SectionTitle';
 import { Subtitle } from './SubTitle';
 
-export default function PaymentTransferPage() {
+function TransferPage() {
   const {
     banks,
     dispatch,
@@ -37,8 +37,6 @@ export default function PaymentTransferPage() {
     onSubmit,
     handleCancel,
   } = usePaymentTransferState();
-
-  const paymentTransferSchema = getPaymentTransferSchema(banks);
 
   useEffect(() => {
     if (sourceBank) clearErrors('sourceBank');
@@ -164,3 +162,5 @@ export default function PaymentTransferPage() {
     </m.div>
   );
 }
+
+export default memo(TransferPage)
