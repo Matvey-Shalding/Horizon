@@ -1,24 +1,18 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { CategoryList } from 'app/main/connect-bank/CategoryItem';
+import clsx from 'clsx';
+import { connectBankFields } from 'data/connectBankFields';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useConnectBankState } from 'hooks/useConnectBank.hook';
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { connectBankSchema, ConnectBankSchemaType } from 'schemas/connectBank.schema';
 import { connectBankService } from 'services/ConnectBank.service';
-import { RootState } from 'state/store';
-import { Category } from 'types/Category.interface';
 import { AddCategoryForm } from 'ui/AddCategory';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
 import { ErrorMessage } from 'ui/Error';
 import { Input } from 'ui/Input';
 import { Title } from 'ui/Title';
-import { useImmer } from 'use-immer';
-import { generateRandomNumber } from 'utils/generateRandomNumber';
 
 const fadeInUp = (delay = 0) => ({
   initial: { opacity: 0, y: 10 },
@@ -27,29 +21,26 @@ const fadeInUp = (delay = 0) => ({
 
 export default function ConnectBank({}: {}) {
   const {
+    banks,
+    dispatch,
+    router,
+    categories,
+    setCategories,
     handleSubmit,
-    formState: { errors },
+    errors,
     setValue,
     register,
     watch,
     setError,
     clearErrors,
     reset,
-  } = useForm<ConnectBankSchemaType>({
-    resolver: zodResolver(connectBankSchema),
-    defaultValues: {
-      categories: [],
-    },
-  });
-
-  const cardholderName = watch('cardholderName');
-
-  const dispatch = useDispatch();
-  const banks = useSelector((state: RootState) => state.bank.banks);
-
-  const router = useRouter();
-
-  const [categories, setCategories] = useImmer<Category[]>([]);
+    cardholderName,
+    handleCancel,
+    handleSubmitBank,
+    handleGenerateRandom,
+    generateCVV,
+    generateCardId,
+  } = useConnectBankState();
 
   useEffect(() => {
     setValue('categories', [...categories]);
@@ -75,11 +66,6 @@ export default function ConnectBank({}: {}) {
     }
   }, [cardholderName, banks, setError, clearErrors]);
 
-  const handleCancel = () => {
-    reset();
-    setCategories([]);
-  };
-
   return (
     <motion.div
       initial="initial"
@@ -97,27 +83,12 @@ export default function ConnectBank({}: {}) {
 
         <motion.form
           {...fadeInUp(0.2)}
-          className="mt-2 mb-2 flex flex-col gap-y-2 min-[450px]:mt-4 min-[450px]:gap-y-3 min-[768px]:mt-6 min-[768px]:mb-4"
+          className={clsx(
+            'mt-2 mb-2 flex flex-col gap-y-2 min-[450px]:mt-4',
+            'min-[450px]:gap-y-3 min-[768px]:mt-6 min-[768px]:mb-4'
+          )}
         >
-          {[
-            {
-              label: 'Cardholder Name',
-              field: 'cardholderName',
-              placeholder: 'John Doe',
-            },
-            {
-              label: 'Initial Balance',
-              field: 'balance',
-              placeholder: '0.00',
-              type: 'number',
-            },
-            {
-              label: 'Monthly Budget',
-              field: 'monthlyBudget',
-              placeholder: '0.00',
-              type: 'number',
-            },
-          ].map(({ label, field, placeholder, type = 'text' }, index) => (
+          {connectBankFields.map(({ label, field, placeholder, type = 'text' }, index) => (
             <motion.div
               key={field}
               {...fadeInUp(0.3 + index * 0.1)}
@@ -148,10 +119,8 @@ export default function ConnectBank({}: {}) {
                 />
               </div>
               <Button
-                onClick={() => {
-                  setValue('cardCvv', generateRandomNumber(3).toString());
-                }}
-                styles="basis-1/4 shrink-0 px-2"
+                onClick={generateCVV}
+                className="shrink-0 basis-1/4 px-2"
                 content="Generate"
                 props={{ type: 'button' }}
               />
@@ -173,8 +142,8 @@ export default function ConnectBank({}: {}) {
                 />
               </div>
               <Button
-                onClick={() => setValue('cardId', generateRandomNumber(12).toString())}
-                styles="basis-1/4 shrink-0 px-2"
+                onClick={generateCardId}
+                className="shrink-0 basis-1/4 px-2"
                 content="Generate"
                 props={{ type: 'button' }}
               />
@@ -215,7 +184,7 @@ export default function ConnectBank({}: {}) {
                 void connectBankService.connect(data, setError, reset, setCategories, dispatch, router)
             )}
             content="Connect bank"
-            styles="basis-1/2"
+            className="basis-1/2"
             props={{
               type: 'button',
             }}

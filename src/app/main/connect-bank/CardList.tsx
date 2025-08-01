@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useMemo } from 'react';
 import { SingUp } from 'types/Auth.types';
 import { Bank } from 'types/Bank.interface';
@@ -15,13 +15,17 @@ export function CardList({
   activeTab: number;
   cardsToShow?: number;
 }) {
-  // Ensure activeTab is within bounds
-  const validActiveTab = Math.min(activeTab, banks.length - 1);
+  // Styling settings
 
-  // Always show the card corresponding to activeTab at the front, and the next 2 cards.
+  const OVERLAP_STEP = useMemo(() => 31,[]);
+  const SHIFT_LEFT_STEP = useMemo(() => 28, []);
+
+  const validActiveTab = useMemo(() => {
+    return Math.min(activeTab, banks.length - 1);
+  }, [activeTab, banks]);
+
   const cardsToDisplay = useMemo(() => {
     return [
-      banks[validActiveTab], // The active card goes to the front
       ...banks.filter((_, index) => index !== validActiveTab).slice(0, cardsToShow ? cardsToShow - 1 : 2), // The other two cards
     ];
   }, [banks, activeTab, cardsToShow]);
@@ -35,28 +39,26 @@ export function CardList({
       }}
     >
       {cardsToDisplay.map((bank, index) => {
-        const overlapStep = 31; // 47% of card width (136px)
-        const shiftLeftStep = 28; // 5% of card width (15.8px)
-        const depth = index * -50; // Moves each card further back in 3D space
+        const depth = index * -50;
 
         return (
-          <motion.div
+          <m.div
             key={bank.cardId}
             className="absolute top-0 left-0 w-full max-w-[316px]"
             style={{
-              zIndex: cardsToDisplay.length - index, // Ensures first card is on top
+              zIndex: cardsToDisplay.length - index,
             }}
             initial={{
               opacity: 0,
-              transform: `translateY(${index * overlapStep}px) translateX(${index * shiftLeftStep}px) translateZ(${depth}px)`,
+              transform: `translateY(${index * OVERLAP_STEP}px) translateX(${index * SHIFT_LEFT_STEP}px) translateZ(${depth}px)`,
             }}
             animate={{
               opacity: 1,
-              transform: `translateY(${index * overlapStep}px) translateX(${index * shiftLeftStep}px) translateZ(${depth}px)`,
+              transform: `translateY(${index * OVERLAP_STEP}px) translateX(${index * SHIFT_LEFT_STEP}px) translateZ(${depth}px)`,
             }}
             transition={{
-              duration: 0.5, // Duration for the transition
-              ease: 'easeInOut', // Smooth easing
+              duration: 0.5,
+              ease: 'easeInOut',
             }}
           >
             <Card
@@ -64,7 +66,7 @@ export function CardList({
               firstName={user?.firstName}
               lastName={user?.lastName}
             />
-          </motion.div>
+          </m.div>
         );
       })}
     </div>
