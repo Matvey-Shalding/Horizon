@@ -1,15 +1,40 @@
-// src/schemas/paymentTransfer.schema.ts
-import { Bank } from 'types/Bank.interface'; // adjust import if needed
 import { z } from 'zod';
+import { Bank } from 'types/Bank.interface';
+import { ERROR_MESSAGES } from '../constants/errorMessages';
 
+/**
+ * Regular expression for validating balance amount (up to 2 decimal places).
+ */
+const BALANCE_REGEX = /^\d+(\.\d{1,2})?$/;
+
+/**
+ * Creates a Zod schema for validating payment transfer form data.
+ * @param banks - Array of available banks for balance validation.
+ * @returns Zod schema for payment transfer.
+ */
 export const getPaymentTransferSchema = (banks: Bank[]) =>
   z
     .object({
-      sourceBank: z.string().min(1, 'Please select a source bank'),
-      recipientAccount: z.string().min(1, 'Please select a recipient bank'),
-      balance: z.string().regex(/^\d+(\.\d{1,2})?$/, 'Enter a valid amount'),
+      /**
+       * Source bank ID, must be non-empty.
+       */
+      sourceBank: z.string().min(1, ERROR_MESSAGES.BANK_SELECT),
+      /**
+       * Recipient account ID, must be non-empty.
+       */
+      recipientAccount: z.string().min(1, ERROR_MESSAGES.RECIPIENT_SELECT),
+      /**
+       * Balance amount, must be a valid number with up to 2 decimal places.
+       */
+      balance: z.string().regex(BALANCE_REGEX, ERROR_MESSAGES.BALANCE_FORMAT),
+      /**
+       * Optional note for the transfer.
+       */
       note: z.string().optional(),
-      categoryId: z.string().min(1, 'Please select a category'),
+      /**
+       * Category ID, must be non-empty.
+       */
+      categoryId: z.string().min(1, ERROR_MESSAGES.CATEGORY_SELECT),
     })
     .refine(
       (data) => {
@@ -20,8 +45,11 @@ export const getPaymentTransferSchema = (banks: Bank[]) =>
       },
       {
         path: ['balance'],
-        message: 'Insufficient balance in the selected bank',
+        message: ERROR_MESSAGES.BALANCE_INSUFFICIENT,
       }
     );
 
+/**
+ * Type inferred from paymentTransferSchema.
+ */
 export type PaymentTransferSchemaType = z.infer<ReturnType<typeof getPaymentTransferSchema>>;

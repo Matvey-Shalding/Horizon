@@ -2,15 +2,16 @@ import { z } from 'zod';
 import { bankCategorySchema } from './bankCategory.schema';
 
 /**
- * Zod schema for the Edit Category form.
- * This validates an array of bank categories, each with a name, budget, and color.
+ * Zod schema for validating Edit Category form data.
  */
 export const editCategorySchema = z.object({
+  /**
+   * Array of bank categories, each with name and color.
+   */
   categories: z.array(bankCategorySchema),
 });
 
 /**
- * TypeScript type inferred from `editCategorySchema`.
- * Represents the shape of form data for editing multiple categories.
+ * Type inferred from editCategorySchema.
  */
-export type EditCategory = z.infer<typeof editCategorySchema>;
+export type EditCategorySchemaType = z.infer<typeof editCategorySchema>;

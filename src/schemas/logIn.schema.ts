@@ -1,17 +1,29 @@
 import { z } from 'zod';
+import { ERROR_MESSAGES } from '../constants/errorMessages';
 
-// ✅ Zod schema for LogIn form with email and password validation
+/**
+ * Zod schema for validating LogIn form data.
+ */
 export const LogInSchema = z.object({
+  /**
+   * Email, must be valid and not exceed 100 characters.
+   */
   email: z
     .string()
-    .email('Invalid email format. Use a valid email like user@example.com')
-    .min(1, 'Your email is required')
-    .max(100, 'Email cannot exceed 100 characters'),
+    .email(ERROR_MESSAGES.EMAIL_INVALID)
+    .min(1, ERROR_MESSAGES.REQUIRED)
+    .max(100, ERROR_MESSAGES.EMAIL_MAX),
 
+  /**
+   * Password, must be 8-60 characters.
+   */
   password: z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters' })
-    .refine((val) => val.length <= 60, { message: 'Password is too long.' }), // bcrypt hash length
+    .min(8, ERROR_MESSAGES.PASSWORD_MIN)
+    .refine((val) => val.length <= 60, { message: ERROR_MESSAGES.PASSWORD_TOO_LONG }),
 });
 
+/**
+ * Type inferred from LogInSchema.
+ */
 export type LogInSchemaType = z.infer<typeof LogInSchema>;

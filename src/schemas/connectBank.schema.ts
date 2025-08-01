@@ -1,12 +1,43 @@
 import { z } from 'zod';
 import { bankCategorySchema } from './bankCategory.schema';
+import { ERROR_MESSAGES } from '../constants/errorMessages';
+
+/**
+ * Regular expression for validating 12-digit card ID.
+ */
+const CARD_ID_REGEX = /^\d{12}$/;
+
+/**
+ * Zod schema for validating Connect Bank form data.
+ */
 export const connectBankSchema = z.object({
-  cardholderName: z.string().min(1, 'Cardholder name is required'),
-  balance: z.string().min(1, 'Initial balance is required'),
-  monthlyBudget: z.string().min(1, 'Monthly budget is required'),
-  cardCvv: z.string().min(3, 'Card CVV must be at least 3 digits'),
-  cardId: z.string().regex(/^\d{12}$/, 'Card ID must be a 12-digit number'),
+  /**
+   * Cardholder name, must be non-empty.
+   */
+  cardholderName: z.string().min(1, ERROR_MESSAGES.CARDHOLDER_NAME_REQUIRED),
+  /**
+   * Initial balance, must be non-empty.
+   */
+  balance: z.string().min(1, ERROR_MESSAGES.BALANCE_REQUIRED),
+  /**
+   * Monthly budget, must be non-empty.
+   */
+  monthlyBudget: z.string().min(1, ERROR_MESSAGES.MONTHLY_BUDGET_REQUIRED),
+  /**
+   * Card CVV, must be at least 3 digits.
+   */
+  cardCvv: z.string().min(3, ERROR_MESSAGES.CARD_CVV_MIN),
+  /**
+   * Card ID, must be a 12-digit number.
+   */
+  cardId: z.string().regex(CARD_ID_REGEX, ERROR_MESSAGES.CARD_ID_FORMAT),
+  /**
+   * Array of bank categories, each with name and color.
+   */
   categories: z.array(bankCategorySchema),
 });
 
+/**
+ * Type inferred from connectBankSchema.
+ */
 export type ConnectBankSchemaType = z.infer<typeof connectBankSchema>;
