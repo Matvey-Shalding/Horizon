@@ -1,69 +1,42 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRef } from 'react';
 
-import { useClickOutside } from '@react-hookz/web';
 import Dropdown from 'components/icons/main/home/dropdown';
 import Edit from 'components/icons/main/home/edit';
+import { useBanksState } from 'hooks/useBanksState.hook';
 import { useRouter } from 'next/navigation';
 import { MAIN_ROUTES } from 'routes';
-import { setBanks } from 'state/main/bankSlice';
-import { RootState } from 'state/store';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
 import { Card } from 'ui/Card';
 import { Checkbox } from 'ui/Checkbox';
-import { Label } from 'ui/Label';
 import { Title } from 'ui/Title';
 import { createSlug } from 'utils/createSlug';
 
 export default function Banks() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {
+    isMenuOpen,
+    setIsMenuOpen,
+    banks,
+    user,
+    dispatch,
+    status,
+    setStatus,
+    selectedBanks,
+    setSelectedBanks,
+    menuRef,
+    handleToggle,
+    handleSelect,
+    handleSelectAll,
+    handleDelete,
+    navigateToBank,
+  } = useBanksState();
 
   const router = useRouter();
-  const banks = useSelector((state: RootState) => state.bank.banks);
-  const user = useSelector((state: RootState) => state.user.user);
-  const dispatch = useDispatch();
-
-  const [status, setStatus] = useState<'default' | 'delete'>('default');
-  const [selectedBanks, setSelectedBanks] = useState<Set<string>>(new Set());
-
-  const handleToggle = () => {
-    setStatus((prev) => (prev === 'default' ? 'delete' : 'default'));
-    setSelectedBanks(new Set());
-  };
-
-  const handleSelect = (cardId: string) => {
-    setSelectedBanks((prev) => {
-      const newSet = new Set(prev);
-      newSet.has(cardId) ? newSet.delete(cardId) : newSet.add(cardId);
-      return newSet;
-    });
-  };
-
-  const handleSelectAll = () => {
-    if (selectedBanks.size === banks.length) {
-      setSelectedBanks(new Set());
-    } else {
-      setSelectedBanks(new Set(banks.map((bank) => bank.cardId)));
-    }
-  };
 
   const menu = useRef<HTMLDivElement | null>(null);
-
-  useClickOutside(menu, () => {
-    setIsMenuOpen(false);
-  });
-
-  const handleDelete = async () => {
-    const updatedBanks = banks.filter((bank) => !selectedBanks.has(bank.cardId));
-
-    dispatch(setBanks(updatedBanks));
-    setSelectedBanks(new Set());
-    setStatus('default');
-  };
 
   return (
     <div className="bg-gray-bg flex w-full flex-col gap-y-2 overflow-y-auto px-0 py-12 min-[450px]:px-5 min-[640px]:gap-y-4 min-[640px]:px-8 min-[900px]:gap-y-8">
@@ -75,7 +48,6 @@ export default function Banks() {
       </div>
 
       <div className="flex flex-col gap-y-5">
-        {/* Header */}
         <div className="border-border flex items-center justify-between border-b pb-2 max-[450px]:px-5">
           <h2 className="font-blue text-xl font-semibold">
             {status === 'delete' ? `${selectedBanks.size} selected` : 'Your cards'}
@@ -109,7 +81,6 @@ export default function Banks() {
                     >
                       <Checkbox
                         checked={selectedBanks.size === banks.length}
-                        // onChange={handleSelectAll}
                       />
                       <span className="text-light-gray text-sm font-medium">
                         {selectedBanks.size === banks.length ? 'Unselect All' : 'Select All'}
@@ -135,7 +106,6 @@ export default function Banks() {
           </div>
         </div>
 
-        {/* Cards List */}
         <motion.div
           layout
           className="flex flex-wrap items-center gap-10 max-[768px]:justify-center"
@@ -189,7 +159,6 @@ export default function Banks() {
                   </motion.div>
                 </motion.div>
 
-                {/* Spending Info */}
                 <motion.div
                   className="flex w-65 justify-end self-end min-[900px]:w-75"
                   layout
@@ -216,7 +185,6 @@ export default function Banks() {
         </motion.div>
       </div>
 
-      {/* Delete Footer */}
       <AnimatePresence>
         {status === 'delete' && (
           <motion.div
@@ -234,7 +202,7 @@ export default function Banks() {
               }}
             />
             <Button
-              styles="!w-auto basis-22 max-[640px]:basis-1/2"
+              className="!w-auto basis-22 max-[640px]:basis-1/2"
               content="Delete"
               onClick={handleDelete}
             />
