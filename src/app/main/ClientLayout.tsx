@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { authorizationService } from 'services/Authorization.service';
 import { RootState } from 'state/store';
 import Loader from 'ui/Loader';
 import Sidebar from 'ui/sidebar/Sidebar';
@@ -15,27 +16,13 @@ export default function ClientLayout({
 }) {
   const user = useSelector((state: RootState) => state.user.user);
   const banks = useSelector((state: RootState) => state.bank.banks);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    const handlePageHide = (event: PageTransitionEvent) => {
-      const dataToSend = { userData: user, userBanks: banks };
-      const blob = new Blob([JSON.stringify(dataToSend)], {
-        type: 'application/json',
-      });
-
-      const success = navigator.sendBeacon('/api/home', blob);
-
-      if (!success) {
-        console.warn('sendBeacon failed to queue the data for sending.');
-      }
-
-      const start = Date.now();
-      while (Date.now() - start < 300) {} // 300ms delay
+    const handlePageHideWithParams = (e: PageTransitionEvent) => {
+      authorizationService.handlePageHide(user, banks);
     };
-
-    window.addEventListener('pagehide', handlePageHide);
-    return () => window.removeEventListener('pagehide', handlePageHide);
+    window.addEventListener('pagehide', handlePageHideWithParams);
+    return () => window.removeEventListener('pagehide', handlePageHideWithParams);
   }, [user, banks]);
 
   if (isLoading) {

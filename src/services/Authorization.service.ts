@@ -1,13 +1,24 @@
 'use client';
 
 import { login } from 'actions/login';
-import { singUp } from 'actions/singup';
+import { signUp } from 'actions/singup';
 import { signIn } from 'next-auth/react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Dispatch, SetStateAction } from 'react';
 import { MAIN_ROUTES } from 'routes';
 import { LogIn, SingUp } from 'types/Auth.types';
+import { Bank } from 'types/Bank.interface';
 import { Updater } from 'use-immer';
+import { getUser } from 'utils/getUser';
+
+interface ServerData {
+  error?: string;
+  success?: string;
+
+  email?: string;
+
+  password?: string;
+}
 
 /**
  * Service class for handling user authorization operations.
@@ -18,7 +29,7 @@ class Authorization {
    * @param user - The user signup data.
    * @param banks - Array of user-associated banks.
    */
-  handlePageHide = (user: SingUp | null | undefined, banks: string[]) => {
+  handlePageHide = (user: SingUp | null | undefined, banks: Bank[]) => {
     const dataToSend = { userData: user, userBanks: banks };
     const blob = new Blob([JSON.stringify(dataToSend)], {
       type: 'application/json',
@@ -28,6 +39,11 @@ class Authorization {
       console.warn('sendBeacon failed to queue the data for sending.');
     }
   };
+
+  async fetchUser(setUser: Dispatch<SetStateAction<SingUp | null | undefined>>): Promise<void> {
+    const fetchedUser = await getUser();
+    setUser(fetchedUser);
+  }
 
   /**
    * Handles user login.
@@ -100,7 +116,7 @@ class Authorization {
     setError('');
     setSuccess('');
     startTransition(() => {
-      singUp(data).then((data) => {
+      signUp(data).then((data: ServerData) => {
         setError(data?.error);
         setSuccess(data?.success);
         setUserData({ email: data.email, password: data.password });

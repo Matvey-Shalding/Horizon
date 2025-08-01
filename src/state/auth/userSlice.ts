@@ -8,7 +8,7 @@ import { SingUp } from 'types/Auth.types';
  */
 interface UserState {
   /** Current user data or null if not set */
-  user: SingUp | null;
+  user: SingUp | null | undefined;
 }
 
 /**
@@ -30,7 +30,7 @@ const userSlice = createSlice({
      * @param state Current user state
      * @param action Payload containing user data or null
      */
-    setUser: (state, action: PayloadAction<SingUp | null>) => {
+    setUser: (state, action: PayloadAction<SingUp | null  | undefined>) => {
       state.user = action.payload;
     },
   },

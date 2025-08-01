@@ -1,9 +1,10 @@
 'use client';
 
+import { memo } from 'react';
 import ClientLayout from './ClientLayout';
 import { ClientProvider } from './clientProvider';
 
-export function LayoutProvider({ children, isLoading }: { children: React.ReactNode; isLoading: boolean }) {
+function Layout({ children, isLoading }: { children: React.ReactNode; isLoading: boolean }) {
   return (
     <div>
       <ClientProvider />
@@ -11,3 +12,5 @@ export function LayoutProvider({ children, isLoading }: { children: React.ReactN
     </div>
   );
 }
+
+export const LayoutProvider = memo(Layout);

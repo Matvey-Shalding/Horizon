@@ -2,19 +2,17 @@ import { useClickOutside, useMediaQuery } from '@react-hookz/web';
 import { menuItems } from 'data/menuItems';
 import { signOut } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AUTH_ROUTES } from 'routes';
-import { authorizationService } from 'services/Authorization.service';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 import { RootState } from 'state/store';
+import { SingUp } from 'types/Auth.types';
+import MenuItem from 'types/MenuItem.interface';
 import BigSidebar from './BigSidebar';
 import FixedSlidingBigSidebar from './FixedBigSidebar';
 import SmallSidebar from './SmallSidebar';
 import TogglingSidebar from './TogglingSidebar';
-import MenuItem from 'types/MenuItem.interface';
-import { SingUp } from 'types/Auth.types';
-
 
 interface CommonSidebarProps {
   isOpen: boolean;
@@ -25,7 +23,6 @@ interface CommonSidebarProps {
   user: SingUp | null | undefined;
   onLogout: () => void;
 }
-
 
 const Sidebar = ({ isLoading }: { isLoading: boolean }) => {
   const router = useRouter();
@@ -51,14 +48,6 @@ const Sidebar = ({ isLoading }: { isLoading: boolean }) => {
     }),
     [isSidebarOpen, pathname, router, user]
   );
-
-  useEffect(() => {
-    const handlePageHideWithParams = (e: PageTransitionEvent) => {
-      authorizationService.handlePageHide(user, banks);
-    };
-    window.addEventListener('pagehide', handlePageHideWithParams);
-    return () => window.removeEventListener('pagehide', handlePageHideWithParams);
-  }, [user, banks]);
 
   useClickOutside(sidebarRef, () => {
     if (isSmallScreen) {
