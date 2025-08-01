@@ -1,6 +1,10 @@
 // constants/colors.ts
+
+/**
+ * Array of blue color shades from deepest to lightest in hex format.
+ */
 export const BLUE_SHADES = [
-  '#007BFF', // deepest
+  '#007BFF', // Deepest
   '#198CFF',
   '#3399FF',
   '#4DA6FF',
@@ -10,9 +14,9 @@ export const BLUE_SHADES = [
   '#B3D9FF',
   '#CCE5FF',
   '#E0EBFF',
-  '#E6F2FF', // lightest
+  '#E6F2FF', // Lightest
   '#EBF5FF',
   '#F0F8FF',
   '#F5FBFF',
   '#FAFDFF',
-];
+] as const;
