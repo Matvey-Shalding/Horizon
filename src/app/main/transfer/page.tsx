@@ -1,17 +1,11 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'state/store';
-import { Bank } from 'types/Bank.interface';
+import { m } from 'framer-motion';
+import { useEffect } from 'react';
 
-import { useMediaQuery } from '@react-hookz/web';
-import { getPaymentTransferSchema, PaymentTransferSchemaType } from 'schemas/paymentTransfer.schema';
-import { paymentTransferService } from 'services/paymentTransfer.service';
-import { MEDIA_QUERIES } from 'settings/MediaQueries';
+import clsx from 'clsx';
+import { usePaymentTransferState } from 'hooks/usePaymentTransferState.hook';
+import { getPaymentTransferSchema } from 'schemas/paymentTransfer.schema';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
 import { ErrorMessage } from 'ui/Error';
@@ -23,11 +17,9 @@ import { SectionTitle } from './SectionTitle';
 import { Subtitle } from './SubTitle';
 
 export default function PaymentTransferPage() {
-  const banks: Bank[] = useSelector((state: RootState) => state.bank.banks);
-
-  const paymentTransferSchema = getPaymentTransferSchema(banks);
-
   const {
+    banks,
+    dispatch,
     register,
     handleSubmit,
     setValue,
@@ -36,52 +28,30 @@ export default function PaymentTransferPage() {
     clearErrors,
     setError,
     getValues,
-    formState: { errors, isSubmitted },
-  } = useForm<PaymentTransferSchemaType>({
-    resolver: zodResolver(paymentTransferSchema),
-    mode: 'onChange',
-  });
+    errors,
+    isSubmitted,
+    sourceBank,
+    resetCounter,
+    setResetCounter,
+    isTablet,
+    onSubmit,
+    handleCancel,
+  } = usePaymentTransferState();
 
-  const dispatch = useDispatch();
-
-  const sourceBank = watch('sourceBank');
-
-  const [resetCounter, setResetCounter] = useState(0);
+  const paymentTransferSchema = getPaymentTransferSchema(banks);
 
   useEffect(() => {
     if (sourceBank) clearErrors('sourceBank');
   }, [sourceBank, clearErrors]);
 
-  const isTablet = useMediaQuery(`(max-width:${MEDIA_QUERIES.TABLETS})`);
-
-  const onSubmit = (data: PaymentTransferSchemaType) => {
-    setResetCounter((prev) => prev + 1);
-    alert('hello');
-    paymentTransferService.transferFunds({
-      sourceBank: data.sourceBank,
-      recipientAccount: data.recipientAccount,
-      balance: data.balance,
-      categoryId: data.categoryId,
-      note: data.note,
-      banks,
-      dispatch,
-      reset,
-      clearErrors,
-    });
-  };
-
-  const handleCancel = () => {
-    setResetCounter((prev) => prev + 1);
-    paymentTransferService.resetFormState({
-      reset,
-      clearErrors,
-    });
-  };
   return (
-    <motion.div
+    <m.div
       initial="initial"
       animate="animate"
-      className="bg-gray-bg flex w-full flex-col overflow-y-auto px-3 pt-10 pb-8 min-[450px]:px-6 min-[768px]:px-8 min-[768px]:pt-12 min-[768px]:pb-14"
+      className={clsx(
+        'bg-gray-bg flex w-full flex-col overflow-y-auto px-3 pt-10 pb-8',
+        'min-[450px]:px-6 min-[768px]:px-8 min-[768px]:pt-12 min-[768px]:pb-14'
+      )}
     >
       <Title
         title="Payment Transfer"
@@ -90,14 +60,16 @@ export default function PaymentTransferPage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mt-3.5 mb-5 flex flex-col gap-y-2.5 min-[640px]:mt-5 min-[640px]:gap-y-4 min-[768px]:mt-8 min-[768px]:gap-y-6"
+        className={clsx(
+          'mt-3.5 mb-5 flex flex-col gap-y-2.5 min-[640px]:mt-5',
+          'min-[640px]:gap-y-4 min-[768px]:mt-8 min-[768px]:gap-y-6'
+        )}
       >
         <SectionTitle
           title="Transfer details"
           subtitle="Enter the details of the recipient"
         />
 
-        {/* Source Bank BanksDropdown */}
         <BanksDropdown
           isSourceBank
           resetCounter={resetCounter}
@@ -128,7 +100,10 @@ export default function PaymentTransferPage() {
             />
             <textarea
               placeholder="Enter your message here"
-              className="text-dark no-res min-h-25 w-128 resize-none border bg-white p-2 text-sm min-[768px]:min-h-35 min-[768px]:p-3"
+              className={clsx(
+                'text-dark no-res min-h-25 w-128 resize-none border',
+                'bg-white p-2 text-sm min-[768px]:min-h-35 min-[768px]:p-3'
+              )}
               {...register('note')}
             />
           </div>
@@ -143,8 +118,12 @@ export default function PaymentTransferPage() {
           </div>
         )}
 
-        {/* Amount & Category */}
-        <div className="border-border flex min-[640px]:border-b min-[640px]:pb-4 min-[768px]:gap-x-8 min-[768px]:pb-5">
+        <div
+          className={clsx(
+            'border-border flex min-[640px]:border-b',
+            'min-[640px]:pb-4 min-[768px]:gap-x-8 min-[768px]:pb-5'
+          )}
+        >
           {!isTablet && (
             <Subtitle
               title="Amount"
@@ -173,7 +152,7 @@ export default function PaymentTransferPage() {
         />
         <div className="flex gap-3">
           <Button
-            styles="basis-1/2"
+            className="basis-1/2"
             content="Transfer Funds"
           />
           <CancelButton
@@ -182,6 +161,6 @@ export default function PaymentTransferPage() {
           />
         </div>
       </form>
-    </motion.div>
+    </m.div>
   );
 }

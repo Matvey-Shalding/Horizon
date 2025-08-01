@@ -29,7 +29,7 @@ class PaymentTransferService {
    * Resets the form and UI state after a transfer or cancellation.
    * @param params - Parameters for resetting form state.
    */
-  private resetFormState({ reset, clearErrors }: ResetParams): void {
+  resetFormState({ reset, clearErrors }: ResetParams): void {
     reset();
     clearErrors();
   }

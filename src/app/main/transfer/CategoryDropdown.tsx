@@ -1,10 +1,11 @@
 import { useMediaQuery } from '@react-hookz/web';
 import chroma from 'chroma-js';
+import clsx from 'clsx';
 import Arrow from 'components/icons/main/transactions/arrow';
 import CategoryIcon from 'components/icons/main/transactions/category';
 import CheckMark from 'components/icons/main/transactions/checkmark';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, m } from 'framer-motion';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 import { PaymentTransferSchemaType } from 'schemas/paymentTransfer.schema';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
@@ -13,7 +14,6 @@ import { ErrorMessage } from 'ui/Error';
 import { shortenString } from 'utils/shortenTitle';
 import { v4 } from 'uuid';
 import { Subtitle } from './SubTitle';
-import clsx from 'clsx';
 
 export function CategoryDropdown<T>({
   title,
@@ -36,6 +36,10 @@ export function CategoryDropdown<T>({
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('');
 
+  const currentCategory = useMemo(() => {
+    return selected ? categories.find((b) => b.name === selected)?.name : 'Select Category';
+  }, [selected, categories]);
+
   useEffect(() => {
     setSelected('');
     setIsOpen(false);
@@ -45,7 +49,12 @@ export function CategoryDropdown<T>({
   const isTablet = useMediaQuery(`(max-width:${MEDIA_QUERIES.TABLETS})`);
 
   return (
-    <div className="border-border flex border-b pb-2.5 min-[450px]:pb-4 min-[768px]:gap-x-8 min-[768px]:pb-5">
+    <div
+      className={clsx(
+        'border-border flex border-b pb-2.5 min-[450px]:pb-4',
+        'min-[768px]:gap-x-8 min-[768px]:pb-5'
+      )}
+    >
       {!isTablet && (
         <Subtitle
           title={title}
@@ -57,7 +66,11 @@ export function CategoryDropdown<T>({
         <div className="flex flex-col gap-y-1.5">
           <div
             ref={ref}
-            className={`relative flex min-h-11 cursor-pointer items-center justify-between rounded-lg border bg-white pr-4.5 pl-3 transition-all duration-200 hover:border-blue-400 hover:shadow-md`}
+            className={clsx(
+              `relative flex min-h-11 cursor-pointer items-center`,
+              'justify-between rounded-lg border bg-white pr-4.5 pl-3',
+              'transition-all duration-200 hover:border-blue-400 hover:shadow-md'
+            )}
             onClick={() => setIsOpen((prev) => !prev)}
           >
             <div className="flex items-center gap-x-1">
@@ -66,21 +79,23 @@ export function CategoryDropdown<T>({
                 width={isDesktop ? 24 : 20}
                 height={isDesktop ? 24 : 20}
               />
-              <span className="text-dark-gray text-sm font-medium">
-                {selected ? categories.find((b) => b.name === selected)?.name : 'Select Category'}
-              </span>
+              <span className="text-dark-gray text-sm font-medium">{currentCategory}</span>
             </div>
             <Arrow className={`${isOpen ? 'rotate-180' : ''} transition-transform`} />
 
             <AnimatePresence>
               {isOpen && (
-                <motion.div
+                <m.div
                   key="category-dropdown"
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute -top-2 right-0 z-10 flex w-60 -translate-y-full flex-col overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-md min-[768px]:w-70"
+                  className={clsx(
+                    'absolute -top-2 right-0 z-10 flex w-60 rounded-lg border',
+                    '-translate-y-full flex-col overflow-y-auto border-gray-200',
+                    'bg-white shadow-md min-[768px]:w-70'
+                  )}
                 >
                   {categories.length === 0 ? (
                     <div className="text-light-gray px-4 py-3 text-center text-sm font-medium">
@@ -102,8 +117,9 @@ export function CategoryDropdown<T>({
                             setTimeout(() => setIsOpen(false), 0);
                           }}
                           className={clsx(
-                            'border-border flex cursor-pointer items-center gap-x-2 border-b px-4 py-2 text-sm font-medium min-[768px]:gap-x-3',
+                            'border-border flex cursor-pointer items-center gap-x-2',
                             'transition-colors duration-150 ease-in-out',
+                            'border-b px-4 py-2 text-sm font-medium min-[768px]:gap-x-3',
                             selected === category.name
                               ? 'bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700'
                               : 'text-gray-700 hover:bg-gray-200 hover:text-gray-900'
@@ -116,7 +132,10 @@ export function CategoryDropdown<T>({
                                   backgroundColor: bg,
                                   color: textColor,
                                 }}
-                                className="grid size-[25px] place-content-center rounded-full text-xs font-medium min-[768px]:size-8 min-[768px]:text-sm"
+                                className={clsx(
+                                  'grid size-[25px] place-content-center rounded-full text-xs',
+                                  'font-medium min-[768px]:size-8 min-[768px]:text-sm'
+                                )}
                               >
                                 {shortenString(category.name)}
                               </div>
@@ -133,7 +152,7 @@ export function CategoryDropdown<T>({
                       );
                     })
                   )}
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>
