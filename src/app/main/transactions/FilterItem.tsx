@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import clsx from 'clsx';
+import { m } from 'framer-motion';
+import { useCallback, useState } from 'react';
 
 interface FilterChipProps {
   label: string;
@@ -10,18 +11,21 @@ interface FilterChipProps {
 export function FilterChip({ label, value, onRemove }: FilterChipProps) {
   const [isVisible, setIsVisible] = useState(true);
 
-  const handleRemove = () => {
-    setIsVisible(false); // Trigger exit animation
-    setTimeout(onRemove, 200); // Wait for animation before removing
-  };
+  const handleRemove = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(onRemove, 200);
+  },[]);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.2 }}
-      className="rounded-main border-border text-gray flex items-center gap-x-2 border px-2.5 py-1.25 text-sm font-medium"
+      className={clsx(
+        'rounded-main border-border text-gray flex items-center',
+        'gap-x-2 border px-2.5 py-1.25 text-sm font-medium'
+      )}
       style={{ display: isVisible ? 'flex' : 'none' }}
     >
       {label}: {value}
@@ -31,6 +35,6 @@ export function FilterChip({ label, value, onRemove }: FilterChipProps) {
       >
         ✕
       </button>
-    </motion.div>
+    </m.div>
   );
 }

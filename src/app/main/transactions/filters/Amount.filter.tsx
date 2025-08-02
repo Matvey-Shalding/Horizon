@@ -1,8 +1,9 @@
 import clsx from 'clsx';
 import Arrow from 'components/icons/main/transactions/arrow';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Range, getTrackBackground } from 'react-range';
+import { AnimatePresence, m } from 'framer-motion';
 import 'rc-slider/assets/index.css';
+import { memo } from 'react';
+import { Range, getTrackBackground } from 'react-range';
 import { Input } from 'ui/Input';
 
 interface AmountFilterProps {
@@ -12,7 +13,7 @@ interface AmountFilterProps {
   setAmountRange: (range: [number, number]) => void;
 }
 
-export function AmountFilter({ isOpen, setIsOpen, amountRange, setAmountRange }: AmountFilterProps) {
+function AmountFilterComponent({ isOpen, setIsOpen, amountRange, setAmountRange }: AmountFilterProps) {
   return (
     <div className="flex flex-col gap-y-2">
       <label
@@ -28,7 +29,7 @@ export function AmountFilter({ isOpen, setIsOpen, amountRange, setAmountRange }:
       </label>
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             layout
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
@@ -105,9 +106,10 @@ export function AmountFilter({ isOpen, setIsOpen, amountRange, setAmountRange }:
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
   );
 }
+export const AmountFilter = memo(AmountFilterComponent);

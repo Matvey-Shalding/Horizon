@@ -1,12 +1,12 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import 'styles/lib/calendar.css';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 interface CalendarPortalProps {
   position: { top: number; left: number };
@@ -39,12 +39,18 @@ export default function CalendarPortal({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
+  const handleSelect = useCallback((range:any) => {
+    if (range?.from && range?.to) {
+      onSelect({ from: range.from, to: range.to });
+    }
+  },[]);
+
   if (!portalRoot) return null;
 
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <motion.div
+        <m.div
           ref={menuRef}
           initial={{ opacity: 0, scale: 0.95, y: -5 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -55,21 +61,18 @@ export default function CalendarPortal({
             left: position.left,
           }}
           className={clsx(
-            'absolute z-50 w-70 -translate-x-2 -translate-y-full rounded-lg bg-white p-2 shadow-lg min-[768px]:-translate-x-[calc(100%+15px)]'
+            'absolute z-50 w-70 -translate-x-2 -translate-y-full rounded-lg bg-white',
+            'p-2 shadow-lg min-[768px]:-translate-x-[calc(100%+15px)]'
           )}
         >
           <DayPicker
             disabled={{ after: new Date() }}
             mode="range"
             selected={dateRange}
-            onSelect={(range) => {
-              if (range?.from && range?.to) {
-                onSelect({ from: range.from, to: range.to });
-              }
-            }}
+            onSelect={handleSelect}
             defaultMonth={dateRange?.from}
           />
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>,
     portalRoot

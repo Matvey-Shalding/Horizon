@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import Arrow from 'components/icons/main/transactions/arrow';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, m } from 'framer-motion';
+import { useMemo, useRef, useState } from 'react';
 import { transactionFilterService } from 'services/Transactions.service';
+import { Category } from 'types/Category.interface';
 import { Checkbox } from 'ui/Checkbox';
 import { Input } from 'ui/Input';
-import { Category } from 'types/Category.interface';
 
 interface CategoryWithBank extends Category {
   bank: { cardId: string; cardholderName: string };
@@ -30,19 +30,13 @@ export function CategoryFilter({
   const [showAllCategories, setShowAllCategories] = useState(false);
   const categoryListRef = useRef<HTMLDivElement>(null);
 
-  const maxHeight = useMemo(() => {
-    return categoryListRef?.current?.getBoundingClientRect().height ?? 0;
-  }, []);
+  const filteredCategories = useMemo(() => {
+    return transactionFilterService.getFilteredCategories(categories, categorySearch);
+  }, [categories, categorySearch]);
 
-  // useEffect(() => {
-  //   if (categoryListRef.current) {
-  //     const maxHeight = window.innerHeight - 80 - categoryListRef.current.getBoundingClientRect().top;
-  //     categoryListRef.current.style.maxHeight = `${maxHeight}px`;
-  //     categoryListRef.current.style.overflowY = "auto";
-  //   }
-  // }, [isOpen]);
-
-  const filteredCategories = transactionFilterService.getFilteredCategories(categories, categorySearch);
+  const currentCategories = useMemo(() => {
+    return filteredCategories.slice(0, showAllCategories ? undefined : 3);
+  }, [filteredCategories, showAllCategories]);
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -59,7 +53,7 @@ export function CategoryFilter({
       </label>
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             layout
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
@@ -77,7 +71,7 @@ export function CategoryFilter({
                 className="flex max-h-35.5 flex-col gap-y-2 overflow-y-auto"
               >
                 {filteredCategories.length > 0 ? (
-                  filteredCategories.slice(0, showAllCategories ? undefined : 3).map((category) => (
+                  currentCategories.map((category) => (
                     <label
                       key={category.name}
                       className={clsx('text-gray flex items-center gap-2 py-[4.25px] pl-1 font-medium')}
@@ -97,7 +91,10 @@ export function CategoryFilter({
                 )}
                 {filteredCategories.length > 3 && (
                   <button
-                    className="text-light-blue flex justify-start px-1 text-sm font-medium hover:bg-gray-100"
+                    className={clsx(
+                      'text-light-blue flex justify-start px-1',
+                      'text-sm font-medium hover:bg-gray-100'
+                    )}
                     onClick={() => setShowAllCategories((prev) => !prev)}
                   >
                     {showAllCategories ? 'Show Less' : 'Show More'}
@@ -105,7 +102,7 @@ export function CategoryFilter({
                 )}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

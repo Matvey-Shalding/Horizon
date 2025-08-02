@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import Arrow from 'components/icons/main/transactions/arrow';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, m } from 'framer-motion';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { transactionFilterService } from 'services/Transactions.service';
 import { Bank } from 'types/Bank.interface';
 import { Checkbox } from 'ui/Checkbox';
@@ -28,7 +28,13 @@ export function BankFilter({ isOpen, setIsOpen, banks, selectedBanks, toggleBank
     }
   }, [isOpen]);
 
-  const filteredBanks = transactionFilterService.getFilteredBanks(banks, bankSearch);
+  const filteredBanks = useMemo(() => {
+    return transactionFilterService.getFilteredBanks(banks, bankSearch);
+  }, [banks, bankSearch]);
+
+  const currentBanks = useMemo(() => {
+    return filteredBanks.slice(0, showAllBanks ? undefined : 3);
+  }, [filteredBanks, showAllBanks]);
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -45,7 +51,7 @@ export function BankFilter({ isOpen, setIsOpen, banks, selectedBanks, toggleBank
       </label>
       <AnimatePresence mode="wait">
         {isOpen && (
-          <motion.div
+          <m.div
             initial={{ height: 0, opacity: 0 }}
             animate={{
               height: 'auto',
@@ -72,7 +78,7 @@ export function BankFilter({ isOpen, setIsOpen, banks, selectedBanks, toggleBank
               />
               <div className="flex max-h-35.5 flex-col gap-y-2 overflow-y-auto">
                 {filteredBanks.length > 0 ? (
-                  filteredBanks.slice(0, showAllBanks ? undefined : 3).map((bank) => (
+                  currentBanks.map((bank) => (
                     <label
                       key={bank.cardId}
                       className={clsx('text-gray flex items-center gap-2 py-[4.25px] pl-1 font-medium')}
@@ -100,7 +106,7 @@ export function BankFilter({ isOpen, setIsOpen, banks, selectedBanks, toggleBank
                 )}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
