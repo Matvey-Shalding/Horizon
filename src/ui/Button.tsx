@@ -21,7 +21,7 @@ function ButtonComponent({ content, className, onClick,props }: ButtonProps) {
       type="button"
       onClick={onClick}
       className={clsx(
-        'rounded-main gradient min-h-11 w-full text-base/normal text-white disabled:cursor-not-allowed',
+        'rounded-main font-semibold gradient min-h-11 w-full text-base/normal text-white disabled:cursor-not-allowed',
         className
       )}
       initial={{ scale: 1 }}

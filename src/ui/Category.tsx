@@ -1,4 +1,4 @@
-import { MenuStatus,MENU_STATUSES } from 'constants/MenuStatuses';
+import { MenuStatus,MENU_STATUSES } from 'constants/menuStatuses';
 import { m } from 'framer-motion';
 import { useCategory } from 'hooks/useCategory.hook';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -54,8 +54,8 @@ export function Category({
           checked={isChecked}
           onChange={onChange}
           style={{ backgroundColor: bgColor }}
-          styles="w-6 h-6"
-          svgStyle="w-5 h-5"
+          checkBoxStyles="w-6 h-6"
+          checkMarkStyles="w-5 h-5"
         />
       )}
       <m.div

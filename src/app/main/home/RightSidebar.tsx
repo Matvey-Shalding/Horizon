@@ -49,8 +49,13 @@ function RightSidebar({ isCollapsed, setIsCollapsed, activeTab }: RightSidebarPr
   useEffect(() => {
     if (sidebarRef.current) {
       sidebarRef.current.style.maxHeight = `${window.innerHeight}px`;
+      if (isRightSidebarFixed) {
+        sidebarRef.current.style.height = '100vh'; // Ensure fixed sidebar takes full height
+      } else {
+        sidebarRef.current.style.height = 'auto'; // Reset for non-fixed state
+      }
     }
-  }, []);
+  }, [isRightSidebarFixed]);
 
   return (
     <>
@@ -68,8 +73,8 @@ function RightSidebar({ isCollapsed, setIsCollapsed, activeTab }: RightSidebarPr
             ref={sidebarRef}
             {...animation}
             className={clsx(
-              'w-98 shrink-0 overflow-x-hidden overflow-y-scroll bg-white pt-8',
-              isRightSidebarFixed && 'fixed top-0 right-0 z-30',
+              'max-w-98 shrink-0 overflow-x-hidden overflow-y-scroll bg-white pt-8',
+              isRightSidebarFixed && 'fixed top-0 right-0 z-30 h-screen', // Added h-screen for fixed
               isMobile && 'w-full'
             )}
           >

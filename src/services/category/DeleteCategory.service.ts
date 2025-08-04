@@ -1,7 +1,7 @@
 'use client';
 
 import { Dispatch } from '@reduxjs/toolkit';
-import { MenuStatus } from 'constants/MenuStatuses';
+import { MenuStatus } from 'constants/menuStatuses';
 import { ChangeEvent } from 'react';
 import { setBanks } from 'state/main/bankSlice';
 import { Updater } from 'use-immer';
@@ -79,6 +79,7 @@ class CategoryService {
     setDeletedCategories: Updater<string[]>,
     setCheckAll: React.Dispatch<React.SetStateAction<boolean>>
   ) {
+    console.log(deletedCategories)
     const updatedBanks = [...banks];
     updatedBanks[activeTab] = {
       ...updatedBanks[activeTab],

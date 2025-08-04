@@ -3,12 +3,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import Plus from 'components/icons/main/home/plus';
-import { DEFAULT_COLOR } from 'constants/DefaultColor';
+import { DEFAULT_COLOR } from 'constants/defaultColor';
 import { AnimatePresence, m } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { useForm } from 'react-hook-form';
-import { bankCategorySchema, bankCategorySchemaType } from 'schemas/bankCategory.schema';
+import { bankCategorySchema, BankCategorySchemaType } from 'schemas/bankCategory.schema';
 import { addCategoryService } from 'services/category/AddCategory.service';
 import { Category } from 'types/Category.interface';
 import { Button } from 'ui/Button';
@@ -42,7 +42,7 @@ export function AddCategoryForm({
     clearErrors,
     setError,
     formState: { errors },
-  } = useForm<bankCategorySchemaType>({
+  } = useForm<BankCategorySchemaType>({
     resolver: zodResolver(bankCategorySchema),
     defaultValues: {
       name: '',
@@ -61,18 +61,18 @@ export function AddCategoryForm({
   }, []);
 
   const onSubmit = useCallback(
-    (data: bankCategorySchemaType) => {
-      addCategoryService.submitCategory(
+    (data: BankCategorySchemaType) => {
+      addCategoryService.submitCategory({
         data,
         categories,
         setError,
         clearErrors,
         setShowColorPicker,
-        setIsOpen,
+        setOpen:setIsOpen,
         setCategories,
         reset,
-        setSelectedColor
-      );
+        setSelectedColor,
+      });
     },
     [categories, setError, clearErrors, setShowColorPicker, setIsOpen, setCategories, reset, setSelectedColor]
   );
@@ -186,12 +186,14 @@ export function AddCategoryForm({
               content="Cancel"
               onClick={() =>
                 void addCategoryService.closeForm(
-                  clearErrors,
-                  setShowColorPicker,
-                  setIsOpen,
-                  reset,
-                  setSelectedColor,
-                  onCancel
+                  {
+                    clearErrors,
+                    setShowColorPicker,
+                    setOpen: setIsOpen,
+                    reset,
+                    setSelectedColor,
+                    onCancel
+                  }
                 )
               }
               props={{ type: 'button' }}

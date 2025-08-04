@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { useCallback, useEffect, useState, memo } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
 interface CheckboxProps {
@@ -48,13 +48,10 @@ const CheckboxComponent = ({
   );
 
   return (
-    <label
-      className={clsx('relative inline-flex items-center', styles)}
-      style={style}
-    >
+    <label className={clsx('relative inline-flex items-center', styles)}>
       <input
         type="checkbox"
-        className="peer absolute h-0 w-0 opacity-0"
+        className="peer absolute h-0 w-0 bg-transparent! opacity-0"
         {...(register && register(String(name)))}
         checked={checked}
         defaultChecked={defaultChecked}
@@ -69,6 +66,7 @@ const CheckboxComponent = ({
           'peer-checked:scale-105 peer-active:scale-95',
           checkBoxStyles
         )}
+        style={style}
       >
         <svg
           className={clsx(

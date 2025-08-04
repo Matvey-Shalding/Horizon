@@ -43,7 +43,7 @@ export function CategorySectionDelete({
     []
   );
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = () => {
     deleteCategoryService.handleDelete(
       banks,
       activeTab,
@@ -54,7 +54,7 @@ export function CategorySectionDelete({
       setDeletedCategories,
       setCheckAll
     );
-  }, []);
+  };
 
   useEffect(() => {
     setCheckAll(deletedCategories.length === categories.length);
@@ -101,7 +101,10 @@ export function CategorySectionDelete({
           Cancel
         </m.button>
         <Button
-          onClick={onSubmit}
+          onClick={() => {
+            alert('hello');
+            onSubmit();
+          }}
           className="text-white"
           content="Delete"
         />

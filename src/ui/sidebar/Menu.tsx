@@ -1,16 +1,16 @@
+import Tippy from '@tippyjs/react';
 import clsx from 'clsx';
 import { AnimatePresence, m } from 'framer-motion';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { memo, useCallback } from 'react';
+import 'styles/lib/tooltip.css';
+import 'tippy.js/dist/tippy.css'; // basic styling
 import MenuItem from 'types/MenuItem.interface';
 
 interface MenuProps {
   items: MenuItem[];
-
   showLabels: boolean;
-
   pathname: string;
-
   router: AppRouterInstance;
 }
 
@@ -35,6 +35,7 @@ const Menu = ({ items, showLabels, pathname, router }: MenuProps) => {
     >
       {items.map((item) => {
         const isActive = pathname.startsWith(item.path);
+
         return (
           <m.button
             key={item.path}
@@ -52,10 +53,26 @@ const Menu = ({ items, showLabels, pathname, router }: MenuProps) => {
               }
             )}
           >
-            <item.icon
-              width={24}
-              height={24}
-            />
+            {showLabels ? (
+              <item.icon
+                width={24}
+                height={24}
+              />
+            ) : (
+              <Tippy
+                content={item.label}
+                placement="top"
+                delay={100}
+              >
+                <span className="inline-flex">
+                  <item.icon
+                    width={24}
+                    height={24}
+                  />
+                </span>
+              </Tippy>
+            )}
+
             <AnimatePresence>
               {showLabels && (
                 <m.span

@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useImmer } from 'use-immer';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { bankCategorySchema, BankCategorySchemaType } from 'schemas/bankCategory.schema';
-import { Category } from 'types/Category.interface';
 import { MenuStatus } from 'constants/menuStatuses';
+import { useEffect, useRef, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { bankCategorySchema } from 'schemas/bankCategory.schema';
 import { editCategoryService } from 'services/category/EditCategory.service';
 import { setBanks } from 'state/main/bankSlice';
+import { Category } from 'types/Category.interface';
+import { useImmer } from 'use-immer';
+import { z } from 'zod';
 
 /**
  * Props for the useCategorySectionEditState hook.
@@ -16,18 +16,28 @@ interface CategorySectionEditStateProps {
   status: MenuStatus;
   setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>;
   activeTab: number;
-  banks: any; // Consider defining a proper Bank interface
+  banks: any;
   categories: Category[];
-  dispatch: any; // Consider typing with AppDispatch
+  dispatch: any;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
- * Schema for the category edit form.
+ * Schema for the category edit form with unique name validation.
  */
 const CategoryFormSchema = z.object({
-  categories: z.array(bankCategorySchema),
+  categories: z.array(bankCategorySchema).superRefine((categories, ctx) => {
+    const names = categories.map((cat) => cat.name.trim().toLowerCase());
+    const duplicates = names.filter((name, index) => names.indexOf(name) !== index);
+    if (duplicates.length > 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Category names must be unique',
+        path: ['root'],
+      });
+    }
+  }),
 });
 
 /**
@@ -37,8 +47,6 @@ type CategoryForm = z.infer<typeof CategoryFormSchema>;
 
 /**
  * Hook for managing state and form logic in the CategorySectionEdit component.
- * @param props - Props for menu status, active tab, banks, categories, dispatch, and dropdown state.
- * @returns Object containing state, form methods, and handlers for the CategorySectionEdit component.
  */
 export const useCategorySectionEditState = ({
   status,
@@ -59,6 +67,7 @@ export const useCategorySectionEditState = ({
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<CategoryForm>({
     resolver: zodResolver(CategoryFormSchema),
     defaultValues: { categories },
@@ -84,7 +93,6 @@ export const useCategorySectionEditState = ({
 
   /**
    * Handles form submission, updating bank categories and resetting status.
-   * @param data - Form data containing updated categories.
    */
   const onSubmit: SubmitHandler<CategoryForm> = (data) => {
     const updatedBanks = [...banks];
@@ -102,21 +110,19 @@ export const useCategorySectionEditState = ({
 
   /**
    * Toggles the color picker for a specific category index.
-   * @param index - Index of the category.
    */
   const toggleColorPicker = (index: number) => {
     setColorPickerOpen((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
   /**
-   * Updates the color of a category at the specified index.
-   * @param index - Index of the category.
-   * @param color - New color value.
+   * Updates the color of a category at the specified index and syncs with form.
    */
   const updateCategoryColor = (index: number, color: string) => {
     setEditedCategories((draft) => {
       draft[index].color = color;
     });
+    setValue(`categories.${index}.color`, color, { shouldValidate: true });
   };
 
   return {
@@ -134,6 +140,7 @@ export const useCategorySectionEditState = ({
     toggleColorPicker,
     updateCategoryColor,
     setColorPickerOpen,
-    reset
+    reset,
+    setValue,
   };
 };

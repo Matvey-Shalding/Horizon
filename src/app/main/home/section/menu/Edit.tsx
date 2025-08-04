@@ -1,19 +1,18 @@
 import { AddCategory } from 'app/main/connect-bank/AddCategory';
+import clsx from 'clsx';
 import Dropdown from 'components/icons/main/home/dropdown';
 import { MenuStatus } from 'constants/menuStatuses';
 import { AnimatePresence, m } from 'framer-motion';
+import { useCategorySectionEditState } from 'hooks/useCategoryEditSectionState';
 import { useEffect, useRef } from 'react';
 import { HexColorPicker } from 'react-colorful';
+import 'styles/lib/colorPicker.css';
 import { Category } from 'types/Category.interface';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
 import { ErrorMessage } from 'ui/Error';
 import { Input } from 'ui/Input';
 import { Menu } from '../../Menu';
-
-import { useCategorySectionEditState } from 'hooks/useCategoryEditSectionState';
-import 'styles/lib/colorPicker.css';
-import clsx from 'clsx';
 
 export function CategorySectionEdit({
   status,
@@ -58,24 +57,24 @@ export function CategorySectionEdit({
     setOpen,
   });
 
-  const colorPicker = useRef<HTMLDivElement>(null);
+  const colorPickerRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const colorPickerPopupRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (colorPicker.current && !colorPicker.current.contains(event.target as Node)) {
-        setColorPickerOpen((prev) => {
-          return Object.fromEntries(Object.entries(prev).map(([key, _]) => [Number(key), false])) as Record<
-            number,
-            boolean
-          >;
-        });
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      console.log(!Boolean(target.closest('._modal')) && !Boolean(target.closest('._preview')));
+
+      if (!Boolean(target.closest('._modal')) && !Boolean(target.closest('._preview'))) {
+        setColorPickerOpen((prev) => Object.fromEntries(Object.keys(prev).map((key) => [key, false])));
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClick);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('click', handleClick);
     };
   }, []);
 
@@ -88,8 +87,11 @@ export function CategorySectionEdit({
       {/* Header */}
       <div className="border-border flex items-center justify-between border-b border-solid pb-1">
         <span className="text-dark text-lg font-semibold">Edit Budgets</span>
-        <div className="relative">
-          <div onClick={() => setOpen((prev) => !prev)}>
+        <div className="relative pl-4">
+          <div
+            className="_dropdown"
+            onClick={() => void setOpen((prev) => !prev)}
+          >
             <Dropdown />
           </div>
           <Menu
@@ -99,6 +101,11 @@ export function CategorySectionEdit({
             setStatus={setStatus}
           />
         </div>
+      </div>
+
+      {/* Form-level Error for Duplicate Names */}
+      <div className="mt-1">
+        <ErrorMessage message={errors.categories?.root?.message} />
       </div>
 
       {/* Category Form */}
@@ -131,20 +138,20 @@ export function CategorySectionEdit({
                     <Input
                       placeholder=""
                       label="Category Color"
-                      defaultValue={category.color}
+                      value={category.color}
                       register={register}
                       fieldRegister={`categories.${index}.color`}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        updateCategoryColor(index, e.target.value);
+                      }}
                     />
                     <ErrorMessage message={errors.categories?.[index]?.color?.message} />
                   </div>
                 </div>
-                <div
-                  ref={colorPicker}
-                  className="relative mt-2 cursor-pointer"
-                  onClick={() => toggleColorPicker(index)}
-                >
+                <div className="relative mt-2 cursor-pointer">
                   <m.div
-                    className="border-border preview mb-1 size-11 rounded-full border"
+                    onClick={() => toggleColorPicker(index)}
+                    className="border-border _preview mb-1 size-11 rounded-full border"
                     style={{ backgroundColor: category.color }}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -152,11 +159,14 @@ export function CategorySectionEdit({
                   <AnimatePresence>
                     {colorPickerOpen[index] && (
                       <m.div
+                        ref={(el) => {
+                          colorPickerPopupRefs.current[index] = el;
+                        }}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.7 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full right-0 z-30 mt-2"
+                        className="_modal absolute top-full right-0 z-30 mt-2"
                       >
                         <HexColorPicker
                           className={clsx(
@@ -178,14 +188,14 @@ export function CategorySectionEdit({
         </div>
       </form>
 
-      <div className="border-border border-main mt-4 border-b pb-1">
+      <div className="border-border border-main mt-1 border-b pb-1">
         <AddCategory
           categories={editedCategories}
           setCategories={setEditedCategories}
         />
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-x-3">
+      <div className="mt-1 grid grid-cols-2 gap-x-3">
         <CancelButton onClick={handleCancel} />
         <Button
           className="text-white"

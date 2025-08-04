@@ -1,8 +1,8 @@
 'use client';
 
-import { DEFAULT_COLOR } from 'constants/DefaultColor';
+import { DEFAULT_COLOR } from 'constants/defaultColor';
 import { UseFormReset, UseFormSetError } from 'react-hook-form';
-import { bankCategorySchemaType } from 'schemas/bankCategory.schema';
+import { BankCategorySchemaType } from 'schemas/bankCategory.schema';
 import { Category } from 'types/Category.interface';
 import { Updater } from 'use-immer';
 interface CloseFormOptions {
@@ -13,7 +13,7 @@ interface CloseFormOptions {
 
   setOpen: (value: boolean) => void;
 
-  reset: UseFormReset<bankCategorySchemaType>;
+  reset: UseFormReset<BankCategorySchemaType>;
 
   setSelectedColor: React.Dispatch<React.SetStateAction<string>>;
 
@@ -24,9 +24,9 @@ interface CloseFormOptions {
  * Options for the submitCategory function
  */
 interface SubmitCategoryOptions extends CloseFormOptions {
-  data: bankCategorySchemaType;
+  data: BankCategorySchemaType;
   categories: Category[];
-  setError: UseFormSetError<bankCategorySchemaType>;
+  setError: UseFormSetError<BankCategorySchemaType>;
   setCategories: Updater<Category[]>;
 }
 

@@ -10,3 +10,12 @@ export interface Category {
   /** The expenses associated with the category */
   expenses: string;
 }
+
+/**
+ * Interface extending Category with bank information
+ * @interface CategoryWithBank
+ */
+export interface CategoryWithBank extends Category {
+  /** Bank details associated with the category */
+  bank: { cardId: string; cardholderName: string };
+}

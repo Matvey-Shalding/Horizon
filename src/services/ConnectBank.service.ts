@@ -1,11 +1,11 @@
 'use client';
 
 import { Dispatch } from '@reduxjs/toolkit';
-import { DEFAULT_COLOR } from 'constants/DefaultColor';
+import { DEFAULT_COLOR } from 'constants/defaultColor';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { UseFormReset, UseFormSetError } from 'react-hook-form';
 import { MAIN_ROUTES } from 'routes';
-import { bankCategorySchemaType } from 'schemas/bankCategory.schema';
+import { BankCategorySchemaType } from 'schemas/bankCategory.schema';
 import { ConnectBankSchemaType } from 'schemas/connectBank.schema';
 import { addBank } from 'state/main/bankSlice';
 import { Category } from 'types/Category.interface';
@@ -27,7 +27,7 @@ class ConnectBank {
     clearErrors: () => void,
     setShowColorPicker: (value: boolean) => void,
     setIsCategoryFormOpen: (value: boolean) => void,
-    reset: UseFormReset<bankCategorySchemaType>,
+    reset: UseFormReset<BankCategorySchemaType>,
     setSelectedColor: React.Dispatch<React.SetStateAction<string>>
   ) {
     setSelectedColor(DEFAULT_COLOR);
@@ -50,14 +50,14 @@ class ConnectBank {
    * @param setSelectedColor - Sets the selected color
    */
   addCategory(
-    data: bankCategorySchemaType,
+    data: BankCategorySchemaType,
     categories: Category[],
-    setError: UseFormSetError<bankCategorySchemaType>,
+    setError: UseFormSetError<BankCategorySchemaType>,
     clearErrors: () => void,
     setShowColorPicker: (value: boolean) => void,
     setOpen: (value: boolean) => void,
     setCategories: Updater<Category[]>,
-    reset: UseFormReset<bankCategorySchemaType>,
+    reset: UseFormReset<BankCategorySchemaType>,
     setSelectedColor: React.Dispatch<React.SetStateAction<string>>
   ) {
     const isDuplicate = categories.some(

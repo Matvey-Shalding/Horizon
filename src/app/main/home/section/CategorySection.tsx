@@ -1,14 +1,11 @@
 import clsx from 'clsx';
 import { MenuStatus } from 'constants/menuStatuses';
 import { useCategorySectionState } from 'hooks/useCategorySectionState.hook';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setBanks } from 'state/main/bankSlice';
 import { Button } from 'ui/Button';
 import { AddCategory } from './AddCategory';
 import { CategorySectionDefault } from './menu/Default';
-import { CategorySectionDelete } from './menu/Delete';
 import { CategorySectionEdit } from './menu/Edit';
+import { CategorySectionDelete } from './menu/Delete';
 
 export function CategorySection({
   status,
@@ -32,23 +29,12 @@ export function CategorySection({
     commonProps,
   } = useCategorySectionState({ status, setStatus, activeTab });
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const updatedBanks = banks.map((bank, index) =>
-      index === activeTab ? { ...bank, categories: myCategories } : bank
-    );
-
-    dispatch(setBanks(updatedBanks));
-  }, [myCategories]);
-
   if (categories.length === 0) {
     if (menuOpen) {
       return (
         <div className="pb-13">
-          {' '}
           <AddCategory
-            onCancel={() => void setMenuOpen(false)}
+            onCancel={() => setMenuOpen(false)}
             categories={myCategories}
             setCategories={setMyCategories}
           />
