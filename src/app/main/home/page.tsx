@@ -16,6 +16,7 @@ import { TransactionList, bottomRef } from 'ui/TransactionList';
 import { BankTabs } from './BankTabs';
 import RightSidebar from './RightSidebar';
 import { ShowMoreButton } from './ShowMoreButton';
+import { FallBackPage } from 'ui/FallbackPage';
 
 export default function Home({}: {}) {
   const {
@@ -69,41 +70,7 @@ export default function Home({}: {}) {
   // no banks
   if (!banks.length) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <m.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 10 }}
-          transition={{ duration: 0.4 }}
-          className="flex flex-col items-center gap-y-4"
-        >
-          <m.span
-            animate={{ y: [0, -5, 0] }}
-            transition={{
-              repeat: Infinity,
-              repeatType: 'reverse',
-              duration: 1.5,
-            }}
-            className="text-dark-gray text-2xl font-semibold"
-          >
-            You have no banks yet
-          </m.span>
-          <m.div
-            animate={{ y: [0, -5, 0] }}
-            transition={{
-              repeat: Infinity,
-              repeatType: 'reverse',
-              duration: 1.5,
-            }}
-            className="w-full basis-full"
-          >
-            <Button
-              onClick={() => void router.push(MAIN_ROUTES.CONNECT_BANK)}
-              content="Connect bank"
-            />
-          </m.div>
-        </m.div>
-      </div>
+      <FallBackPage/>
     );
   }
 

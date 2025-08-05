@@ -4,7 +4,10 @@ import clsx from 'clsx';
 import Filter from 'components/icons/main/transactions/filter';
 import { useTransactionsHistoryState } from 'hooks/useTransactionHistoryPage.hook';
 import { memo, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'state/store';
 import 'styles/lib/pagination.css';
+import { FallBackPage } from 'ui/FallbackPage';
 import { Pagination } from 'ui/Pagination';
 import { Title } from 'ui/Title';
 import { TransactionList } from 'ui/TransactionList';
@@ -13,8 +16,13 @@ import { FiltersMenu } from './FilterMenu';
 import { Select } from './Select';
 
 function TransactionsHistoryPage() {
+  const banks = useSelector((state: RootState) => state.bank.banks);
+
+  if (!banks.length) {
+    return <FallBackPage />;
+  }
+
   const {
-    banks,
     selected,
     setSelected,
     isFilterMenuOpen,

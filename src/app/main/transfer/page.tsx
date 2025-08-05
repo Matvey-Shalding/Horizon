@@ -8,6 +8,7 @@ import { usePaymentTransferState } from 'hooks/usePaymentTransferState.hook';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
 import { ErrorMessage } from 'ui/Error';
+import { FallBackPage } from 'ui/FallbackPage';
 import { Input } from 'ui/Input';
 import { Title } from 'ui/Title';
 import { BanksDropdown } from './BanksDropdown';
@@ -40,6 +41,10 @@ function TransferPage() {
   useEffect(() => {
     if (sourceBank) clearErrors('sourceBank');
   }, [sourceBank, clearErrors]);
+
+  if (!banks.length) {
+    return <FallBackPage content="You need at least two banks to transfer funds" />;
+  }
 
   return (
     <m.div

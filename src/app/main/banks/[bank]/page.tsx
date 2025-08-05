@@ -1,7 +1,12 @@
 'use client';
 
 import { CategoryList } from 'app/main/connect-bank/CategoryItem';
+import { m } from 'framer-motion';
 import { useBankPageState } from 'hooks/useBankPageState.hook';
+import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { MAIN_ROUTES } from 'routes';
+import { RootState } from 'state/store';
 import { AddCategoryForm } from 'ui/AddCategory';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
@@ -31,8 +36,52 @@ export default function BankPage() {
     handleBack,
   } = useBankPageState();
 
+  const banks = useSelector((state: RootState) => state.bank.banks);
+
+  const router = useRouter();
+
   if (!bank) {
     return <p className="text-center text-red-500">Bank not found</p>;
+  }
+
+  if (!banks.length) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <m.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          transition={{ duration: 0.4 }}
+          className="flex flex-col items-center gap-y-4"
+        >
+          <m.span
+            animate={{ y: [0, -5, 0] }}
+            transition={{
+              repeat: Infinity,
+              repeatType: 'reverse',
+              duration: 1.5,
+            }}
+            className="text-dark-gray text-2xl font-semibold"
+          >
+            You have no banks yet
+          </m.span>
+          <m.div
+            animate={{ y: [0, -5, 0] }}
+            transition={{
+              repeat: Infinity,
+              repeatType: 'reverse',
+              duration: 1.5,
+            }}
+            className="w-full basis-full"
+          >
+            <Button
+              onClick={() => void router.push(MAIN_ROUTES.CONNECT_BANK)}
+              content="Connect bank"
+            />
+          </m.div>
+        </m.div>
+      </div>
+    );
   }
 
   return (

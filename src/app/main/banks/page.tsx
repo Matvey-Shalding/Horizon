@@ -3,7 +3,7 @@
 import { useClickOutside } from '@react-hookz/web';
 import Dropdown from 'components/icons/main/home/dropdown';
 import Edit from 'components/icons/main/home/edit';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useBanksState } from 'hooks/useBanksState.hook';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
@@ -12,6 +12,7 @@ import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
 import { Card } from 'ui/Card';
 import { Checkbox } from 'ui/Checkbox';
+import { FallBackPage } from 'ui/FallbackPage';
 import { Title } from 'ui/Title';
 import { createSlug } from 'utils/createSlug';
 
@@ -34,8 +35,6 @@ export default function Banks() {
     navigateToBank,
   } = useBanksState();
 
-  const router = useRouter();
-
   const menu = useRef<HTMLDivElement | null>(null);
 
   // Close menu when clicking outside
@@ -43,6 +42,11 @@ export default function Banks() {
     setIsMenuOpen(false);
   });
 
+  const router = useRouter();
+
+  if (!banks.length) {
+    return <FallBackPage />;
+  }
   return (
     <div className="bg-gray-bg flex w-full flex-col gap-y-2 overflow-y-auto px-0 py-12 min-[450px]:px-5 min-[640px]:gap-y-4 min-[640px]:px-8 min-[900px]:gap-y-8">
       <div className="max-[450px]:px-5">
@@ -71,7 +75,7 @@ export default function Banks() {
 
               <AnimatePresence>
                 {isMenuOpen && (
-                  <motion.div
+                  <m.div
                     key="menu"
                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -94,7 +98,7 @@ export default function Banks() {
                     <button
                       className="flex w-full items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-gray-100"
                       onClick={() => {
-                        setStatus("delete");
+                        setStatus('delete');
                       }}
                     >
                       <Edit
@@ -103,14 +107,14 @@ export default function Banks() {
                       />
                       <span className="text-light-gray text-sm font-medium">Edit</span>
                     </button>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </div>
           </div>
         </div>
 
-        <motion.div
+        <m.div
           layout
           className="flex flex-wrap items-center gap-10 max-[768px]:justify-center"
           transition={{ layout: { duration: 0.4, ease: 'easeInOut' } }}
@@ -121,19 +125,19 @@ export default function Banks() {
             const slug = createSlug(bank.cardholderName);
 
             return (
-              <motion.div
+              <m.div
                 key={bank.cardId}
                 className="flex w-fit flex-col gap-y-2"
                 layout
               >
-                <motion.div
+                <m.div
                   className="flex items-center gap-x-3 min-[450px]:gap-x-5"
                   layout
                   transition={{ duration: 0.3, ease: 'easeInOut' }}
                 >
                   <AnimatePresence mode="sync">
                     {status === 'delete' && (
-                      <motion.div
+                      <m.div
                         key={`checkbox-${bank.cardId}`}
                         initial={{ opacity: 0, x: -12 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -147,11 +151,11 @@ export default function Banks() {
                           checked={isChecked}
                           onChange={() => handleSelect(bank.cardId)}
                         />
-                      </motion.div>
+                      </m.div>
                     )}
                   </AnimatePresence>
 
-                  <motion.div
+                  <m.div
                     onClick={() => void router.push(MAIN_ROUTES.BANKS + '/' + slug)}
                     layout
                   >
@@ -160,10 +164,10 @@ export default function Banks() {
                       firstName={user?.firstName}
                       lastName={user?.lastName}
                     />
-                  </motion.div>
-                </motion.div>
+                  </m.div>
+                </m.div>
 
-                <motion.div
+                <m.div
                   className="flex w-65 justify-end self-end min-[900px]:w-75"
                   layout
                 >
@@ -173,7 +177,7 @@ export default function Banks() {
                       <span className="text-gray text-sm">$500</span>
                     </div>
                     <div className="h-2 w-full rounded-sm bg-[#EAECF0]">
-                      <motion.div
+                      <m.div
                         className="bg-dark-gray h-full rounded-sm"
                         animate={{
                           width: `${(200 / Number(bank.monthlyBudget)) * 100}%`,
@@ -182,16 +186,16 @@ export default function Banks() {
                       />
                     </div>
                   </div>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             );
           })}
-        </motion.div>
+        </m.div>
       </div>
 
       <AnimatePresence>
         {status === 'delete' && (
-          <motion.div
+          <m.div
             className="border-border mt-3 flex justify-end gap-x-4 border-t pt-3 max-[450px]:px-3"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -210,7 +214,7 @@ export default function Banks() {
               content="Delete"
               onClick={handleDelete}
             />
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
