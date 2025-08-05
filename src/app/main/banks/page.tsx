@@ -1,12 +1,12 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { useRef } from 'react';
-
+import { useClickOutside } from '@react-hookz/web';
 import Dropdown from 'components/icons/main/home/dropdown';
 import Edit from 'components/icons/main/home/edit';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useBanksState } from 'hooks/useBanksState.hook';
 import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
 import { MAIN_ROUTES } from 'routes';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
@@ -37,6 +37,11 @@ export default function Banks() {
   const router = useRouter();
 
   const menu = useRef<HTMLDivElement | null>(null);
+
+  // Close menu when clicking outside
+  useClickOutside(menu, () => {
+    setIsMenuOpen(false);
+  });
 
   return (
     <div className="bg-gray-bg flex w-full flex-col gap-y-2 overflow-y-auto px-0 py-12 min-[450px]:px-5 min-[640px]:gap-y-4 min-[640px]:px-8 min-[900px]:gap-y-8">
@@ -77,11 +82,11 @@ export default function Banks() {
                     <button
                       className="flex w-full items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-gray-100 disabled:cursor-not-allowed"
                       disabled={status === 'default'}
-                      onClick={handleSelectAll}
+                      onClick={() => {
+                        handleSelectAll();
+                      }}
                     >
-                      <Checkbox
-                        checked={selectedBanks.size === banks.length}
-                      />
+                      <Checkbox checked={selectedBanks.size === banks.length} />
                       <span className="text-light-gray text-sm font-medium">
                         {selectedBanks.size === banks.length ? 'Unselect All' : 'Select All'}
                       </span>
@@ -89,8 +94,7 @@ export default function Banks() {
                     <button
                       className="flex w-full items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-gray-100"
                       onClick={() => {
-                        setStatus((status) => (status === 'default' ? 'delete' : 'default'));
-                        setIsMenuOpen(false);
+                        setStatus("delete");
                       }}
                     >
                       <Edit

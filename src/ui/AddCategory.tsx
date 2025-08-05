@@ -68,7 +68,7 @@ export function AddCategoryForm({
         setError,
         clearErrors,
         setShowColorPicker,
-        setOpen:setIsOpen,
+        setOpen: setIsOpen,
         setCategories,
         reset,
         setSelectedColor,
@@ -185,16 +185,14 @@ export function AddCategoryForm({
             <CancelButton
               content="Cancel"
               onClick={() =>
-                void addCategoryService.closeForm(
-                  {
-                    clearErrors,
-                    setShowColorPicker,
-                    setOpen: setIsOpen,
-                    reset,
-                    setSelectedColor,
-                    onCancel
-                  }
-                )
+                void addCategoryService.closeForm({
+                  clearErrors,
+                  setShowColorPicker,
+                  setOpen: setIsOpen,
+                  reset,
+                  setSelectedColor,
+                  onCancel,
+                })
               }
               props={{ type: 'button' }}
             />

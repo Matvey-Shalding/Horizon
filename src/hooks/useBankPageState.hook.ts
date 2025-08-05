@@ -1,17 +1,18 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMediaQuery } from '@react-hookz/web';
+import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useRouter } from 'next/navigation';
-import { useImmer } from 'use-immer';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMediaQuery } from '@react-hookz/web';
-import { z } from 'zod';
 import { connectBankSchema } from 'schemas/connectBank.schema';
+import { MEDIA_QUERIES } from 'settings/MediaQueries';
 import { setBanks } from 'state/main/bankSlice';
 import { RootState } from 'state/store';
 import { Bank } from 'types/Bank.interface';
+import { Category } from 'types/Category.interface';
+import { useImmer } from 'use-immer';
 import { getBankFromSlug } from 'utils/getNameFromSlug';
-import { MEDIA_QUERIES } from 'settings/MediaQueries';
+import { z } from 'zod';
 
 /**
  * Schema for editing bank details, omitting balance.
@@ -34,7 +35,7 @@ export const useBankPageState = () => {
   const banks = useSelector((state: RootState) => state.bank.banks);
   const user = useSelector((state: RootState) => state.user.user);
   const bank = getBankFromSlug(banks as any, slug?.toString() ?? '') as Bank | undefined;
-  const [categories, setCategories] = useImmer<Bank['categories']>(bank?.categories ?? []);
+  const [categories, setCategories] = useImmer<Category[]>(bank?.categories ?? []);
   const isDesktop = useMediaQuery(`(min-width:${MEDIA_QUERIES.DESKTOPS})`);
 
   const {
@@ -68,11 +69,12 @@ export const useBankPageState = () => {
    */
   const onSubmit = useCallback((data: EditSchemaType) => {
     if (!bank) return;
-    const updated = { ...bank, ...data, categories };
+    console.log(data);
+    const updated = { ...bank, ...data } as Bank;
     const updatedBanks = banks.map((b) => (b.cardId === bank.cardId ? updated : b));
     dispatch(setBanks(updatedBanks));
     router.push('/main/banks');
-  },[])
+  }, []);
 
   /**
    * Handles form cancellation, resetting form and navigating back.
@@ -80,14 +82,14 @@ export const useBankPageState = () => {
   const handleCancel = useCallback(() => {
     reset();
     router.push('/main/banks');
-  },[])
+  }, []);
 
   /**
    * Navigates back to the banks list.
    */
   const handleBack = useCallback(() => {
     router.push('/main/banks');
-  },[])
+  }, []);
 
   return {
     bank,
@@ -104,6 +106,5 @@ export const useBankPageState = () => {
     handleCancel,
     handleBack,
     setValue,
-    
   };
 };

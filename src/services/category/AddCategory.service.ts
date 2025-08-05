@@ -6,7 +6,6 @@ import { BankCategorySchemaType } from 'schemas/bankCategory.schema';
 import { Category } from 'types/Category.interface';
 import { Updater } from 'use-immer';
 interface CloseFormOptions {
-
   clearErrors: () => void;
 
   setShowColorPicker: (value: boolean) => void;
@@ -77,6 +76,7 @@ const submitCategory = ({
   setCategories((draft) => {
     draft.push({ ...data, expenses: '0' });
   });
+
   closeForm(closeFormOptions);
 };
 

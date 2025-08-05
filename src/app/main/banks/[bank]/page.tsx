@@ -1,5 +1,6 @@
 'use client';
 
+import { CategoryList } from 'app/main/connect-bank/CategoryItem';
 import { useBankPageState } from 'hooks/useBankPageState.hook';
 import { AddCategoryForm } from 'ui/AddCategory';
 import { Button } from 'ui/Button';
@@ -9,7 +10,6 @@ import { ErrorMessage } from 'ui/Error';
 import { Input } from 'ui/Input';
 import { Label } from 'ui/Label';
 import { Title } from 'ui/Title';
-import { CategoryList } from 'app/main/connect-bank/CategoryItem';
 
 /**
  * BankPage component for editing bank details and categories.
@@ -43,10 +43,21 @@ export default function BankPage() {
             onClick={handleBack}
             className="absolute -top-6 left-0 flex w-fit items-center text-sm text-blue-600 hover:underline"
           >
-            <Label content="← Back to Banks" onClick={() => {}} />
+            <Label
+              content="← Back to Banks"
+              onClick={() => {}}
+            />
           </button>
-          <Title title={cardholderName} subtitle="Effortlessly Manage Your Banking Activities" />
-          <Card {...bank} cardholderName={cardholderName} firstName={user?.firstName} lastName={user?.lastName} />
+          <Title
+            title={cardholderName}
+            subtitle="Effortlessly Manage Your Banking Activities"
+          />
+          <Card
+            {...bank}
+            cardholderName={cardholderName}
+            firstName={user?.firstName}
+            lastName={user?.lastName}
+          />
         </div>
       )}
 
@@ -56,13 +67,21 @@ export default function BankPage() {
             onClick={handleBack}
             className="absolute -top-6 left-0 flex w-fit items-center text-sm text-blue-600 hover:underline"
           >
-            <Label content="← Back to Banks" onClick={() => {}} />
+            <Label
+              content="← Back to Banks"
+              onClick={() => {}}
+            />
           </button>
         )}
-        <Title title="Edit Bank Details" subtitle="Update your card information" />
-
+        <Title
+          title="Edit Bank Details"
+          subtitle="Update your card information"
+        />
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit, (errors) => {
+            console.error('validation blocked submit:', errors);
+          })}
+          id="my-form"
           className="flex flex-col gap-y-1 min-[450px]:gap-y-1.5 min-[640px]:gap-y-2.5"
         >
           <div className="flex flex-col gap-y-1">
@@ -97,13 +116,26 @@ export default function BankPage() {
         </form>
 
         <div className="flex flex-col">
-          <AddCategoryForm categories={categories} setCategories={setCategories} />
-          <CategoryList categories={categories} setCategories={setCategories} />
+          <AddCategoryForm
+            categories={categories}
+            setCategories={setCategories}
+          />
+          <CategoryList
+            categories={categories}
+            setCategories={setCategories}
+          />
         </div>
 
         <div className="flex gap-4 pb-6">
-          <CancelButton className="basis-1/2" onClick={handleCancel} />
-          <Button onClick={() => handleSubmit(onSubmit)()} className="basis-1/2" content="Save Changes" />
+          <CancelButton
+            className="basis-1/2"
+            onClick={handleCancel}
+          />
+          <Button
+            props={{ type: 'submit', form: 'my-form' }}
+            className="basis-1/2"
+            content="Save Changes"
+          />
         </div>
       </div>
     </div>
