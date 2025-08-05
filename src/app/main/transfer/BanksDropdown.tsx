@@ -88,26 +88,29 @@ export function BanksDropdown<T>({
       )}
 
       <div className="relative basis-full min-[640px]:max-w-128">
-        <div className="flex flex-col gap-y-1.5">
-          {isTablet && <span className="text-dark-gray text-sm/snug font-semibold">{subtitle}</span>}
-          <div
-            ref={dropdownRef}
-            className={clsx(
-              'flex min-h-11 cursor-pointer items-center justify-between rounded-lg border bg-white',
-              isDesktop ? 'px-4.5' : 'shadow-main px-2.5 py-1.5 min-[640px]:px-4 min-[640px]:py-2.5'
-            )}
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            <div className="flex items-center gap-x-2 min-[768px]:gap-x-3">
-              <Card
-                width={isDesktop ? 24 : 20}
-                height={isDesktop ? 24 : 20}
-                className="text-dark-gray"
-              />
-              <span className="text-dark-gray text-sm font-medium">{currentBank}</span>
+        <div className="flex flex-col gap-y-1">
+          <div className="flex flex-col gap-y-1.5">
+            {isTablet && <span className="text-dark-gray text-sm/snug font-semibold">{subtitle}</span>}
+            <div
+              ref={dropdownRef}
+              className={clsx(
+                'flex min-h-11 cursor-pointer items-center justify-between rounded-lg border bg-white',
+                isDesktop ? 'px-4.5' : 'shadow-main px-2.5 py-1.5 min-[640px]:px-4 min-[640px]:py-2.5'
+              )}
+              onClick={() => setIsOpen((prev) => !prev)}
+            >
+              <div className="flex items-center gap-x-2 min-[768px]:gap-x-3">
+                <Card
+                  width={isDesktop ? 24 : 20}
+                  height={isDesktop ? 24 : 20}
+                  className="text-dark-gray"
+                />
+                <span className="text-dark-gray text-sm font-medium">{currentBank}</span>
+              </div>
+              <Arrow className={clsx('transition-transform', isOpen && 'rotate-180')} />
             </div>
-            <Arrow className={clsx('transition-transform', isOpen && 'rotate-180')} />
           </div>
+          {errorMessage && <ErrorMessage message={errorMessage} />}
         </div>
 
         <AnimatePresence>
@@ -180,7 +183,6 @@ export function BanksDropdown<T>({
           )}
         </AnimatePresence>
       </div>
-      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 }

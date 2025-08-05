@@ -47,6 +47,7 @@ export const usePaymentTransferState = () => {
    * @param data - Form data for the payment transfer.
    */
   const onSubmit = (data: PaymentTransferSchemaType) => {
+    alert("hello")
     setResetCounter((prev) => prev + 1);
     paymentTransferService.transferFunds({
       sourceBank: data.sourceBank,

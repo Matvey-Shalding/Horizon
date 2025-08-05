@@ -86,7 +86,7 @@ class PaymentTransferService {
         ...updatedBanks[sourceBankIndex].transactions,
         {
           ...transaction,
-          amount: `- ${balance}`,
+          amount: `${balance}`,
           recipientBankId: recipientAccount,
         },
       ],
@@ -99,7 +99,7 @@ class PaymentTransferService {
         ...updatedBanks[recipientBankIndex].transactions,
         {
           ...transaction,
-          amount: `+${balance}`,
+          amount: `${balance}`,
           recipientBankId: sourceBank,
         },
       ],

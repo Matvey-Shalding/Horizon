@@ -1,3 +1,5 @@
+'use client';
+
 import { useMediaQuery } from '@react-hookz/web';
 import clsx from 'clsx';
 import { AnimatePresence, m } from 'framer-motion';
@@ -17,31 +19,38 @@ export function BankTabs({ banks, activeTab, setActiveTab }: BankTabProps) {
   const [underlinePos, setUnderlinePos] = useState({ left: 0, width: 0 });
   const isMobile = useMediaQuery(`(max-width:${MEDIA_QUERIES.MOBILE})`);
 
-  // Recalculate underline position after layout is complete
+  // Recalculate underline position after layout and on scroll
   useLayoutEffect(() => {
     const updateUnderline = () => {
-      const btn = buttonRefs.current[activeTab];
       const container = containerRef.current;
-      if (btn && container) {
-        const btnRect = btn.getBoundingClientRect();
-        const parentRect = container.getBoundingClientRect();
-        setUnderlinePos({
-          left: btnRect.left - parentRect.left - (Number(isMobile) && 12),
-          width: btnRect.width,
-        });
-      }
+      const btn = buttonRefs.current[activeTab];
+      if (!btn || !container) return;
+
+      // Corrected calculation for left position
+      const left = btn.offsetLeft;
+      setUnderlinePos({
+        left,
+        width: btn.offsetWidth,
+      });
     };
 
-    // Defer measurement to ensure styles are applied
-    const timeoutId = setTimeout(updateUnderline, 0);
-    return () => clearTimeout(timeoutId);
-  }, [activeTab, isMobile, banks.length]);
+    // Defer once to ensure DOM is painted
+    const id = window.setTimeout(updateUnderline, 0);
+
+    // Listen for horizontal scroll to keep underline in sync
+    containerRef.current?.addEventListener('scroll', updateUnderline);
+
+    return () => {
+      clearTimeout(id);
+      containerRef.current?.removeEventListener('scroll', updateUnderline);
+    };
+  }, [activeTab, banks.length, isMobile]);
 
   return (
     <div
       ref={containerRef}
       className={clsx(
-        'border-border bank-tabs-container relative mb-2 flex max-w-full',
+        'border-border bank-tabs-container relative mb-2 flex max-h-8.5 max-w-full',
         'min-h-fit w-full basis-full items-start gap-x-3.5 self-center',
         'overflow-x-auto border-b px-3 pb-1.5 min-[450px]:mb-0 min-[450px]:px-0'
       )}
@@ -50,7 +59,7 @@ export function BankTabs({ banks, activeTab, setActiveTab }: BankTabProps) {
         <AnimatePresence initial={false}>
           {banks.map((bank, index) => (
             <button
-              key={index}
+              key={bank.cardholderName + index}
               ref={(el) => {
                 buttonRefs.current[index] = el;
               }}

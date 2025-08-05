@@ -5,7 +5,6 @@ import { memo, useEffect } from 'react';
 
 import clsx from 'clsx';
 import { usePaymentTransferState } from 'hooks/usePaymentTransferState.hook';
-import { getPaymentTransferSchema } from 'schemas/paymentTransfer.schema';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
 import { ErrorMessage } from 'ui/Error';
@@ -150,6 +149,7 @@ function TransferPage() {
         />
         <div className="flex gap-3">
           <Button
+            props={{ type: 'submit' }}
             className="basis-1/2"
             content="Transfer Funds"
           />
@@ -163,4 +163,4 @@ function TransferPage() {
   );
 }
 
-export default memo(TransferPage)
+export default memo(TransferPage);
