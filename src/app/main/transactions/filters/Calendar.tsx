@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef } from 'react';
 import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
+// import 'react-day-picker/dist/style.css';
 import 'styles/lib/calendar.css';
 import { createPortal } from 'react-dom';
 import { m, AnimatePresence } from 'framer-motion';
@@ -61,7 +61,7 @@ export default function CalendarPortal({
             left: position.left,
           }}
           className={clsx(
-            'absolute z-50 w-70 -translate-x-2 -translate-y-full rounded-lg bg-white',
+            'absolute z-50 -translate-x-2 -translate-y-full rounded-lg bg-white',
             'p-2 shadow-lg min-[768px]:-translate-x-[calc(100%+15px)]'
           )}
         >

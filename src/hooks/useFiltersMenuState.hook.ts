@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { RefObject, useEffect, useMemo, useState } from 'react';
 import { transactionFilterService } from 'services/Transactions.service';
 import { Bank } from 'types/Bank.interface';
 import { CategoryWithBank } from 'types/Category.interface';
@@ -26,6 +26,7 @@ interface FiltersMenuStateProps {
   banks: Bank[];
   transactions: Transaction[];
   setTransactions: (transactions: Transaction[]) => void;
+  ref: RefObject<HTMLDivElement>;
 }
 
 /**
@@ -34,22 +35,31 @@ interface FiltersMenuStateProps {
  * @returns Object containing state, opened section, and event handlers.
  */
 export const useFiltersMenuState = ({
+  ref,
   categories,
   banks,
   transactions,
   setTransactions,
 }: FiltersMenuStateProps) => {
-  const initialState: FilterState = {
-    datePreset: null,
-    dateRange: undefined,
-    amountRange: [0, 100000],
-    selectedCategories: [],
-    selectedBanks: [],
-    transactions,
-  };
+  const initialState: FilterState = useMemo(() => {
+    return {
+      datePreset: null,
+      dateRange: undefined,
+      amountRange: [0, 100000],
+      selectedCategories: [],
+      selectedBanks: [],
+      transactions,
+    };
+  }, []);
 
   const [state, setState] = useState<FilterState>({ ...initialState, transactions });
   const [openedSection, setOpenedSection] = useState<'date' | 'category' | 'bank' | 'amount' | undefined>();
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.style.maxHeight = window.innerHeight - ref.current.getBoundingClientRect().top - 20 + 'px';
+    }
+  }, [ref]);
 
   useEffect(() => {
     setState((prev) => ({ ...prev, transactions }));

@@ -1,7 +1,8 @@
 'use client';
 
 import clsx from 'clsx';
-import { Dispatch, memo, SetStateAction } from 'react';
+import { useFiltersMenuState } from 'hooks/useFiltersMenuState.hook';
+import { Dispatch, memo, SetStateAction, useRef } from 'react';
 import { Bank } from 'types/Bank.interface';
 import { CategoryWithBank } from 'types/Category.interface';
 import { Transaction } from 'types/Transaction.interface';
@@ -10,7 +11,6 @@ import { AmountFilter } from './filters/Amount.filter';
 import { BankFilter } from './filters/Bank.filter';
 import { CategoryFilter } from './filters/Category.filter';
 import { DateFilter } from './filters/Date.filter';
-import { useFiltersMenuState } from 'hooks/useFiltersMenuState.hook';
 
 interface FiltersMenuProps {
   categories: CategoryWithBank[];
@@ -29,6 +29,7 @@ function Filters({
   setIsCalendarOpen,
   isCalendarOpen,
 }: FiltersMenuProps) {
+  const menu = useRef<HTMLDivElement>(null);
   const {
     state,
     openedSection,
@@ -41,10 +42,11 @@ function Filters({
     removeBank,
     resetFilters,
     handleSetDatePreset,
-  } = useFiltersMenuState({ categories, banks, transactions, setTransactions });
+  } = useFiltersMenuState({ ref: menu, categories, banks, transactions, setTransactions });
 
   return (
     <div
+      ref={menu}
       className={clsx(
         'menu absolute top-[calc(100%+10px)] right-0 z-20 w-70 overflow-x-hidden',
         'overflow-y-auto rounded-lg bg-white p-4 pb-6 shadow-md'
@@ -116,4 +118,4 @@ function Filters({
   );
 }
 
-export const FiltersMenu = memo(Filters)
+export const FiltersMenu = memo(Filters);
