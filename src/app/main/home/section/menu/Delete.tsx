@@ -3,7 +3,6 @@ import { MenuStatus } from 'constants/menuStatuses';
 import { m } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { authorizationService } from 'services/Authorization.service';
 import { deleteCategoryService } from 'services/category/DeleteCategory.service';
 import { RootState } from 'state/store';
 import { Bank } from 'types/Bank.interface';
@@ -57,9 +56,9 @@ export function CategorySectionDelete({
       dispatch,
       setStatus,
       setDeletedCategories,
-      setCheckAll
+      setCheckAll,
+      user
     );
-    authorizationService.handleSaveData(user, banks);
   };
 
   useEffect(() => {
@@ -108,7 +107,6 @@ export function CategorySectionDelete({
         </m.button>
         <Button
           onClick={() => {
-            alert('hello');
             onSubmit();
           }}
           className="text-white"

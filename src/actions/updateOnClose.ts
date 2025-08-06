@@ -59,7 +59,6 @@ export async function updateOnClose(user: any, banks: { [key: string]: any }[]) 
         const nameKey = existing.name.trim().toLowerCase();
         if (!incomingCategoryMap.has(nameKey)) {
           await Database.category.delete({ where: { id: existing.id } });
-          console.log(`Deleted category ${existing.name}`);
         }
       }
 
@@ -112,168 +111,18 @@ export async function updateOnClose(user: any, banks: { [key: string]: any }[]) 
         }
       }
     }
+    await Database.transaction.deleteMany({
+      where: {
+        OR: [
+          { bankId: { notIn: passedCardIds } },
+          {
+            AND: [{ recipientBankId: { not: undefined } }, { recipientBankId: { notIn: passedCardIds } }],
+          },
+        ],
+      },
+    });
   } catch (error) {
     console.error('Error updating user, bank, categories, or transactions:', error);
     throw new Error('Failed to update data');
   }
 }
-
-// console.log('Banks TO DB');
-// console.dir(banks, { depth: null });
-// try {
-//   function generateCuid(): string {
-//     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-//     let result = 'c_';
-//     for (let i = 0; i < 23; i++) {
-//       result += chars.charAt(Math.floor(Math.random() * chars.length));
-//     }
-//     return result;
-//   }
-//   // Helper function to generate a random date within the last 365 days
-//   function getRandomDate(): string {
-//     const daysBack = Math.floor(Math.random() * 365);
-//     const date = new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000);
-//     return date.toISOString().split('T')[0]; // YYYY-MM-DD format
-//   }
-//   // Helper function to generate a random amount between 0 and 1000
-//   function getRandomAmount(): string {
-//     return (Math.random() * 1000).toFixed(2);
-//   }
-//   async function insertBanksWithCategoriesAndTransactions(userId: string) {
-//     console.log('Inserting banks, categories, and transactions to DB for user:', userId);
-//     // Always use these five banks regardless of input
-//     const banks = [
-//       {
-//         cardId: '123456789012',
-//         cardholderName: 'John Doe',
-//         balance: 1000.0,
-//         monthlyBudget: 500.0,
-//         cardCvv: '123',
-//         userId: userId,
-//       },
-//       {
-//         cardId: '123456789013',
-//         cardholderName: 'Jane Smith',
-//         balance: 2000.0,
-//         monthlyBudget: 600.0,
-//         cardCvv: '456',
-//         userId: userId,
-//       },
-//       {
-//         cardId: '123456789014',
-//         cardholderName: 'Alice Johnson',
-//         balance: 1500.0,
-//         monthlyBudget: 400.0,
-//         cardCvv: '789',
-//         userId: userId,
-//       },
-//       {
-//         cardId: '123456789015',
-//         cardholderName: 'Bob Brown',
-//         balance: 3000.0,
-//         monthlyBudget: 700.0,
-//         cardCvv: '012',
-//         userId: userId,
-//       },
-//       {
-//         cardId: '123456789016',
-//         cardholderName: 'Carol White',
-//         balance: 2500.0,
-//         monthlyBudget: 550.0,
-//         cardCvv: '345',
-//         userId: userId,
-//       },
-//     ];
-//     // Always use these categories
-//     const categoriesTemplate = [
-//       { name: 'Food', expenses: '300', color: '#FF6F61' },
-//       { name: 'Transport', expenses: '150', color: '#4CAF50' },
-//       { name: 'Entertainment', expenses: '100', color: '#2196F3' },
-//       { name: 'Shopping', expenses: '200', color: '#FFC107' },
-//       { name: 'Bills', expenses: '400', color: '#9C27B0' },
-//     ];
-//     const bankCardIds = banks.map((bank) => bank.cardId);
-//     try {
-//       // Check if user exists
-//       const userExists = await Database.user.findUnique({
-//         where: { id: userId },
-//       });
-//       if (!userExists) {
-//         throw new Error(`User with ID ${userId} not found`);
-//       }
-//       // Insert banks, categories, and transactions
-//       for (const bank of banks) {
-//         // Check if bank exists
-//         const existingBank = await Database.bank.findUnique({
-//           where: { cardId: bank.cardId },
-//         });
-//         if (!existingBank) {
-//           await Database.bank.create({
-//             data: {
-//               cardId: bank.cardId,
-//               cardholderName: bank.cardholderName,
-//               balance: bank.balance,
-//               monthlyBudget: bank.monthlyBudget,
-//               cardCvv: bank.cardCvv,
-//               userId: bank.userId,
-//             },
-//           });
-//           console.log(`Inserted bank ${bank.cardId} for user ${userId}`);
-//         } else {
-//           console.log(`Bank ${bank.cardId} already exists, skipping bank creation`);
-//         }
-//         // Insert categories for this bank with unique IDs
-//         for (const category of categoriesTemplate) {
-//           const existingCategory = await Database.category.findFirst({
-//             where: {
-//               bankId: bank.cardId,
-//               name: category.name,
-//             },
-//           });
-//           if (!existingCategory) {
-//             await Database.category.create({
-//               data: {
-//                 id: generateCuid(),
-//                 name: category.name,
-//                 expenses: category.expenses,
-//                 color: category.color,
-//                 bankId: bank.cardId,
-//               },
-//             });
-//             console.log(`Inserted category ${category.name} for bank ${bank.cardId}`);
-//           } else {
-//             console.log(`Category ${category.name} for bank ${bank.cardId} already exists, skipping`);
-//           }
-//         }
-//         // Insert 5 transactions for this bank with unique IDs
-//         for (let i = 0; i < 5; i++) {
-//           const category = categoriesTemplate[i % categoriesTemplate.length];
-//           const transactionId = generateCuid();
-//           await Database.transaction.create({
-//             data: {
-//               id: transactionId,
-//               amount: getRandomAmount(),
-//               status: 'SUCCESS',
-//               date: getRandomDate(),
-//               category: { name: category.name, budget: parseInt(category.expenses) },
-//               message: '',
-//               bankId: bank.cardId,
-//               recipientBankId: bankCardIds[Math.floor(Math.random() * bankCardIds.length)],
-//             },
-//           });
-//           console.log(`Inserted transaction ${transactionId} for bank ${bank.cardId}`);
-//         }
-//       }
-//       return {
-//         message: 'Successfully inserted banks, categories, and transactions',
-//       };
-//     } catch (error) {
-//       console.error('Error inserting banks, categories, or transactions:', error);
-//       throw new Error('Failed to insert banks, categories, or transactions');
-//     }
-//   }
-//   // Execute the function with the specified userId
-//   await insertBanksWithCategoriesAndTransactions('07fc337d-402b-4f71-8dca-f9d94b7d9170');
-//   return {
-//     message: 'User, bank, categories, and transactions updated successfully',
-//   };

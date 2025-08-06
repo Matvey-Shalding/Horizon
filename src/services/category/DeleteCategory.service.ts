@@ -3,10 +3,12 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { MenuStatus } from 'constants/menuStatuses';
 import { ChangeEvent } from 'react';
+import { authorizationService } from 'services/Authorization.service';
 import { setBanks } from 'state/main/bankSlice';
-import { Updater } from 'use-immer';
+import { SingUp } from 'types/Auth.types';
 import { Bank } from 'types/Bank.interface';
 import { Category } from 'types/Category.interface';
+import { Updater } from 'use-immer';
 
 /**
  * Service class for managing category selection and deletion
@@ -77,9 +79,9 @@ class CategoryService {
     dispatch: Dispatch,
     setStatus: React.Dispatch<React.SetStateAction<MenuStatus>>,
     setDeletedCategories: Updater<string[]>,
-    setCheckAll: React.Dispatch<React.SetStateAction<boolean>>
+    setCheckAll: React.Dispatch<React.SetStateAction<boolean>>,
+    user: SingUp | null | undefined
   ) {
-    console.log(deletedCategories)
     const updatedBanks = [...banks];
     updatedBanks[activeTab] = {
       ...updatedBanks[activeTab],
@@ -88,6 +90,7 @@ class CategoryService {
     dispatch(setBanks(updatedBanks));
     setStatus('DEFAULT');
     this.resetSelection(setDeletedCategories, setCheckAll);
+    authorizationService.handleSaveData(user, updatedBanks);
   }
 }
 

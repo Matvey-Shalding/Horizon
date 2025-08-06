@@ -87,7 +87,7 @@ export const useAddCategoryState = ({
    * Handles form submission, adding a new category if not a duplicate.
    * @param data - Form data for the new category.
    */
-  const onSubmit = useCallback(async (data: BankCategorySchemaType) => {
+  const onSubmit = useCallback((data: BankCategorySchemaType) => {
     const isDuplicate = categories.some(
       (cat) => cat.name.trim().toLowerCase() === data.name.trim().toLowerCase()
     );

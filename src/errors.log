@@ -645,14 +645,14 @@ C:\Horizon\src\components\icons\auth\Success.tsx
   17:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   18:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   21:9   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
-  23:9   error  Unknown property 'fill-rule' found, use 'fillRule' instead              react/no-unknown-property
+  23:9   error  Unknown property 'fillRule' found, use 'fillRule' instead              react/no-unknown-property
   26:9   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   32:11  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
 
 C:\Horizon\src\components\icons\main\home\copy.tsx
    2:3  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   10:5  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  10:8  error  Unknown property 'clip-path' found, use 'clipPath' instead              react/no-unknown-property
+  10:8  error  Unknown property 'clipPath' found, use 'clipPath' instead              react/no-unknown-property
   11:7  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   14:9  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
   15:9  error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
@@ -805,7 +805,7 @@ C:\Horizon\src\components\icons\sidebar\nav\Transfer.tsx
 C:\Horizon\src\components\icons\ui\card\PayPass.tsx
    2:3  error  'React' must be in scope when using JSX                               react/react-in-jsx-scope
   10:5  error  'React' must be in scope when using JSX                               react/react-in-jsx-scope
-  10:8  error  Unknown property 'clip-path' found, use 'clipPath' instead            react/no-unknown-property
+  10:8  error  Unknown property 'clipPath' found, use 'clipPath' instead            react/no-unknown-property
   11:7  error  'React' must be in scope when using JSX                               react/react-in-jsx-scope
   14:9  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead      react/no-unknown-property
   15:9  error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead  react/no-unknown-property
@@ -816,8 +816,8 @@ C:\Horizon\src\components\icons\ui\card\PayPass.tsx
 C:\Horizon\src\components\icons\ui\card\Visa.tsx
    2:3  error  'React' must be in scope when using JSX                     react/react-in-jsx-scope
   10:5  error  'React' must be in scope when using JSX                     react/react-in-jsx-scope
-  11:7  error  Unknown property 'fill-rule' found, use 'fillRule' instead  react/no-unknown-property
-  12:7  error  Unknown property 'clip-rule' found, use 'clipRule' instead  react/no-unknown-property
+  11:7  error  Unknown property 'fillRule' found, use 'fillRule' instead  react/no-unknown-property
+  12:7  error  Unknown property 'clipRule' found, use 'clipRule' instead  react/no-unknown-property
 
 C:\Horizon\src\components\main\SearchInput.tsx
    5:29  error  Unexpected empty object pattern                                                                                                                                                                                                                                                                                                                                                            no-empty-pattern

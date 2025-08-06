@@ -82,7 +82,6 @@ class Authorization {
     setError: Dispatch<SetStateAction<string | undefined>>,
     router: AppRouterInstance
   ) {
-    console.log('singInAfterSignUp', userData);
     if (success && userData.email && userData.password) {
       const signInResult = await signIn('credentials', {
         redirect: false,
@@ -114,7 +113,6 @@ class Authorization {
     startTransition: React.TransitionStartFunction,
     setUserData: Updater<{ email?: string; password?: string }>
   ) {
-    console.log('data', data);
     setError('');
     setSuccess('');
     startTransition(() => {

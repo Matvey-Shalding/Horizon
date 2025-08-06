@@ -1,13 +1,8 @@
 'use client';
 
-import { Dispatch } from '@reduxjs/toolkit';
 import { DEFAULT_COLOR } from 'constants/defaultColor';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { UseFormReset, UseFormSetError } from 'react-hook-form';
-import { MAIN_ROUTES } from 'routes';
 import { BankCategorySchemaType } from 'schemas/bankCategory.schema';
-import { ConnectBankSchemaType } from 'schemas/connectBank.schema';
-import { addBank } from 'state/main/bankSlice';
 import { Category } from 'types/Category.interface';
 import { Updater } from 'use-immer';
 
@@ -73,33 +68,9 @@ class ConnectBank {
     }
 
     setCategories((draft) => {
-      draft.push({...data,expenses: "0"});
+      draft.push({ ...data, expenses: '0' });
     });
     this.closeCategoryMenu(clearErrors, setShowColorPicker, setOpen, reset, setSelectedColor);
-  }
-
-  /**
-   * Connects a new bank, dispatches it, and navigates to home
-   * @param data - Bank connection form data
-   * @param setError - Sets form errors
-   * @param reset - Resets the bank connection form
-   * @param setCategories - Updates categories array
-   * @param dispatch - Redux dispatch function
-   * @param router - Next.js router instance
-   */
-  connect(
-    data: ConnectBankSchemaType,
-    setError: UseFormSetError<ConnectBankSchemaType>,
-    reset: UseFormReset<ConnectBankSchemaType>,
-    setCategories: Updater<Category[]>,
-    dispatch: Dispatch,
-    router: AppRouterInstance
-  ) {
-    reset();
-    setCategories(() => []);
-    const categories:Category[] = data.categories.map(cat => ({...cat,expenses: "0"}))
-    dispatch(addBank({ ...data, transactions: [], expenses: '0',categories }));
-    router.push(MAIN_ROUTES.HOME);
   }
 }
 

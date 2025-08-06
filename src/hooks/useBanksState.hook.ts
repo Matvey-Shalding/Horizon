@@ -58,14 +58,24 @@ export const useBanksState = () => {
   };
 
   /**
-   * Deletes selected banks and resets state.
+   * Deletes selected banks and associated transactions, then saves the updated state.
    */
   const handleDelete = async () => {
-    const updatedBanks = banks.filter((bank) => !selectedBanks.has(bank.cardId));
+    const updatedBanks = banks
+      .filter((bank) => !selectedBanks.has(bank.cardId))
+      .map((bank) => ({
+        ...bank,
+        transactions: bank.transactions?.filter(
+          (tx: any) => !selectedBanks.has(tx.bankId) && !selectedBanks.has(tx.recipientBankId)
+        ),
+      }));
+
     dispatch(setBanks(updatedBanks));
     setSelectedBanks(new Set());
     setStatus('default');
-    authorizationService.handleSaveData(user, banks);
+
+    // Save to server after cleanup
+    await authorizationService.handleSaveData(user, updatedBanks);
   };
 
   /**

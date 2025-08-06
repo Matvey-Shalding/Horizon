@@ -18,9 +18,7 @@ export const signUp = async (data: SingUp) => {
   }
 
   const { password, email } = validatedFields.data;
-  console.log('Server password', password);
   const hashedPassword = await bcrypt.hash(password, 10);
-  console.log('Server hashed password', hashedPassword);
   const existingUser = await findUserByEmail(email);
 
   if (existingUser) {

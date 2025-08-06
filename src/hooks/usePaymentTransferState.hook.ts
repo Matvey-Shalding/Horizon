@@ -50,7 +50,7 @@ export const usePaymentTransferState = () => {
    */
   const onSubmit = async (data: PaymentTransferSchemaType) => {
     setResetCounter((prev) => prev + 1);
-    paymentTransferService.transferFunds({
+    const updatedBanks = paymentTransferService.transferFunds({
       sourceBank: data.sourceBank,
       recipientAccount: data.recipientAccount,
       balance: data.balance,
@@ -61,7 +61,10 @@ export const usePaymentTransferState = () => {
       reset,
       clearErrors,
     });
-    authorizationService.handleSaveData(user, banks);
+
+    if (updatedBanks) {
+      authorizationService.handleSaveData(user, updatedBanks);
+    }
   };
 
   /**

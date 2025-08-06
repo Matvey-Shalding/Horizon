@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { connectBankSchema, ConnectBankSchemaType } from 'schemas/connectBank.schema';
 import { authorizationService } from 'services/Authorization.service';
-import { connectBankService } from 'services/ConnectBank.service';
+import { addBank } from 'state/main/bankSlice';
 import { RootState } from 'state/store';
 import { Category } from 'types/Category.interface';
 import { useImmer } from 'use-immer';
@@ -75,8 +75,24 @@ export const useConnectBankState = () => {
    * @param data - Form data for the new bank.
    */
   const handleSubmitBank = async (data: ConnectBankSchemaType) => {
-    connectBankService.connect(data, setError, reset, setCategories, dispatch, router);
-    authorizationService.handleSaveData(user, banks);
+    // Create the new bank with zeroed values
+    const newBank = {
+      ...data,
+      transactions: [],
+      expenses: '0',
+      categories: data.categories.map((cat) => ({ ...cat, expenses: '0' })),
+    };
+
+    // Create the future bank array
+    const updatedBanks = [...banks, newBank];
+
+    // Dispatch and persist
+    dispatch(addBank(newBank));
+    authorizationService.handleSaveData(user, updatedBanks);
+
+    // Reset form and categories
+    reset();
+    setCategories([]);
   };
 
   /**

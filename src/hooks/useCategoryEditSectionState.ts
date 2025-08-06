@@ -103,7 +103,7 @@ export const useCategorySectionEditState = ({
     updatedBanks[activeTab] = { ...updatedBanks[activeTab], categories: data.categories };
     dispatch(setBanks(updatedBanks));
     setStatus('DEFAULT');
-    authorizationService.handleSaveData(user,banks);
+    authorizationService.handleSaveData(user,updatedBanks);
   };
 
   /**

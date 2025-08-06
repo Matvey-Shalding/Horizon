@@ -48,10 +48,10 @@ class PaymentTransferService {
     dispatch,
     reset,
     clearErrors,
-  }: TransferParams): void {
+  }: TransferParams): Bank[] | null {
     const sourceIndex = banks.findIndex((b) => b.cardId === sourceBank);
     const recipIndex = banks.findIndex((b) => b.cardId === recipientAccount);
-    if (sourceIndex === -1 || recipIndex === -1) return;
+    if (sourceIndex === -1 || recipIndex === -1) return null;
 
     const amount = Number(balance);
     const now = new Date();
@@ -67,20 +67,17 @@ class PaymentTransferService {
       })
       .replace(',', '');
 
-    // Deep clone banks and nested categories
     const updatedBanks = banks.map((b) => ({
       ...b,
       categories: b.categories.map((c) => ({ ...c })),
       transactions: [...b.transactions],
     }));
 
-    // Locate source bank + category
     const source = updatedBanks[sourceIndex];
     const categoryIdx = source.categories.findIndex((c) => c.name === categoryId);
-    if (categoryIdx === -1) return;
+    if (categoryIdx === -1) return null;
     const srcCategory = source.categories[categoryIdx];
 
-    // Build transaction payload
     const txBase = {
       id: crypto.randomUUID(),
       status: 'SUCCESS' as TransactionStatus,
@@ -89,20 +86,18 @@ class PaymentTransferService {
       message: note,
     };
 
-    // 1) Update source bank
     source.balance = String(Number(source.balance) - amount);
     source.transactions.push({
       ...txBase,
       amount: balance,
       recipientBankId: recipientAccount,
     });
-    // Increment the source category's expenses
+
     source.categories[categoryIdx] = {
       ...srcCategory,
       expenses: String(Number(srcCategory.expenses) + amount),
     };
 
-    // 2) Update recipient bank
     const recip = updatedBanks[recipIndex];
     recip.balance = String(Number(recip.balance) + amount);
     recip.transactions.push({
@@ -111,9 +106,10 @@ class PaymentTransferService {
       recipientBankId: sourceBank,
     });
 
-    // Dispatch and reset
     dispatch(setBanks(updatedBanks));
     this.resetFormState({ reset, clearErrors });
+
+    return updatedBanks;
   }
 }
 

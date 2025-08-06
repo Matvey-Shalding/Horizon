@@ -70,12 +70,11 @@ export const useBankPageState = () => {
    */
   const onSubmit = useCallback(async (data: EditSchemaType) => {
     if (!bank) return;
-    console.log(data);
     const updated = { ...bank, ...data } as Bank;
     const updatedBanks = banks.map((b) => (b.cardId === bank.cardId ? updated : b));
     dispatch(setBanks(updatedBanks));
     router.push('/main/banks');
-    authorizationService.handleSaveData(user, banks);
+    authorizationService.handleSaveData(user, updatedBanks);
   }, []);
 
   /**
