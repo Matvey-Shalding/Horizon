@@ -23,11 +23,6 @@ export interface SingUp {
   email: string;
 }
 
-/**
- * Type alias for the keys of the SingUp interface
- * @type {SingUpField}
- */
-export type SingUpField = keyof SingUp;
 
 /**
  * Interface representing the data structure for user login credentials
@@ -39,9 +34,3 @@ export interface LogIn {
   /** User's email address */
   email: string;
 }
-
-/**
- * Type alias for the keys of the LogIn interface
- * @type {LogInFields}
- */
-export type LogInFields = keyof LogIn;
