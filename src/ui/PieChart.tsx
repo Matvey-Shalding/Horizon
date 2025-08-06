@@ -1,6 +1,6 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import clsx from 'clsx';
-import { BLUE_SHADES } from 'constants/colors';
+import { BLUE_SHADES } from 'constant/colors';
 import { useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 

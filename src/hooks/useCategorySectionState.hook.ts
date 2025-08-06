@@ -1,4 +1,4 @@
-import { MenuStatus } from 'constants/menuStatuses';
+import { MenuStatus } from 'constant/menuStatuses';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBanks } from 'state/main/bankSlice';

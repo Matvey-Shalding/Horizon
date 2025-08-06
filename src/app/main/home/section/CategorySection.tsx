@@ -1,4 +1,4 @@
-import { MenuStatus } from 'constants/menuStatuses';
+import { MenuStatus } from 'constant/menuStatuses';
 import { useCategorySectionState } from 'hooks/useCategorySectionState.hook';
 import { AddCategory } from './AddCategory';
 import { CategorySectionDefault } from './menu/Default';

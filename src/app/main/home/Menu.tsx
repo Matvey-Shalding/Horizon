@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import Delete from 'components/icons/main/home/delete';
 import Edit from 'components/icons/main/home/edit';
-import { MENU_STATUSES, MenuStatus } from 'constants/menuStatuses';
+import { MENU_STATUSES, MenuStatus } from 'constant/menuStatuses';
 import { AnimatePresence, m } from 'framer-motion';
 import { SetStateAction, useEffect, useRef } from 'react';
 

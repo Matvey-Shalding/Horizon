@@ -1,6 +1,6 @@
 import { Bank } from 'types/Bank.interface';
 import { z } from 'zod';
-import { ERROR_MESSAGES } from '../constants/errorMessages';
+import { ERROR_MESSAGES } from '../constant/errorMessages';
 
 /**
  * Regular expression for validating balance amount (up to 2 decimal places).

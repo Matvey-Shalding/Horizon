@@ -1,5 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { MENU_STATUSES, MenuStatus } from 'constants/menuStatuses';
+import { MENU_STATUSES, MenuStatus } from 'constant/menuStatuses';
 import { setBanks } from 'state/main/bankSlice';
 import { Bank } from 'types/Bank.interface';
 import { Category } from 'types/Category.interface';

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ERROR_MESSAGES } from '../constants/errorMessages';
+import { ERROR_MESSAGES } from '../constant/errorMessages';
 import { bankCategorySchema } from './bankCategory.schema';
 
 /**

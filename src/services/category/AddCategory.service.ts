@@ -1,6 +1,6 @@
 'use client';
 
-import { DEFAULT_COLOR } from 'constants/defaultColor';
+import { DEFAULT_COLOR } from 'constant/defaultColor';
 import { UseFormReset, UseFormSetError } from 'react-hook-form';
 import { BankCategorySchemaType } from 'schemas/bankCategory.schema';
 import { Category } from 'types/Category.interface';

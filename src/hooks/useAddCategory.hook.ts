@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DEFAULT_COLOR } from 'constants/defaultColor';
+import { DEFAULT_COLOR } from 'constant/defaultColor';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';

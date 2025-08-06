@@ -3,8 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Notification } from 'app/auth/Notification';
 import clsx from 'clsx';
-import { FormFields } from 'constants/formFields';
-import { SIGN_UP_FORM_FIELDS } from 'constants/signUpFormFields';
+import { FormFields } from 'constant/formFields';
+import { SIGN_UP_FORM_FIELDS } from 'constant/signUpFormFields';
 import { m } from 'framer-motion';
 import { useSignUp } from 'hooks/useSignUp.hook';
 import { useRouter } from 'next/navigation';
