@@ -1,5 +1,5 @@
-import { TRANSACTION_TABLE_HEADERS } from '@/constants/transactionHeaders';
 import clsx from 'clsx';
+import { TRANSACTION_TABLE_HEADERS } from 'constants/transactionHeaders';
 import { AnimatePresence, m } from 'framer-motion';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Transaction as TransactionType } from 'types/Transaction.interface';

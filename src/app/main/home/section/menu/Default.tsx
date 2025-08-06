@@ -1,5 +1,5 @@
-import { MenuStatus } from '@/constants/menuStatuses';
 import Dropdown from 'components/icons/main/home/dropdown';
+import { MenuStatus } from 'constants/menuStatuses';
 import { useCallback } from 'react';
 import { Bank } from 'types/Bank.interface';
 import { Category as CategoryComponent } from 'ui/Category';

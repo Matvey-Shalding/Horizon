@@ -6,7 +6,7 @@ import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
-import { FormFields } from '@/constants/formFields';
+import { FormFields } from 'constants/formFields';
 import { LogInSchema, LogInSchemaType } from 'schemas/logIn.schema';
 import { authorizationService } from 'services/Authorization.service';
 import { setPending } from 'state/auth/authSlice';

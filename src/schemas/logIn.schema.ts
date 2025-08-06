@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ERROR_MESSAGES } from '../@/constants/errorMessages';
+import { ERROR_MESSAGES } from '../constants/errorMessages';
 
 /**
  * Zod schema for validating LogIn form data.

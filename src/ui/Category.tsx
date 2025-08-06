@@ -1,4 +1,4 @@
-import { MENU_STATUSES, MenuStatus } from '@/constants/menuStatuses';
+import { MENU_STATUSES, MenuStatus } from 'constants/menuStatuses';
 import { m } from 'framer-motion';
 import { useCategory } from 'hooks/useCategory.hook';
 import { useCallback, useEffect, useState } from 'react';
