@@ -4,17 +4,17 @@ const Error = (props?: React.SVGProps<SVGSVGElement>) => (
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     stroke="#f04438"
-    stroke-width="0.00024000000000000003"
+    strokeWidth="0.00024000000000000003"
     {...props}
   >
     <g
       id="SVGRepo_bgCarrier"
-      stroke-width="0"
+      strokeWidth="0"
     ></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path d="M11.001 10h2v5h-2zM11 16h2v2h-2z"></path>

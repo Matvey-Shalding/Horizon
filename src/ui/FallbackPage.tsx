@@ -1,12 +1,25 @@
+import clsx from 'clsx';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { MAIN_ROUTES } from 'routes';
 import { Button } from './Button';
 
-export function FallBackPage({ content }: { content?: string }) {
+export function FallBackPage({
+  content,
+  buttonContent,
+  className,
+  buttonClassName,
+  onClick,
+}: {
+  content?: string;
+  buttonContent?: string;
+  className?: string;
+  buttonClassName?: string;
+  onClick?: () => void;
+}) {
   const router = useRouter();
   return (
-    <div className="flex h-screen w-full px-4 items-center justify-center">
+    <div className={clsx('flex h-screen w-full items-center justify-center px-4', className)}>
       <m.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -21,7 +34,7 @@ export function FallBackPage({ content }: { content?: string }) {
             repeatType: 'reverse',
             duration: 1.5,
           }}
-          className="text-dark-gray inline-block max-w-80 text-center text-2xl font-semibold"
+          className="text-dark-gray inline-block max-w-130 text-center text-2xl font-semibold max-[560px]:max-w-80"
         >
           {content ? content : 'You have no banks yet'}
         </m.span>
@@ -35,8 +48,15 @@ export function FallBackPage({ content }: { content?: string }) {
           className="w-full basis-full"
         >
           <Button
-            onClick={() => void router.push(MAIN_ROUTES.CONNECT_BANK)}
-            content="Connect bank"
+            className={buttonClassName}
+            onClick={() => {
+              if (onClick) {
+                onClick();
+              } else {
+                void router.push(MAIN_ROUTES.CONNECT_BANK);
+              }
+            }}
+            content={buttonContent ? buttonContent : 'Connect bank'}
           />
         </m.div>
       </m.div>

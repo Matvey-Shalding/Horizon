@@ -2,7 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { DEFAULT_COLOR } from 'constants/defaultColor';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { bankCategorySchema, BankCategorySchemaType } from 'schemas/bankCategory.schema';
+import { RootState } from 'state/store';
 import { Category } from 'types/Category.interface';
 import { Updater } from 'use-immer';
 
@@ -29,6 +31,9 @@ export const useAddCategoryState = ({
 }: AddCategoryStateProps) => {
   const [selectedColor, setSelectedColor] = useState(defaultColor);
   const [showColorPicker, setShowColorPicker] = useState(false);
+
+  const banks = useSelector((state: RootState) => state.bank.banks);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const {
     register,
@@ -68,21 +73,21 @@ export const useAddCategoryState = ({
     onCancel?.();
   }, [onCancel]);
 
-  const onInputChange = useCallback((e:ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setSelectedColor(e.target.value);
     setValue('color', e.target.value);
-  }, [])
-  
-  const onColorPick = useCallback((color:string) => {
+  }, []);
+
+  const onColorPick = useCallback((color: string) => {
     setSelectedColor(color);
     setValue('color', color);
-  },[]);
+  }, []);
 
   /**
    * Handles form submission, adding a new category if not a duplicate.
    * @param data - Form data for the new category.
    */
-  const onSubmit = useCallback((data: BankCategorySchemaType) => {
+  const onSubmit = useCallback(async (data: BankCategorySchemaType) => {
     const isDuplicate = categories.some(
       (cat) => cat.name.trim().toLowerCase() === data.name.trim().toLowerCase()
     );
@@ -113,6 +118,6 @@ export const useAddCategoryState = ({
     handleCancel,
     onSubmit,
     onColorPick,
-    onInputChange
+    onInputChange,
   };
 };

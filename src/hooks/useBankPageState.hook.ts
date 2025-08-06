@@ -5,6 +5,7 @@ import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { connectBankSchema } from 'schemas/connectBank.schema';
+import { authorizationService } from 'services/Authorization.service';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 import { setBanks } from 'state/main/bankSlice';
 import { RootState } from 'state/store';
@@ -67,13 +68,14 @@ export const useBankPageState = () => {
    * Handles form submission, updating bank details and navigating back.
    * @param data - Form data for the bank details.
    */
-  const onSubmit = useCallback((data: EditSchemaType) => {
+  const onSubmit = useCallback(async (data: EditSchemaType) => {
     if (!bank) return;
     console.log(data);
     const updated = { ...bank, ...data } as Bank;
     const updatedBanks = banks.map((b) => (b.cardId === bank.cardId ? updated : b));
     dispatch(setBanks(updatedBanks));
     router.push('/main/banks');
+    authorizationService.handleSaveData(user, banks);
   }, []);
 
   /**

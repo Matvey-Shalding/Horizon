@@ -10,9 +10,9 @@ const Filter = (props?: React.SVGProps<SVGSVGElement>) => (
     <path
       d="M5 10H15M2.5 5H17.5M7.5 15H12.5"
       stroke="#344054"
-      stroke-width="1.66667"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.66667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

@@ -49,15 +49,13 @@ class PaymentTransferService {
     reset,
     clearErrors,
   }: TransferParams): void {
-    const sourceBankIndex = banks.findIndex((bank) => bank.cardId === sourceBank);
-    const recipientBankIndex = banks.findIndex((bank) => bank.cardId === recipientAccount);
+    const sourceIndex = banks.findIndex((b) => b.cardId === sourceBank);
+    const recipIndex = banks.findIndex((b) => b.cardId === recipientAccount);
+    if (sourceIndex === -1 || recipIndex === -1) return;
 
-    if (sourceBankIndex === -1 || recipientBankIndex === -1) return;
-
-    const updatedBanks = [...banks];
     const amount = Number(balance);
-    const date = new Date();
-    const formattedDate = date
+    const now = new Date();
+    const formattedDate = now
       .toLocaleString('en-US', {
         weekday: 'short',
         day: '2-digit',
@@ -67,44 +65,53 @@ class PaymentTransferService {
         minute: '2-digit',
         hour12: false,
       })
-      .replace(/,/, '');
+      .replace(',', '');
 
-    const category = banks[sourceBankIndex].categories.find((c) => c.name === categoryId)!;
+    // Deep clone banks and nested categories
+    const updatedBanks = banks.map((b) => ({
+      ...b,
+      categories: b.categories.map((c) => ({ ...c })),
+      transactions: [...b.transactions],
+    }));
 
-    const transaction = {
+    // Locate source bank + category
+    const source = updatedBanks[sourceIndex];
+    const categoryIdx = source.categories.findIndex((c) => c.name === categoryId);
+    if (categoryIdx === -1) return;
+    const srcCategory = source.categories[categoryIdx];
+
+    // Build transaction payload
+    const txBase = {
       id: crypto.randomUUID(),
       status: 'SUCCESS' as TransactionStatus,
       date: formattedDate,
-      category,
+      category: srcCategory,
       message: note,
     };
 
-    updatedBanks[sourceBankIndex] = {
-      ...updatedBanks[sourceBankIndex],
-      balance: String(Number(updatedBanks[sourceBankIndex].balance) - amount),
-      transactions: [
-        ...updatedBanks[sourceBankIndex].transactions,
-        {
-          ...transaction,
-          amount: `${balance}`,
-          recipientBankId: recipientAccount,
-        },
-      ],
+    // 1) Update source bank
+    source.balance = String(Number(source.balance) - amount);
+    source.transactions.push({
+      ...txBase,
+      amount: balance,
+      recipientBankId: recipientAccount,
+    });
+    // Increment the source category's expenses
+    source.categories[categoryIdx] = {
+      ...srcCategory,
+      expenses: String(Number(srcCategory.expenses) + amount),
     };
 
-    updatedBanks[recipientBankIndex] = {
-      ...updatedBanks[recipientBankIndex],
-      balance: String(Number(updatedBanks[recipientBankIndex].balance) + amount),
-      transactions: [
-        ...updatedBanks[recipientBankIndex].transactions,
-        {
-          ...transaction,
-          amount: `${balance}`,
-          recipientBankId: sourceBank,
-        },
-      ],
-    };
+    // 2) Update recipient bank
+    const recip = updatedBanks[recipIndex];
+    recip.balance = String(Number(recip.balance) + amount);
+    recip.transactions.push({
+      ...txBase,
+      amount: balance,
+      recipientBankId: sourceBank,
+    });
 
+    // Dispatch and reset
     dispatch(setBanks(updatedBanks));
     this.resetFormState({ reset, clearErrors });
   }

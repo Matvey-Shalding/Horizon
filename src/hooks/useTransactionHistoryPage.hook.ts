@@ -1,5 +1,5 @@
 import { useClickOutside, useMediaQuery } from '@react-hookz/web';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 import { RootState } from 'state/store';
@@ -11,7 +11,7 @@ import { Transaction } from 'types/Transaction.interface';
  * Hook for managing state, logic, and computed values in the TransactionsHistoryPage component.
  * @returns Object containing state, refs, media queries, memoized values, and event handlers.
  */
-export const useTransactionsHistoryState = () => {
+export const useTransactionsHistoryState = ({listRef}: { listRef: RefObject<HTMLDivElement> }) => {
   const banks = useSelector((state: RootState) => state.bank.banks);
   const [selected, setSelected] = useState<Bank>(banks[0]);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
@@ -21,7 +21,6 @@ export const useTransactionsHistoryState = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
   const filterMenuRef = useRef<HTMLDivElement>(null);
 
   // Media queries
@@ -116,7 +115,6 @@ export const useTransactionsHistoryState = () => {
     isCalendarOpen,
     setIsCalendarOpen,
     containerRef,
-    listRef,
     filterMenuRef,
     isDesktop,
     isTablet,

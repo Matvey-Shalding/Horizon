@@ -78,48 +78,46 @@ function RightSidebar({ isCollapsed, setIsCollapsed, activeTab }: RightSidebarPr
               isMobile && 'w-full'
             )}
           >
-            <div className="flex flex-col">
-              <div className="basis-full px-6 max-[450px]:px-4">
-                <div className="flex h-full basis-full flex-col gap-y-8">
-                  <div className="flex justify-between">
-                    <div className="flex flex-col gap-y-1">
-                      <span className="text-dark text-2xl font-semibold">
-                        {user?.firstName} {user?.lastName}
-                      </span>
-                      <span className="text-gray">{user?.email}</span>
-                    </div>
-                    <button onClick={() => setIsCollapsed(!isCollapsed)}>
-                      <Sidebar
-                        width={24}
-                        height={24}
-                        className="text-light-gray fill-light-gray cursor-pointer"
-                      />
-                    </button>
+            <div className="h-full px-6 max-[450px]:px-4">
+              <div className="flex h-full basis-full flex-col gap-y-8">
+                <div className="flex justify-between">
+                  <div className="flex flex-col gap-y-1">
+                    <span className="text-dark text-2xl font-semibold">
+                      {user?.firstName} {user?.lastName}
+                    </span>
+                    <span className="text-gray">{user?.email}</span>
                   </div>
-                  <div className="-mx-1.5 flex flex-col gap-y-6">
-                    <div className="border-border flex justify-between border-b border-solid pb-1.5">
-                      <span className="text-dark text-lg font-semibold">My banks</span>
-                      <div
-                        onClick={() => router.push(MAIN_ROUTES.CONNECT_BANK)}
-                        className="text-gray flex cursor-pointer items-center gap-x-2"
-                      >
-                        <Plus className="fill-gray stroke-gray" />
-                        <span className="text-sm font-semibold">Add bank</span>
-                      </div>
-                    </div>
-                    <CardList
-                      cardsToShow={isMobile ? 1 : 3}
-                      banks={banks}
-                      user={user}
-                      activeTab={activeTab}
+                  <button onClick={() => setIsCollapsed(!isCollapsed)}>
+                    <Sidebar
+                      width={24}
+                      height={24}
+                      className="text-light-gray fill-light-gray cursor-pointer"
                     />
+                  </button>
+                </div>
+                <div className="-mx-1.5 flex flex-col gap-y-6">
+                  <div className="border-border flex justify-between border-b border-solid pb-1.5">
+                    <span className="text-dark text-lg font-semibold">My banks</span>
+                    <div
+                      onClick={() => router.push(MAIN_ROUTES.CONNECT_BANK)}
+                      className="text-gray flex cursor-pointer items-center gap-x-2"
+                    >
+                      <Plus className="fill-gray stroke-gray" />
+                      <span className="text-sm font-semibold">Add bank</span>
+                    </div>
                   </div>
-                  <CategorySection
-                    status={menuStatus}
-                    setStatus={setMenuStatus}
+                  <CardList
+                    cardsToShow={isMobile ? 1 : 3}
+                    banks={banks}
+                    user={user}
                     activeTab={activeTab}
                   />
                 </div>
+                <CategorySection
+                  status={menuStatus}
+                  setStatus={setMenuStatus}
+                  activeTab={activeTab}
+                />
               </div>
             </div>
           </m.div>

@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import Filter from 'components/icons/main/transactions/filter';
 import { useTransactionsHistoryState } from 'hooks/useTransactionHistoryPage.hook';
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'state/store';
 import 'styles/lib/pagination.css';
@@ -17,10 +17,7 @@ import { Select } from './Select';
 
 function TransactionsHistoryPage() {
   const banks = useSelector((state: RootState) => state.bank.banks);
-
-  if (!banks.length) {
-    return <FallBackPage />;
-  }
+  const listRef = useRef<HTMLDivElement>(null);
 
   const {
     selected,
@@ -31,7 +28,6 @@ function TransactionsHistoryPage() {
     isCalendarOpen,
     setIsCalendarOpen,
     containerRef,
-    listRef,
     filterMenuRef,
     isDesktop,
     isTablet,
@@ -43,15 +39,19 @@ function TransactionsHistoryPage() {
     handlePageClick,
     handleToggleFilterMenu,
     transactions,
-  } = useTransactionsHistoryState();
+  } = useTransactionsHistoryState({ listRef });
 
-  const currentCardId = useMemo(() => {
-    return selected.cardId.slice(9, 13);
-  }, [selected]);
+  // Apply maxHeight style to the list container for scrolling
+  useEffect(() => {
+    if (listRef.current && containerRef.current) {
+      // Fill available height inside the container
+      listRef.current.style.height = `${containerRef.current.clientHeight - listRef.current.offsetTop}px`;
+    }
+  }, [containerRef]);
 
-  const formattedBalance = useMemo(() => {
-    return selected ? '$' + Number(selected.balance).toFixed(2) : '$0.00';
-  }, [selected]);
+  if (!banks.length) {
+    return <FallBackPage content="No bank accounts found." />;
+  }
 
   return (
     <div
@@ -63,7 +63,7 @@ function TransactionsHistoryPage() {
           title="Transaction history"
           subtitle="Gain Insights and Track Your Transactions Over Time"
         />
-        {isDesktop && (
+        {isDesktop && transactions.length > 0 && (
           <Select
             selected={selected}
             setSelected={setSelected}
@@ -83,7 +83,7 @@ function TransactionsHistoryPage() {
               <span className="text-[1.75rem] font-bold text-white">{selected?.cardholderName || 'N/A'}</span>
               <span className="text-sm text-white">
                 <span className="text-xl">●●●● ●●●● ●●●● </span>
-                <span>{currentCardId}</span>
+                <span>{selected.cardId.slice(9, 13)}</span>
               </span>
             </div>
             <div
@@ -93,7 +93,9 @@ function TransactionsHistoryPage() {
               )}
             >
               <span className="self-start text-sm font-medium text-white">Current Balance</span>
-              <span className="text-2xl font-semibold text-white">{formattedBalance}</span>
+              <span className="text-2xl font-semibold text-white">
+                {'$' + Number(selected.balance).toFixed(2)}
+              </span>
             </div>
           </div>
         </div>
@@ -113,56 +115,64 @@ function TransactionsHistoryPage() {
         </div>
       )}
 
-      <div className="mb-5 flex items-center justify-between max-[768px]:px-6 max-[450px]:px-3">
-        <span className="text-dark text-xl font-semibold">History</span>
-        <div className="flex items-center gap-x-2">
-          {!isDesktop && (
-            <Select
-              selected={selected}
-              setSelected={setSelected}
+      {transactions.length > 0 ? (
+        <>
+          <div className="mb-5 flex items-center justify-between max-[768px]:px-6 max-[450px]:px-3">
+            <span className="text-dark text-xl font-semibold">History</span>
+            <div className="flex items-center gap-x-2">
+              {!isDesktop && transactions.length > 0 && (
+                <Select
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              )}
+              <div
+                ref={filterMenuRef}
+                className="relative"
+              >
+                <div
+                  className={clsx(
+                    'shadow-main flex cursor-pointer items-center gap-x-2 rounded-lg',
+                    'border border-solid px-2.5 py-1.5 min-[640px]:px-4 min-[640px]:py-2.5'
+                  )}
+                  onClick={handleToggleFilterMenu}
+                >
+                  <Filter />
+                  <span className="text-dark-gray text-sm font-semibold max-[640px]:hidden">
+                    Apply filter
+                  </span>
+                </div>
+                {isFilterMenuOpen && (
+                  <FiltersMenu
+                    isCalendarOpen={isCalendarOpen}
+                    setIsCalendarOpen={setIsCalendarOpen}
+                    categories={categories}
+                    banks={banks}
+                    transactions={transactions}
+                    setTransactions={setFilteredTransactions}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div ref={listRef}>
+            <TransactionList transactions={currentItems} />
+          </div>
+
+          {filteredTransactions.length > 0 && (
+            <Pagination
+              pageCount={pageCount}
+              currentPage={currentPage}
+              isTablet={!!isTablet}
+              onPageChange={handlePageClick}
             />
           )}
-          <div
-            ref={filterMenuRef}
-            className="relative"
-          >
-            <div
-              className={clsx(
-                'shadow-main flex cursor-pointer items-center gap-x-2 rounded-lg',
-                'border border-solid px-2.5 py-1.5 min-[640px]:px-4 min-[640px]:py-2.5'
-              )}
-              onClick={handleToggleFilterMenu}
-            >
-              <Filter />
-              <span className="text-dark-gray text-sm font-semibold max-[640px]:hidden">Apply filter</span>
-            </div>
-            {isFilterMenuOpen && (
-              <FiltersMenu
-                isCalendarOpen={isCalendarOpen}
-                setIsCalendarOpen={setIsCalendarOpen}
-                categories={categories}
-                banks={banks}
-                transactions={transactions}
-                setTransactions={setFilteredTransactions}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div
-        className="basis-full"
-        ref={listRef}
-      >
-        <TransactionList transactions={currentItems} />
-      </div>
-
-      {filteredTransactions.length > 0 && (
-        <Pagination
-          pageCount={pageCount}
-          currentPage={currentPage}
-          isTablet={!!isTablet}
-          onPageChange={handlePageClick}
+        </>
+      ) : (
+        <FallBackPage
+          content="You haven’t made any transactions"
+          buttonContent="Transfer funds"
         />
       )}
     </div>

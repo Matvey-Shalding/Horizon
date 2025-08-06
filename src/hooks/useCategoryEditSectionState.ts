@@ -2,9 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { MenuStatus } from 'constants/menuStatuses';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { bankCategorySchema } from 'schemas/bankCategory.schema';
+import { authorizationService } from 'services/Authorization.service';
 import { editCategoryService } from 'services/category/EditCategory.service';
 import { setBanks } from 'state/main/bankSlice';
+import { RootState } from 'state/store';
 import { Category } from 'types/Category.interface';
 import { useImmer } from 'use-immer';
 import { z } from 'zod';
@@ -58,6 +61,7 @@ export const useCategorySectionEditState = ({
   open,
   setOpen,
 }: CategorySectionEditStateProps) => {
+  const user = useSelector((state: RootState) => state.user.user);
   const [editedCategories, setEditedCategories] = useImmer<Category[]>(categories);
   const [colorPickerOpen, setColorPickerOpen] = useState<Record<number, boolean>>({});
   const colorPickerRef = useRef<HTMLDivElement>(null);
@@ -94,11 +98,12 @@ export const useCategorySectionEditState = ({
   /**
    * Handles form submission, updating bank categories and resetting status.
    */
-  const onSubmit: SubmitHandler<CategoryForm> = (data) => {
+  const onSubmit: SubmitHandler<CategoryForm> = async (data) => {
     const updatedBanks = [...banks];
     updatedBanks[activeTab] = { ...updatedBanks[activeTab], categories: data.categories };
     dispatch(setBanks(updatedBanks));
     setStatus('DEFAULT');
+    authorizationService.handleSaveData(user,banks);
   };
 
   /**

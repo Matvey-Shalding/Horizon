@@ -10,7 +10,7 @@ import bankReducer from 'state/main/bankSlice';
 const persistConfig = {
   key: 'root',
   storage: sessionStorage,
-  whitelist: ['bank'], 
+  whitelist: ['bank'],
 };
 
 /**
@@ -31,14 +31,14 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
  * Configure Redux store
  */
 export const store = configureStore({
-  reducer: persistedReducer,
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'], 
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
       },
     }),
+  reducer: rootReducer,
 });
 
 /**

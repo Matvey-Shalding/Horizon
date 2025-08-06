@@ -6,7 +6,6 @@ import { connectBankFields } from 'data/connectBankFields';
 import { motion } from 'framer-motion';
 import { useConnectBankState } from 'hooks/useConnectBank.hook';
 import { useEffect } from 'react';
-import { connectBankService } from 'services/ConnectBank.service';
 import { AddCategoryForm } from 'ui/AddCategory';
 import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
@@ -179,10 +178,7 @@ export default function ConnectBank({}: {}) {
             onClick={handleCancel}
           />
           <Button
-            onClick={handleSubmit(
-              (data) =>
-                void connectBankService.connect(data, setError, reset, setCategories, dispatch, router)
-            )}
+            onClick={handleSubmit(handleSubmitBank)}
             content="Connect bank"
             className="basis-1/2"
             props={{

@@ -42,7 +42,7 @@ function TransferPage() {
     if (sourceBank) clearErrors('sourceBank');
   }, [sourceBank, clearErrors]);
 
-  if (!banks.length) {
+  if (banks.length <= 1) {
     return <FallBackPage content="You need at least two banks to transfer funds" />;
   }
 

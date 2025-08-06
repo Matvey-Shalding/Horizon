@@ -18,7 +18,7 @@
 
 .border_container .line {
   stroke-dasharray: 260;
-  stroke-width: 2px;
+  strokewidth: 2px;
   fill: transparent;
   stroke: var(--color-light-blue);
   animation: svgAnimation 2.5s linear infinite;

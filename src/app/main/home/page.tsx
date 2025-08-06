@@ -5,18 +5,17 @@ import Plus from 'components/icons/main/home/plus';
 import { AnimatePresence, m } from 'framer-motion';
 import { useHomeState } from 'hooks/useHomeState.hook';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { MAIN_ROUTES } from 'routes';
-import { Button } from 'ui/Button';
 import { CancelButton } from 'ui/CancelButton';
+import { FallBackPage } from 'ui/FallbackPage';
 import { Label } from 'ui/Label';
 import PieChart from 'ui/PieChart';
 import { Title } from 'ui/Title';
-import { TransactionList, bottomRef } from 'ui/TransactionList';
+import { bottomRef, TransactionList } from 'ui/TransactionList';
 import { BankTabs } from './BankTabs';
 import RightSidebar from './RightSidebar';
 import { ShowMoreButton } from './ShowMoreButton';
-import { FallBackPage } from 'ui/FallbackPage';
 
 export default function Home({}: {}) {
   const {
@@ -44,21 +43,21 @@ export default function Home({}: {}) {
 
   const router = useRouter();
 
-  // fix sidebar height
+  // Fix sidebar height
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.style.maxHeight = window.innerHeight + 'px';
     }
   }, []);
 
-  // fix tabs width
+  // Fix tabs width
   useEffect(() => {
     if (tabsRef.current && isSmallLaptop) {
       tabsRef.current.style.maxWidth = window.innerWidth - 120 + 'px';
     }
   }, [isSmallLaptop]);
 
-  // scroll helper
+  // Scroll helper
   const scrollToBottom = () => {
     setTimeout(() => {
       requestAnimationFrame(() => {
@@ -67,14 +66,12 @@ export default function Home({}: {}) {
     }, 100);
   };
 
-  // no banks
+  // No banks
   if (!banks.length) {
-    return (
-      <FallBackPage/>
-    );
+    return <FallBackPage />;
   }
 
-  // main dashboard
+  // Main dashboard
   return (
     <div className="bg-gray-bg flex basis-full overflow-x-hidden">
       <div
@@ -134,73 +131,79 @@ export default function Home({}: {}) {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
-
-        {/* Transactions header */}
-        <div className="flex items-center justify-between px-3">
-          <span
-            className={clsx(
-              'text-blue -mt-1 -mb-2 inline-block px-3 text-xl',
-              'font-semibold min-[450px]:px-0 min-[450px]:text-2xl'
-            )}
-          >
-            Recent transactions
-          </span>
-          {!isMobile && (
-            <CancelButton
-              content="View all"
-              onClick={() => void router.push(MAIN_ROUTES.TRANSACTIONS)}
-              className="min-h-10!"
-            />
-          )}
-        </div>
-
-        {/* Transaction List + Show More/Less */}
-        <AnimatePresence mode="wait">
-          <m.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.3 }}
-            className="flex flex-col"
-          >
-            {/* Bank summary */}
-            <div className="bg-light-white rounded-t-main flex items-start justify-between px-6 py-5 sm:p-8">
-              <div className="flex items-center gap-x-4.5">
-                <div className="gradient grid h-10 w-10 place-content-center rounded-full font-medium text-white">
-                  {shortenTitle}
-                </div>
-                <div className="flex flex-col gap-y-1">
-                  <span className="text-xl font-semibold text-[#194185]">{currentBank}</span>
-                  <span className="text-lg font-semibold text-[#1570EF]">${currentBankBalance}</span>
-                </div>
-              </div>
-              {isNotTablet && (
-                <button className="rounded-main text-green bg-[#dafeea] px-2.5 py-0.5 text-sm font-medium">
-                  savings
-                </button>
+        {sortedTransactions.length > 0 ? (
+          <Fragment>
+            <div className="flex items-center justify-between px-3">
+              <span
+                className={clsx(
+                  'text-blue -mt-1 -mb-2 inline-block px-3 text-xl',
+                  'font-semibold min-[450px]:px-0 min-[450px]:text-2xl'
+                )}
+              >
+                Recent transactions
+              </span>
+              {!isMobile && (
+                <CancelButton
+                  onClick={() => void router.push(MAIN_ROUTES.TRANSACTIONS)}
+                  content="View all"
+                />
               )}
             </div>
-            <div className="flex w-full basis-full flex-col gap-y-5">
-              <TransactionList
-                limit={visibleTransactions}
-                transactions={sortedTransactions}
-              />
-              <ShowMoreButton
-                sortedTransactions={sortedTransactions}
-                visibleTransactions={visibleTransactions}
-                handleShowMore={() => {
-                  handleShowMore();
-                  scrollToBottom();
-                }}
-                handleShowLess={() => {
-                  handleShowLess();
-                  scrollToBottom();
-                }}
-              />
-            </div>
-          </m.div>
-        </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              <m.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col"
+              >
+                {/* Bank summary */}
+                <div className="bg-light-white rounded-t-main flex items-start justify-between px-6 py-5 sm:p-8">
+                  <div className="flex items-center gap-x-4.5">
+                    <div className="gradient grid h-10 w-10 place-content-center rounded-full font-medium text-white">
+                      {shortenTitle}
+                    </div>
+                    <div className="flex flex-col gap-y-1">
+                      <span className="text-xl font-semibold text-[#194185]">{currentBank}</span>
+                      <span className="text-lg font-semibold text-[#1570EF]">${currentBankBalance}</span>
+                    </div>
+                  </div>
+                  {isNotTablet && (
+                    <button className="rounded-main text-green bg-[#dafeea] px-2.5 py-0.5 text-sm font-medium">
+                      savings
+                    </button>
+                  )}
+                </div>
+                <div className="flex w-full basis-full flex-col gap-y-5">
+                  <TransactionList
+                    limit={visibleTransactions}
+                    transactions={sortedTransactions}
+                  />
+                  <ShowMoreButton
+                    sortedTransactions={sortedTransactions}
+                    visibleTransactions={visibleTransactions}
+                    handleShowMore={() => {
+                      handleShowMore();
+                      scrollToBottom();
+                    }}
+                    handleShowLess={() => {
+                      handleShowLess();
+                      scrollToBottom();
+                    }}
+                  />
+                </div>
+              </m.div>
+            </AnimatePresence>
+          </Fragment>
+        ) : (
+          <FallBackPage
+            onClick={() => void router.push(MAIN_ROUTES.TRANSFER)}
+            content="You haven’t made any transactions "
+            buttonContent="Transfer funds"
+          />
+        )}
       </div>
 
       {/* Sidebar */}

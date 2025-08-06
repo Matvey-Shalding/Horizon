@@ -2,7 +2,10 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { MenuStatus } from 'constants/menuStatuses';
 import { m } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { authorizationService } from 'services/Authorization.service';
 import { deleteCategoryService } from 'services/category/DeleteCategory.service';
+import { RootState } from 'state/store';
 import { Bank } from 'types/Bank.interface';
 import { Category } from 'types/Category.interface';
 import { Button } from 'ui/Button';
@@ -43,7 +46,9 @@ export function CategorySectionDelete({
     []
   );
 
-  const onSubmit = () => {
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const onSubmit = async () => {
     deleteCategoryService.handleDelete(
       banks,
       activeTab,
@@ -54,6 +59,7 @@ export function CategorySectionDelete({
       setDeletedCategories,
       setCheckAll
     );
+    authorizationService.handleSaveData(user, banks);
   };
 
   useEffect(() => {

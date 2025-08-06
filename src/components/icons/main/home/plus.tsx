@@ -10,9 +10,9 @@ const Plus = (props?: React.SVGProps<SVGSVGElement>) => (
   >
     <path
       d="M9.99996 4.16666V15.8333M4.16663 10H15.8333"
-      stroke-width="1.66667"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.66667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <defs>
       <linearGradient
@@ -23,10 +23,10 @@ const Plus = (props?: React.SVGProps<SVGSVGElement>) => (
         y2="10"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#0179FE" />
+        <stop stopColor="#0179FE" />
         <stop
           offset="1"
-          stop-color="#4893FF"
+          stopColor="#4893FF"
         />
       </linearGradient>
     </defs>

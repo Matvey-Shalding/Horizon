@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPaymentTransferSchema, PaymentTransferSchemaType } from 'schemas/paymentTransfer.schema';
+import { authorizationService } from 'services/Authorization.service';
 import { paymentTransferService } from 'services/paymentTransfer.service';
 import { MEDIA_QUERIES } from 'settings/MediaQueries';
 import { RootState } from 'state/store';
@@ -19,6 +20,7 @@ export const usePaymentTransferState = () => {
   const paymentTransferSchema = getPaymentTransferSchema(banks);
   const [resetCounter, setResetCounter] = useState(0);
   const isTablet = useMediaQuery(`(max-width:${MEDIA_QUERIES.TABLETS})`);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const {
     register,
@@ -46,8 +48,7 @@ export const usePaymentTransferState = () => {
    * Handles form submission, initiating fund transfer and resetting form.
    * @param data - Form data for the payment transfer.
    */
-  const onSubmit = (data: PaymentTransferSchemaType) => {
-    alert("hello")
+  const onSubmit = async (data: PaymentTransferSchemaType) => {
     setResetCounter((prev) => prev + 1);
     paymentTransferService.transferFunds({
       sourceBank: data.sourceBank,
@@ -60,6 +61,7 @@ export const usePaymentTransferState = () => {
       reset,
       clearErrors,
     });
+    authorizationService.handleSaveData(user, banks);
   };
 
   /**

@@ -29,7 +29,7 @@ class Authorization {
    * @param user - The user signup data.
    * @param banks - Array of user-associated banks.
    */
-  handlePageHide = (user: SingUp | null | undefined, banks: Bank[]) => {
+  handleSaveData = (user: SingUp | null | undefined, banks: Bank[]) => {
     const dataToSend = { userData: user, userBanks: banks };
     const blob = new Blob([JSON.stringify(dataToSend)], {
       type: 'application/json',
@@ -82,6 +82,7 @@ class Authorization {
     setError: Dispatch<SetStateAction<string | undefined>>,
     router: AppRouterInstance
   ) {
+    console.log('singInAfterSignUp', userData);
     if (success && userData.email && userData.password) {
       const signInResult = await signIn('credentials', {
         redirect: false,
@@ -113,6 +114,7 @@ class Authorization {
     startTransition: React.TransitionStartFunction,
     setUserData: Updater<{ email?: string; password?: string }>
   ) {
+    console.log('data', data);
     setError('');
     setSuccess('');
     startTransition(() => {

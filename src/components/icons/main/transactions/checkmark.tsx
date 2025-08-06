@@ -10,9 +10,9 @@ const CheckMark = (props?: React.SVGProps<SVGSVGElement>) => (
     <path
       d="M20 6L9 17L4 12"
       stroke="url(#paint0_linear_8_4021)"
-      stroke-width="3"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <defs>
       <linearGradient
@@ -23,10 +23,10 @@ const CheckMark = (props?: React.SVGProps<SVGSVGElement>) => (
         y2="11.5"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#0179FE" />
+        <stop stopColor="#0179FE" />
         <stop
           offset="1"
-          stop-color="#4893FF"
+          stopColor="#4893FF"
         />
       </linearGradient>
     </defs>

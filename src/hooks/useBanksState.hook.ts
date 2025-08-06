@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import { useClickOutside } from '@react-hookz/web';
+import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { MAIN_ROUTES } from 'routes';
+import { authorizationService } from 'services/Authorization.service';
 import { setBanks } from 'state/main/bankSlice';
 import { RootState } from 'state/store';
-import { MAIN_ROUTES } from 'routes';
 import { createSlug } from 'utils/createSlug';
 
 /**
@@ -64,6 +65,7 @@ export const useBanksState = () => {
     dispatch(setBanks(updatedBanks));
     setSelectedBanks(new Set());
     setStatus('default');
+    authorizationService.handleSaveData(user, banks);
   };
 
   /**

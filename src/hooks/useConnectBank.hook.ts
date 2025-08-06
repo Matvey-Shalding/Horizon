@@ -4,6 +4,7 @@ import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { connectBankSchema, ConnectBankSchemaType } from 'schemas/connectBank.schema';
+import { authorizationService } from 'services/Authorization.service';
 import { connectBankService } from 'services/ConnectBank.service';
 import { RootState } from 'state/store';
 import { Category } from 'types/Category.interface';
@@ -19,6 +20,7 @@ export const useConnectBankState = () => {
   const router = useRouter();
   const banks = useSelector((state: RootState) => state.bank.banks);
   const [categories, setCategories] = useImmer<Category[]>([]);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const {
     handleSubmit,
@@ -72,8 +74,9 @@ export const useConnectBankState = () => {
    * Handles form submission, connecting a new bank.
    * @param data - Form data for the new bank.
    */
-  const handleSubmitBank = (data: ConnectBankSchemaType) => {
+  const handleSubmitBank = async (data: ConnectBankSchemaType) => {
     connectBankService.connect(data, setError, reset, setCategories, dispatch, router);
+    authorizationService.handleSaveData(user, banks);
   };
 
   /**

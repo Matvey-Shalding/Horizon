@@ -1,11 +1,10 @@
-import clsx from 'clsx';
 import { MenuStatus } from 'constants/menuStatuses';
 import { useCategorySectionState } from 'hooks/useCategorySectionState.hook';
-import { Button } from 'ui/Button';
+import { FallBackPage } from 'ui/FallbackPage';
 import { AddCategory } from './AddCategory';
 import { CategorySectionDefault } from './menu/Default';
-import { CategorySectionEdit } from './menu/Edit';
 import { CategorySectionDelete } from './menu/Delete';
+import { CategorySectionEdit } from './menu/Edit';
 
 export function CategorySection({
   status,
@@ -42,17 +41,10 @@ export function CategorySection({
       );
     } else {
       return (
-        <div
-          className={clsx(
-            'border-border flex h-full basis-full flex-col',
-            'items-center justify-center gap-y-4 border-t border-solid'
-          )}
-        >
-          <span className="text-dark-gray text-xl font-semibold">You have no banks yet</span>
-          <Button
-            onClick={() => setMenuOpen(true)}
-            content="Add category"
-          />
+        <div className="h-full basis-full px-4 border-t border-border pt-2 grid place-content-center">
+          <span className="text-2xl block font-semibold text-dark-gray text-center">
+            You don't have any categories
+          </span>
         </div>
       );
     }
