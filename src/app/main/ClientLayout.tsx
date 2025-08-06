@@ -14,16 +14,6 @@ export default function ClientLayout({
   children: React.ReactNode;
   isLoading: boolean;
 }) {
-  const user = useSelector((state: RootState) => state.user.user);
-  const banks = useSelector((state: RootState) => state.bank.banks);
-
-  useEffect(() => {
-    const handlePageHideWithParams = (e: PageTransitionEvent) => {
-      authorizationService.handlePageHide(user, banks);
-    };
-    window.addEventListener('pagehide', handlePageHideWithParams);
-    return () => window.removeEventListener('pagehide', handlePageHideWithParams);
-  }, [user, banks]);
 
   if (isLoading) {
     return <Loader visible={isLoading} />;

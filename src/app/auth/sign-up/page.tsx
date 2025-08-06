@@ -43,7 +43,9 @@ export default function SingUp() {
   }, [isSubmitting, dispatch]);
 
   useEffect(() => {
-    authorizationService.singInAfterSignUp(userData, success, setSuccess, setError, router);
+    if (success) {
+      authorizationService.singInAfterSignUp(userData, success, setSuccess, setError, router);
+    }
   }, [success]);
 
   return (
@@ -60,10 +62,12 @@ export default function SingUp() {
       <div className="laptop:mb-6 max-tablet:mb-2 max-tablet-small:mb-1 mb-4">
         <Logo />
       </div>
-      <Title
-        title="Sign up"
-        subtitle="Please enter your details."
-      />
+      <div className="tablet-small:mb-3 mb-2">
+        <Title
+          title="Sign up"
+          subtitle="Please enter your details."
+        />
+      </div>
 
       <form
         onSubmit={handleSubmit(

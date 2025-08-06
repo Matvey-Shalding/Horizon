@@ -34,16 +34,11 @@ body {
 
 @theme {
   /* Breakpoints */
-  --breakpoint-sm: 40rem; /* 640px */
-  --breakpoint-md: 48rem; /* 768px */
-  --breakpoint-lg: 64rem; /* 1024px */
-  --breakpoint-xl: 80rem; /* 1280px */
-  --breakpoint-2xl: 96rem; /* 1536px */
-  /* --breakpoint-laptop: 67.5rem;
-  --breakpoint-desktop: 84.375rem;
-  --breakpoint-tablet: 48rem;
-  --breakpoint-tablet-small: 35rem;
-  --breakpoint-mb: 28rem; */
+--breakpoint-laptop: 67.5rem;         /* 1080px */
+--breakpoint-desktop: 84.375rem;      /* 1350px */
+--breakpoint-tablet: 48rem;           /* 768px */
+--breakpoint-tablet-small: 35rem;     /* 560px */
+--breakpoint-mb: 28rem;               /* 448px */
 
   /* Colors */
   --color-white: #fff;

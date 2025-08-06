@@ -1,3 +1,0 @@
-1) Scroll not working in transaction list in home
-2) clicking on custom date not toggles but only opens the calendar
-3) select in transactions not working

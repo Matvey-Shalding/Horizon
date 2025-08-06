@@ -5,10 +5,10 @@
  * @param data - User signup data.
  * @returns Success message with email and hashed password, or error message.
  */
+import bcrypt from 'bcryptjs';
+import { Database } from 'database/database';
 import { SignUpSchema } from 'schemas/singUp.schema';
 import { SingUp } from 'types/Auth.types';
-import { Database } from 'database/database';
-import bcrypt from 'bcryptjs';
 import { findUserByEmail } from 'utils/findUser';
 
 export const signUp = async (data: SingUp) => {
@@ -18,7 +18,9 @@ export const signUp = async (data: SingUp) => {
   }
 
   const { password, email } = validatedFields.data;
+  console.log('Server password', password);
   const hashedPassword = await bcrypt.hash(password, 10);
+  console.log('Server hashed password', hashedPassword);
   const existingUser = await findUserByEmail(email);
 
   if (existingUser) {
@@ -32,5 +34,5 @@ export const signUp = async (data: SingUp) => {
     },
   });
 
-  return { success: 'User created', email };
+  return { success: 'User created', email, password: hashedPassword };
 };

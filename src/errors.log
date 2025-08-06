@@ -578,12 +578,12 @@ C:\Horizon\src\components\auth\Title.tsx
 
 C:\Horizon\src\components\icons\auth\Error.tsx
    2:3   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-   7:5   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
+   7:5   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
   10:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  10:31  error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
+  10:31  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
   11:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  13:7   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  14:7   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  13:7   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  14:7   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
   16:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   17:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   18:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
@@ -637,14 +637,14 @@ C:\Horizon\src\components\icons\auth\Logo.tsx
 C:\Horizon\src\components\icons\auth\Success.tsx
    2:3   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
    9:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-   9:31  error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
+   9:31  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
   10:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  12:7   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  13:7   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  12:7   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  13:7   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
   15:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   17:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   18:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  21:9   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
+  21:9   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
   23:9   error  Unknown property 'fill-rule' found, use 'fillRule' instead              react/no-unknown-property
   26:9   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   32:11  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
@@ -654,9 +654,9 @@ C:\Horizon\src\components\icons\main\home\copy.tsx
   10:5  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   10:8  error  Unknown property 'clip-path' found, use 'clipPath' instead              react/no-unknown-property
   11:7  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  14:9  error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  15:9  error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  16:9  error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  14:9  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  15:9  error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  16:9  error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
   19:5  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   20:7  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   21:9  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
@@ -664,17 +664,17 @@ C:\Horizon\src\components\icons\main\home\copy.tsx
 C:\Horizon\src\components\icons\main\home\delete.tsx
    2:3   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
    3:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-   3:31  error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
+   3:31  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
    4:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-   6:7   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-   7:7   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+   6:7   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+   7:7   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
    9:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   11:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  13:9   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  14:9   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  13:9   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  14:9   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
   16:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  18:9   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  19:9   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  18:9   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  19:9   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
 
 C:\Horizon\src\components\icons\main\home\dropdown.tsx
    1:19  error  'props' is defined but never used        @typescript-eslint/no-unused-vars
@@ -687,65 +687,65 @@ C:\Horizon\src\components\icons\main\home\dropdown.tsx
 C:\Horizon\src\components\icons\main\home\edit.tsx
    2:3   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   10:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  10:31  error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
+  10:31  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
   11:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  13:7   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  14:7   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  13:7   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  14:7   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
   16:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   18:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  20:9   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  21:9   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  22:9   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  20:9   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  21:9   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  22:9   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
   24:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  26:9   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  27:9   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  28:9   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  26:9   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  27:9   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  28:9   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
 
 C:\Horizon\src\components\icons\main\home\plus.tsx
    2:3   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   11:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  13:7   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  14:7   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  15:7   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  13:7   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  14:7   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  15:7   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
   17:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   18:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   26:9   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  26:15  error  Unknown property 'stop-color' found, use 'stopColor' instead            react/no-unknown-property
+  26:15  error  Unknown property 'stopColor' found, use 'stopColor' instead            react/no-unknown-property
   27:9   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  27:26  error  Unknown property 'stop-color' found, use 'stopColor' instead            react/no-unknown-property
+  27:26  error  Unknown property 'stopColor' found, use 'stopColor' instead            react/no-unknown-property
 
 C:\Horizon\src\components\icons\main\transactions\arrow.tsx
    2:3  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   10:5  error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  13:7  error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  14:7  error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  15:7  error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  13:7  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  14:7  error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  15:7  error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
 
 C:\Horizon\src\components\icons\main\transactions\checkmark.tsx
    2:3   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   10:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  13:7   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  14:7   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  15:7   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  13:7   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  14:7   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  15:7   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
   17:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   18:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   26:9   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  26:15  error  Unknown property 'stop-color' found, use 'stopColor' instead            react/no-unknown-property
+  26:15  error  Unknown property 'stopColor' found, use 'stopColor' instead            react/no-unknown-property
   27:9   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  27:26  error  Unknown property 'stop-color' found, use 'stopColor' instead            react/no-unknown-property
+  27:26  error  Unknown property 'stopColor' found, use 'stopColor' instead            react/no-unknown-property
 
 C:\Horizon\src\components\icons\main\transactions\credit-card.tsx
    2:3   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   10:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  13:7   error  Unknown property 'stroke-width' found, use 'strokeWidth' instead        react/no-unknown-property
-  14:7   error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead    react/no-unknown-property
-  15:7   error  Unknown property 'stroke-linejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
+  13:7   error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead        react/no-unknown-property
+  14:7   error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead    react/no-unknown-property
+  15:7   error  Unknown property 'strokeLinejoin' found, use 'strokeLinejoin' instead  react/no-unknown-property
   17:5   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   18:7   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
   26:9   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  26:15  error  Unknown property 'stop-color' found, use 'stopColor' instead            react/no-unknown-property
+  26:15  error  Unknown property 'stopColor' found, use 'stopColor' instead            react/no-unknown-property
   27:9   error  'React' must be in scope when using JSX                                 react/react-in-jsx-scope
-  27:26  error  Unknown property 'stop-color' found, use 'stopColor' instead            react/no-unknown-property
+  27:26  error  Unknown property 'stopColor' found, use 'stopColor' instead            react/no-unknown-property
 
 C:\Horizon\src\components\icons\sidebar\Log_out.tsx
    2:3  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
@@ -807,8 +807,8 @@ C:\Horizon\src\components\icons\ui\card\PayPass.tsx
   10:5  error  'React' must be in scope when using JSX                               react/react-in-jsx-scope
   10:8  error  Unknown property 'clip-path' found, use 'clipPath' instead            react/no-unknown-property
   11:7  error  'React' must be in scope when using JSX                               react/react-in-jsx-scope
-  14:9  error  Unknown property 'stroke-width' found, use 'strokeWidth' instead      react/no-unknown-property
-  15:9  error  Unknown property 'stroke-linecap' found, use 'strokeLinecap' instead  react/no-unknown-property
+  14:9  error  Unknown property 'strokeWidth' found, use 'strokeWidth' instead      react/no-unknown-property
+  15:9  error  Unknown property 'strokeLinecap' found, use 'strokeLinecap' instead  react/no-unknown-property
   18:5  error  'React' must be in scope when using JSX                               react/react-in-jsx-scope
   19:7  error  'React' must be in scope when using JSX                               react/react-in-jsx-scope
   20:9  error  'React' must be in scope when using JSX                               react/react-in-jsx-scope

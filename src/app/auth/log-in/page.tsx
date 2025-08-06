@@ -60,10 +60,12 @@ export default function LogIn() {
       <div className="laptop:mb-6 max-tablet:mb-2 max-tablet-small:mb-1 mb-4">
         <Logo />
       </div>
-      <Title
-        title="Log in"
-        subtitle="Welcome back! Please enter your details."
-      />
+      <div className="tablet-small:mb-3 mb-2">
+        <Title
+          title="Log in"
+          subtitle="Welcome back! Please enter your details."
+        />
+      </div>
 
       <form
         onSubmit={handleSubmit(
