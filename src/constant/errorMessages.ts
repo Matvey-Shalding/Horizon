@@ -7,6 +7,8 @@ export const ERROR_MESSAGES = {
   REQUIRED: 'This field is required',
   /** Invalid email format error */
   EMAIL_INVALID: 'Invalid email format. Use a valid email like user@example.com',
+  /** Password length is too big */
+  PASSWORD_TOO_LONG: 'Password length must not exceed 60 symbols',
   /** Minimum name length error */
   NAME_MIN: (min: number) => `Must be at least ${min} characters`,
   /** Maximum name length error */
