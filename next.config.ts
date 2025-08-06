@@ -1,11 +1,29 @@
-const path = require('path');
+import type { NextConfig } from 'next';
 
-const nextConfig = {
+const nextConfig: NextConfig = {
+  /**
+   * Enable static exports.
+   *
+   * @see https://nextjs.org/docs/app/building-your-application/deploying/static-exports
+   */
   output: 'export',
-  webpack(config: any) {
-    config.resolve.alias['@'] = path.resolve(__dirname, 'src');
-    return config;
+
+  /**
+   * Set base path. This is the slug of your GitHub repository.
+   *
+   * @see https://nextjs.org/docs/app/api-reference/next-config-js/basePath
+   */
+  basePath: 'Matvey-Shalding/Horizon',
+
+  /**
+   * Disable server-based image optimization. Next.js does not support
+   * dynamic features with static exports.
+   *
+   * @see https://nextjs.org/docs/app/api-reference/components/image#unoptimized
+   */
+  images: {
+    unoptimized: true,
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
