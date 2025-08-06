@@ -1,5 +1,5 @@
+import { MenuStatus } from '@/constants/menuStatuses';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MenuStatus } from 'constants/menuStatuses';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -103,7 +103,7 @@ export const useCategorySectionEditState = ({
     updatedBanks[activeTab] = { ...updatedBanks[activeTab], categories: data.categories };
     dispatch(setBanks(updatedBanks));
     setStatus('DEFAULT');
-    authorizationService.handleSaveData(user,updatedBanks);
+    authorizationService.handleSaveData(user, updatedBanks);
   };
 
   /**

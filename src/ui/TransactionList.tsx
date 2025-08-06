@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { TRANSACTION_TABLE_HEADERS } from '@/constants/transactionHeaders';
 import clsx from 'clsx';
 import { AnimatePresence, m } from 'framer-motion';
-import { TRANSACTION_TABLE_HEADERS } from 'constants/transactionHeaders';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Transaction as TransactionType } from 'types/Transaction.interface';
 import { Transaction } from './Transaction';
 

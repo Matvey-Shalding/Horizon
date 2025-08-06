@@ -1,6 +1,5 @@
-import { MenuStatus } from 'constants/menuStatuses';
+import { MenuStatus } from '@/constants/menuStatuses';
 import { useCategorySectionState } from 'hooks/useCategorySectionState.hook';
-import { FallBackPage } from 'ui/FallbackPage';
 import { AddCategory } from './AddCategory';
 import { CategorySectionDefault } from './menu/Default';
 import { CategorySectionDelete } from './menu/Delete';
@@ -41,8 +40,8 @@ export function CategorySection({
       );
     } else {
       return (
-        <div className="h-full basis-full px-4 border-t border-border pt-2 grid place-content-center">
-          <span className="text-2xl block font-semibold text-dark-gray text-center">
+        <div className="border-border grid h-full basis-full place-content-center border-t px-4 pt-2">
+          <span className="text-dark-gray block text-center text-2xl font-semibold">
             You don't have any categories
           </span>
         </div>

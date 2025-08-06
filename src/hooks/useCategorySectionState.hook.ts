@@ -1,10 +1,10 @@
+import { MenuStatus } from '@/constants/menuStatuses';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useImmer } from 'use-immer';
 import { setBanks } from 'state/main/bankSlice';
 import { RootState } from 'state/store';
 import { Category } from 'types/Category.interface';
-import { MenuStatus } from 'constants/menuStatuses';
+import { useImmer } from 'use-immer';
 
 interface CategorySectionStateProps {
   status: MenuStatus;

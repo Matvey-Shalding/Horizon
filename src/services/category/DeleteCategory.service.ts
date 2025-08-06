@@ -1,7 +1,7 @@
 'use client';
 
+import { MenuStatus } from '@/constants/menuStatuses';
 import { Dispatch } from '@reduxjs/toolkit';
-import { MenuStatus } from 'constants/menuStatuses';
 import { ChangeEvent } from 'react';
 import { authorizationService } from 'services/Authorization.service';
 import { setBanks } from 'state/main/bankSlice';

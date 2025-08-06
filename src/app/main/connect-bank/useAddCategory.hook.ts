@@ -1,11 +1,11 @@
+import { DEFAULT_COLOR } from '@/constants/defaultColor';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { bankCategorySchema, BankCategorySchemaType } from 'schemas/bankCategory.schema';
 import { connectBankService } from 'services/ConnectBank.service';
 import { Category } from 'types/Category.interface';
 import { Updater } from 'use-immer';
-import { DEFAULT_COLOR } from 'constants/defaultColor';
 
 /**
  * Props for the useAddCategoryState hook.

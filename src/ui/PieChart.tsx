@@ -1,8 +1,8 @@
+import { BLUE_SHADES } from '@/constants/colors';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
-import { BLUE_SHADES } from 'constants/colors';
-import { useMemo } from 'react';
 import clsx from 'clsx';
+import { useMemo } from 'react';
+import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -21,15 +21,12 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
         },
       ],
     };
-  },[data])
+  }, [data]);
 
   return (
-    <div className={clsx(
-      'flex items-center justify-center',
-      'h-25 w-25',
-      'min-[450px]:h-30 min-[450px]:w-30'
-    )}
->
+    <div
+      className={clsx('flex items-center justify-center', 'h-25 w-25', 'min-[450px]:h-30 min-[450px]:w-30')}
+    >
       <Doughnut
         data={chartData}
         options={{

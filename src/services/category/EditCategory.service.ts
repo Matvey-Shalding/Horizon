@@ -1,9 +1,9 @@
+import { MENU_STATUSES, MenuStatus } from '@/constants/menuStatuses';
 import { Dispatch } from '@reduxjs/toolkit';
-import { MENU_STATUSES, MenuStatus } from 'constants/menuStatuses';
 import { setBanks } from 'state/main/bankSlice';
+import { Bank } from 'types/Bank.interface';
 import { Category } from 'types/Category.interface';
 import { Updater } from 'use-immer';
-import { Bank } from 'types/Bank.interface';
 /**
  * Service for managing category-related actions in the application.
  */

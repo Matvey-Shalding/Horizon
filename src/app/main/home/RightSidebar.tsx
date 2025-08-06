@@ -1,11 +1,11 @@
 'use client';
 
+import { MENU_STATUSES, MenuStatus } from '@/constants/menuStatuses';
 import { useClickOutside, useMediaQuery } from '@react-hookz/web';
 import { generateRightSidebarAnimation } from 'animations/rightSidebarAnimation';
 import clsx from 'clsx';
 import Plus from 'components/icons/main/home/plus';
 import Sidebar from 'components/icons/sidebar/Sidebar';
-import { MENU_STATUSES, MenuStatus } from 'constants/menuStatuses';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';

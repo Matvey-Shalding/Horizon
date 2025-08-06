@@ -1,7 +1,7 @@
+import { MenuStatus } from '@/constants/menuStatuses';
 import { AddCategory } from 'app/main/connect-bank/AddCategory';
 import clsx from 'clsx';
 import Dropdown from 'components/icons/main/home/dropdown';
-import { MenuStatus } from 'constants/menuStatuses';
 import { AnimatePresence, m } from 'framer-motion';
 import { useCategorySectionEditState } from 'hooks/useCategoryEditSectionState';
 import { useEffect, useRef } from 'react';

@@ -1,4 +1,4 @@
-import { DEFAULT_COLOR } from 'constants/defaultColor';
+import { DEFAULT_COLOR } from '@/constants/defaultColor';
 import { AnimatePresence, m } from 'framer-motion';
 import { useAddCategoryState } from 'hooks/useAddCategory.hook';
 import { HexColorPicker } from 'react-colorful';
@@ -33,7 +33,7 @@ export function AddCategory({
     onSubmit,
     handleCancel,
     onColorPick,
-    onInputChange
+    onInputChange,
   } = useAddCategoryState({ categories, setCategories, defaultColor, onCancel });
 
   return (

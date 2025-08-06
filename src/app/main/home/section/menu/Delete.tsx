@@ -1,5 +1,5 @@
+import { MenuStatus } from '@/constants/menuStatuses';
 import { Dispatch } from '@reduxjs/toolkit';
-import { MenuStatus } from 'constants/menuStatuses';
 import { m } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

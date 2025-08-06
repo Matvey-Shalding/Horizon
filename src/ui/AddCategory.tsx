@@ -1,9 +1,9 @@
 'use client';
 
+import { DEFAULT_COLOR } from '@/constants/defaultColor';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import Plus from 'components/icons/main/home/plus';
-import { DEFAULT_COLOR } from 'constants/defaultColor';
 import { AnimatePresence, m } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';

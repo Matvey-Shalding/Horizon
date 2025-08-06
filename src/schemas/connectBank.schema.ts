@@ -1,6 +1,6 @@
 import { z } from 'zod';
+import { ERROR_MESSAGES } from '../@/constants/errorMessages';
 import { bankCategorySchema } from './bankCategory.schema';
-import { ERROR_MESSAGES } from '../constants/errorMessages';
 
 /**
  * Regular expression for validating 12-digit card ID.
