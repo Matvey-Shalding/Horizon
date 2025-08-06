@@ -1,0 +1,28 @@
+# Ignore logs and env files
+*.log
+.env.local
+.env.*.local
+.env
+
+# Ignore local development folders
+node_modules/
+.next/
+.vscode/
+
+# Ignore build artifacts and cache folders
+dist/
+coverage/
+out/
+
+# Ignore Prisma cache (but NOT prisma/generated client!)
+prisma/migrations/
+
+# Ignore tests and snapshots
+**/__tests__/
+**/__mocks__/
+**/__snapshots__/
+
+# Ignore IDE/editor files
+.idea/
+*.iml
+.DS_Store
