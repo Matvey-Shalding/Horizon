@@ -1,12 +1,8 @@
 import NextAuth from 'next-auth';
 import authConfig from '../../../../../auth.config';
 
-/**
- * NextAuth handlers for authentication routes.
- */
-const { handlers } = NextAuth(authConfig);
+// Initialize NextAuth with the provided configuration
+const nextAuthHandlers = NextAuth(authConfig);
 
-/**
- * Exported HTTP method handlers for NextAuth.
- */
-export const { GET, POST } = handlers;
+// Export GET and POST handlers for NextAuth authentication routes
+export const { GET, POST } = nextAuthHandlers.handlers;
