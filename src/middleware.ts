@@ -4,37 +4,40 @@ import { AUTH_ROUTES } from 'routes';
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT } from '../routes';
 
 export async function middleware(req: NextRequest) {
-  const { nextUrl } = req;
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  try {
+    const { nextUrl } = req;
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-  const isLoggedIn = !!token;
+    const isLoggedIn = !!token;
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname as any);
+    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+    const isAuthRoute = authRoutes.includes(nextUrl.pathname as any);
 
-  // Allow access to API authentication routes
-  if (isApiAuthRoute) {
-    return NextResponse.next();
-  }
+    if (isApiAuthRoute) {
+      return NextResponse.next();
+    }
 
-  // Redirect authenticated users visiting "/" to a default route (e.g., /dashboard)
-  if (isLoggedIn && nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-  }
-
-  // Handle authentication routes
-  if (isAuthRoute) {
-    if (isLoggedIn) {
+    if (isLoggedIn && nextUrl.pathname === '/') {
       return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
+
+    if (isAuthRoute) {
+      if (isLoggedIn) {
+        return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+      }
+      return NextResponse.next();
+    }
+
+    if (!isLoggedIn) {
+      return NextResponse.redirect(new URL(AUTH_ROUTES.LOGIN, nextUrl));
+    }
+
+    return NextResponse.next();
+  } catch (error) {
+    console.error('Middleware error:', error);
+    // Allow request to proceed even if there is an error
     return NextResponse.next();
   }
-
-  if (!isLoggedIn) {
-    return NextResponse.redirect(new URL(AUTH_ROUTES.LOGIN, nextUrl));
-  }
-
-  return NextResponse.next();
 }
 
 export const config = {
