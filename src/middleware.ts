@@ -1,47 +1,37 @@
 import { getToken } from 'next-auth/jwt';
-import { NextRequest, NextResponse } from 'next/server';
-import { AUTH_ROUTES } from 'routes';
-import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT } from '../routes';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
+const AUTH_PAGES = ['/login', '/signup'];
 
 export async function middleware(req: NextRequest) {
-  try {
-    const { nextUrl } = req;
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const url = req.nextUrl.clone();
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    const isLoggedIn = !!token;
+  // Debug logging for Vercel logs
+  console.log('🔍 Middleware Debug');
+  console.log('URL:', req.nextUrl.pathname);
+  console.log('Token:', token ? '✅ Token found' : '❌ No token');
+  console.log('ENV:', process.env.NODE_ENV);
 
-    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-    const isAuthRoute = authRoutes.includes(nextUrl.pathname as any);
+  const isAuthPage = AUTH_PAGES.includes(url.pathname);
+  const isAuthenticated = !!token;
 
-    if (isApiAuthRoute) {
-      return NextResponse.next();
-    }
-
-    if (isLoggedIn && nextUrl.pathname === '/') {
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-    }
-
-    if (isAuthRoute) {
-      if (isLoggedIn) {
-        return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-      }
-      return NextResponse.next();
-    }
-
-    if (!isLoggedIn) {
-      return NextResponse.redirect(new URL(AUTH_ROUTES.LOGIN, nextUrl));
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    console.error('Middleware error:', error);
-    // Allow request to proceed even if there is an error
-    return NextResponse.next();
+  if (isAuthPage && isAuthenticated) {
+    // Prevent logged in users from accessing login/signup
+    url.pathname = '/main/home';
+    return NextResponse.redirect(url);
   }
+
+  if (!isAuthPage && !isAuthenticated) {
+    // Redirect non-authenticated users to login
+    url.pathname = '/login';
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-  ],
+  matcher: ['/', '/main/:path*', '/login', '/signup'],
 };
