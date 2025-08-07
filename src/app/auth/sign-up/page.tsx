@@ -7,6 +7,7 @@ import { FormFields } from 'constant/formFields';
 import { SIGN_UP_FORM_FIELDS } from 'constant/signUpFormFields';
 import { m } from 'framer-motion';
 import { useSignUp } from 'hooks/useSignUp.hook';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -34,6 +35,12 @@ export default function SingUp() {
   const router = useRouter();
 
   const dispatch = useDispatch();
+
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    console.log(session, status);
+  }, [session, status]);
 
   const { isSubmitting, startTransition, error, setError, setSuccess, success, userData, setUserData } =
     useSignUp();

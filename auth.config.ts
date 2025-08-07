@@ -11,6 +11,7 @@ const authConfig: NextAuthConfig = {
 
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
+
           const user = await findUserByEmail(email);
 
           if (!user) return null;
@@ -30,27 +31,6 @@ const authConfig: NextAuthConfig = {
       },
     }),
   ],
-
-  session: {
-    strategy: 'jwt',
-  },
-
-  trustHost: true, // 👈 REQUIRED for Vercel deployments
-
-  secret: process.env.NEXTAUTH_SECRET,
-
-  cookies: {
-    sessionToken: {
-      name: `__Secure-next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: process.env.NODE_ENV === 'production', // 👈 IMPORTANT
-      },
-    },
-  },
-
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -61,8 +41,9 @@ const authConfig: NextAuthConfig = {
     },
     async session({ session, token }) {
       if (session.user && token) {
-        session.user.id = token.id as string;
-        session.user.email = token.email as string;
+        // Explicitly assert the types for session.user and token
+        session.user.id = token.id as string; // Type assertion for 'id'
+        session.user.email = token.email as string; // Type assertion for 'email'
       }
       return session;
     },
