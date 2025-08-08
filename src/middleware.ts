@@ -7,23 +7,22 @@ export async function middleware(req: NextRequest) {
   try {
     const { nextUrl } = req;
 
-    console.log("Next url",nextUrl)
+    console.log('Next url', nextUrl);
 
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     console.log('secret code', process.env.NEXTAUTH_SECRET);
 
-    console.log("token",token)
+    console.log('token', token);
 
     const isLoggedIn = !!token;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname as any);
 
-    console.log("Is api", isApiAuthRoute )
-    
-    console.log('Is auth', isAuthRoute);
+    console.log('Is api', isApiAuthRoute);
 
+    console.log('Is auth', isAuthRoute);
 
     if (isApiAuthRoute) {
       return NextResponse.next();

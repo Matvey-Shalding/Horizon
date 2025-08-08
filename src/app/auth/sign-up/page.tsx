@@ -36,12 +36,6 @@ export default function SingUp() {
 
   const dispatch = useDispatch();
 
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    console.log(session, status);
-  }, [session, status]);
-
   const { isSubmitting, startTransition, error, setError, setSuccess, success, userData, setUserData } =
     useSignUp();
 
