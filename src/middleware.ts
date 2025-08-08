@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname as any);
 
-    console.log("Is api", isApiAuthRoute)
+    console.log("Is api", isApiAuthRoute )
     
     console.log('Is auth', isAuthRoute);
 
