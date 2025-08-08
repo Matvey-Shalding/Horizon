@@ -25,7 +25,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts", "src/middleware.ts",
+    ".next/types/**/*.ts", 
+    // "src/middleware.ts", //enable if it running locally
   ],
   "exclude": ["node_modules"]
 }
