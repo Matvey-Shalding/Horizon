@@ -4,26 +4,28 @@ import { AUTH_ROUTES } from 'routes';
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT } from '../routes';
 
 export async function middleware(req: NextRequest) {
+
+  const SECRET_CODE = 'FTkAz0ygsRoEfwpY7ykEVR0mw+o3Pu40Pz6QewMbrL4=';
+
   try {
     const { nextUrl } = req;
 
-    console.log("Next url",nextUrl)
+    console.log('Next url', nextUrl);
 
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const token = await getToken({ req, secret: SECRET_CODE });
 
-    console.log('secret code', process.env.NEXTAUTH_SECRET);
+    console.log('secret code', SECRET_CODE);
 
-    console.log("token",token)
+    console.log('token', token);
 
     const isLoggedIn = !!token;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname as any);
 
-    console.log("Is api", isApiAuthRoute )
-    
-    console.log('Is auth', isAuthRoute);
+    console.log('Is api', isApiAuthRoute);
 
+    console.log('Is auth', isAuthRoute);
 
     if (isApiAuthRoute) {
       return NextResponse.next();
@@ -54,6 +56,19 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    {
+      source: '/((?!api|_next/static|_next/image|media|fonts|favicon.ico|favicon.png).*)',
+      missing: [
+        // Exclude Server Actions
+        { type: 'header', key: 'next-action' },
+      ],
+    },
   ],
 };
